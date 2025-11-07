@@ -512,27 +512,12 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             Admin.clearFormErrors(this.productForm);
             Admin.hideAlert('modalMessage');
-            
+
             // Validate required fields
             if (!this.productDeveloperInput.value) {
                 Admin.showInputError('developer_id', 'Please select a developer.', 'relations');
                 Admin.showAlert('Please correct the validation errors.', 'danger', 'modalMessage');
-                
-                // Switch to the Relations tab to show the error
-                this.switchToRelationsTab(() => {
-                    // Focus on the developer select after switching tabs
-                    setTimeout(() => {
-                        this.productDeveloperInput.focus();
-                    }, 300);
-                });
-                
-                return;
-            }
-            
-            if (!this.productPublisherInput.value) {
-                Admin.showInputError('publisher_id', 'Please select a publisher.', 'relations');
-                Admin.showAlert('Please correct the validation errors.', 'danger', 'modalMessage');
-                
+
                 // Switch to the Relations tab to show the error
                 this.switchToRelationsTab(() => {
                     // Focus on the publisher select after switching tabs
@@ -540,17 +525,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         this.productPublisherInput.focus();
                     }, 300);
                 });
-                
+
                 return;
             }
-            
+
             this.toggleSaveButtonState(true);
             const productId = this.productIdInput.value;
-            const actionUrl = productId ? `${this.baseUrl}/api/admin/products/${productId}` : `${this.baseUrl}/api/admin/products`;
+            const actionUrl =  productId ? `${this.baseUrl}/api/admin/products/${productId}` : `${this.baseUrl}/api/admin/products`;
             
             // Create FormData object
             const formData = new FormData();
-            
+
             // Add basic form fields
             formData.append('title', this.productNameInput.value);
             formData.append('slug', this.productSlugInput.value);
@@ -572,7 +557,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('is_trending', this.productIsTrendingInput.checked ? '1' : '0');
             formData.append('meta_title', this.productMetaTitleInput.value);
             formData.append('meta_description', this.productMetaDescriptionInput.value);
-            
+
             // Add minimum requirements
             const minRequirements = {
                 os: this.minReqOSInput.value,
@@ -581,7 +566,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 graphics: this.minReqGraphicsInput.value,
                 storage: this.minReqStorageInput.value
             };
-            
+
             // Add recommended requirements
             const recRequirements = {
                 os: this.recReqOSInput.value,
@@ -590,68 +575,73 @@ document.addEventListener('DOMContentLoaded', function () {
                 graphics: this.recReqGraphicsInput.value,
                 storage: this.recReqStorageInput.value
             };
-            
+
             // Add minimum and recommended requirements as JSON strings
             formData.append('min_requirements', JSON.stringify(minRequirements));
             formData.append('rec_requirements', JSON.stringify(recRequirements));
-            
-            // Add categories, platforms, tags, and related products
+
+            // Add categories, platforms, tags
             this.getSelectedValues('productCategories').forEach(id => formData.append('categories[]', id));
             this.getSelectedValues('productPlatforms').forEach(id => formData.append('platforms[]', id));
             this.getSelectedValues('productTags').forEach(id => formData.append('tags[]', id));
-            this.getSelectedValues('productRelatedProducts').forEach(id => formData.append('related_products[]', id));
-            
+    
+            // Add related products with relation type
+            const selectedRelatedProducts = this.getSelectedValues('productRelatedProducts');
+            const relationType = document.getElementById('relationType') ? document.getElementById('relationType').value : 'similar';
+            const relatedProductsData = selectedRelatedProducts.map(id => ({
+                id: id,
+                relation_type: relationType
+            }));
+            formData.append('related_products', JSON.stringify(relatedProductsData));
             // Add product keys
-            const keys = Array.from(this.productKeysContainer.querySelectorAll('.product-key-input'))
-                .map(input => input.value)
-                .filter(key => key.trim() !== '');
+            const keys = Array.from(this.productKeysContainer.querySelectorAll('.product-key-input')).map(input => input.value).filter(key => key.trim() !== '');
             formData.append('keys', JSON.stringify(keys));
-            
+
             // Add existing images
             const existingImageUrls = this.productExistingImages.map(img => img.image_url);
             formData.append('existing_images', JSON.stringify(existingImageUrls));
-            
+
             // Add files
             if (this.productFeaturedImageInput.files.length > 0) {
                 formData.append('featured_image', this.productFeaturedImageInput.files[0]);
             }
-            
+
             if (this.productGalleryInput.files.length > 0) {
-                Array.from(this.productGalleryInput.files).forEach(file => {
+                 Array.from(this.productGalleryInput.files).forEach(file => {
                     formData.append('images[]', file);
                 });
             }
-            
+
             // Add method for PUT request (Laravel style)
             if (productId) {
                 formData.append('_method', 'PUT');
             }
-            
+
             try {
                 // Use Admin.fetchWithCsrf for form submission
                 const response = await Admin.fetchWithCsrf(actionUrl, {
                     method: 'POST',
                     body: formData
                 });
-                
+
                 if (response.status === 401 || response.status === 403) {
                     window.location.href = `${this.baseUrl}/frontend/admin/admin_login.html`;
                     return;
                 }
-                
+
                 const data = await response.json();
-                
+
                 if (response.ok && data.success) {
                     Admin.showAlert(data.message, 'success', 'productManagementMessage');
                     this.productModal.hide();
                     this.loadProducts(this.currentPage, this.currentSearchTerm, this.currentStatusFilter);
-                } else {
+                }else {
                     this.handleFormErrors(data);
                 }
-            } catch (error) {
+            }catch (error) {
                 console.error('Error submitting form:', error);
                 Admin.showAlert('Network error. Could not save product.', 'danger', 'modalMessage');
-            } finally {
+            }finally {
                 this.toggleSaveButtonState(false);
             }
         }

@@ -512,7 +512,7 @@ class Product extends Model
     {
         try {
             $stmt = $this->db->prepare("
-                SELECT p.id, p.title as name, p.slug, p.featured_image as main_image_url, p.price, p.sale_price, p.average_rating
+                SELECT p.id, p.title as name, p.slug, p.featured_image as main_image_url, p.price, p.sale_price, p.average_rating, rp.relation_type
                 FROM related_products rp
                 JOIN products p ON rp.related_product_id = p.id
                 WHERE rp.product_id = :product_id AND p.status = 'published'
@@ -522,7 +522,7 @@ class Product extends Model
             $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+        }catch (PDOException $e) {
             error_log("Error fetching related products: " . $e->getMessage());
             return [];
         }
@@ -716,42 +716,45 @@ class Product extends Model
     {
         try {
             $this->db->beginTransaction();
-            
+        
             // Delete all existing related products
             $deleteStmt = $this->db->prepare("DELETE FROM related_products WHERE product_id = :product_id");
             $deleteStmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
             $deleteStmt->execute();
-            
-            // Insert new related products if any
+
             if (!empty($relatedProducts)) {
+
                 $values = [];
                 $params = [];
-                
+
                 foreach ($relatedProducts as $product) {
-                    if (isset($product['id'])) {
-                        $relationType = $product['relation_type'] ?? 'similar';
+                    $relatedProductId = $product['id'] ?? null;
+                    $relationType = $product['relation_type'] ?? 'similar';
+                    
+                    if ($relatedProductId !== null && $relatedProductId != $productId) {
                         $values[] = "(?, ?, ?)";
                         $params[] = $productId;
-                        $params[] = (int) $product['id'];
+                        $params[] = (int) $relatedProductId;
                         $params[] = $relationType;
                     }
                 }
-                
+
                 if (!empty($values)) {
                     $sql = "INSERT INTO related_products (product_id, related_product_id, relation_type) VALUES " . implode(', ', $values);
                     $stmt = $this->db->prepare($sql);
                     $stmt->execute($params);
                 }
             }
-            
+
             $this->db->commit();
             return true;
-        } catch (PDOException $e) {
+        }catch (PDOException $e) {
             $this->db->rollBack();
             error_log("Error syncing related products: " . $e->getMessage());
             return false;
         }
     }
+
     /**
      * Fetches a list of products for the admin panel with search and pagination.
      * This method is different from `getAll` as it does not filter by status='published'.

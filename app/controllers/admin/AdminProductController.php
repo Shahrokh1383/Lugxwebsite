@@ -285,8 +285,11 @@ class AdminProductController extends Controller
             }
             
             // Add related products if provided
-            if (isset($data['related_products']) && is_array($data['related_products'])) {
-                $this->productModel->syncRelatedProducts($productId, $data['related_products']);
+            if (isset($data['related_products'])) {
+                $relatedProducts = is_array($data['related_products']) ? $data['related_products'] : json_decode($data['related_products'], true);
+                if (is_array($relatedProducts)) {
+                    $this->productModel->syncRelatedProducts($productId, $relatedProducts);
+                }
             }
             
             $this->renderApiJson(['success' => true, 'message' => 'Product created successfully!', 'productId' => $productId], 201);
