@@ -16,21 +16,23 @@ class NewsletterSubscriber extends Model {
      */
     public function findByEmail(string $email): array|false
     {
-        return $this->first(['email', $email]);
+        return $this->first(['email' => $email]);
     }
 
     /**
      * Subscribes a new email address to the newsletter.
      *
      * @param string $email
+     * @param string|null $name
+     * @param array|null $preferences
      * @return bool
      */
-    public function subscribe(string $email, ?string $name = null, ?array $preferences = null):bool
+    public function subscribe(string $email, ?string $name = null, ?array $preferences = null): bool
     {
         $existingSubscriber = $this->findByEmail($email);
 
         if ($existingSubscriber) {
-             // Subscriber already exists, update their status if necessary
+            // Subscriber already exists, update their status if necessary
             if ($existingSubscriber['status'] !== 'active') {
                 $updateData = [
                     'status' => 'active',
@@ -46,20 +48,20 @@ class NewsletterSubscriber extends Model {
             return true;
         }
 
-         // Create a new subscriber
+        // Create a new subscriber
         $data = [
             'email' => $email,
             'status' => 'active',
             'subscribed_at' => date('Y-m-d H:i:s')
         ];
-
+        
         if ($name) $data['name'] = $name;
         if ($preferences) $data['preferences'] = json_encode($preferences);
 
         return (bool) $this->create($data);
     }
 
-     /**
+    /**
      * Unsubscribe a user from the newsletter
      *
      * @param string $email
@@ -99,8 +101,10 @@ class NewsletterSubscriber extends Model {
     }
 
     /**
-     * Fetches all newsletter subscribers.
-     * @return array An array of all newsletter subscribers.
+     * Fetches all newsletter subscribers with optional filtering
+     * 
+     * @param array $filters
+     * @return array
      */
     public function getAll(array $filters = []): array
     {
@@ -128,7 +132,7 @@ class NewsletterSubscriber extends Model {
         }
     }
 
-     /**
+    /**
      * Get active subscribers count
      * 
      * @return int
@@ -145,7 +149,7 @@ class NewsletterSubscriber extends Model {
         }
     }
 
-      /**
+    /**
      * Get subscribers with specific preferences
      * 
      * @param array $preferences

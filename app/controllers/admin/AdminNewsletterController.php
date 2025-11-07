@@ -6,7 +6,6 @@ use App\Models\NewsletterSubscriber;
 use App\Models\EmailCampaign;
 use App\Services\AuthService;
 use App\Services\MailService;
-use App\Services\NewsletterService;
 use PDOException;
 use Exception;
 
@@ -16,7 +15,6 @@ class AdminNewsletterController extends Controller
     private NewsletterSubscriber $subscriberModel;
     private EmailCampaign $campaignModel;
     private MailService $mailService;
-    private NewsletterService $newsletterService;
 
     public function __construct()
     {
@@ -24,7 +22,6 @@ class AdminNewsletterController extends Controller
         $this->subscriberModel = new NewsletterSubscriber();
         $this->campaignModel = new EmailCampaign();
         $this->mailService = new MailService();
-        $this->newsletterService = new NewsletterService();
 
         if (!$this->subscriberModel) {
             error_log("ERROR: AdminNewsletterController - Failed to load NewsletterSubscriber model.");
@@ -396,6 +393,9 @@ class AdminNewsletterController extends Controller
             
             // Send emails to all subscribers
             $successCount = 0;
+            $failureCount = 0;
+            $errorMessages = [];
+            
             foreach ($subscribers as $subscriber) {
                 $subscriberName = $subscriber['name'] ?? '';
                 $result = $this->mailService->sendMail(
@@ -407,6 +407,9 @@ class AdminNewsletterController extends Controller
                 
                 if ($result) {
                     $successCount++;
+                } else {
+                    $failureCount++;
+                    $errorMessages[] = "Failed to send to: {$subscriber['email']}";
                 }
             }
             
@@ -417,9 +420,23 @@ class AdminNewsletterController extends Controller
                 'recipients_count' => $successCount
             ]);
             
+            // Log any errors for debugging
+            if (!empty($errorMessages)) {
+                error_log("Email sending errors for campaign {$id}: " . implode('; ', $errorMessages));
+            }
+            
+            $message = "Campaign sent successfully to {$successCount} subscribers.";
+            if ($failureCount > 0) {
+                $message .= " Failed to send to {$failureCount} subscribers.";
+            }
+            
             $this->renderApiJson([
                 'success' => true, 
-                'message' => "Campaign sent successfully to {$successCount} subscribers."
+                'message' => $message,
+                'data' => [
+                    'success_count' => $successCount,
+                    'failure_count' => $failureCount
+                ]
             ]);
             
         } catch (PDOException $e) {
@@ -465,30 +482,27 @@ class AdminNewsletterController extends Controller
         }
         
         try {
-            $result = $this->newsletterService->sendTestEmail($id, $testEmail);
-            $this->renderApiJson($result);
+            $campaign = $this->campaignModel->getCampaignById($id);
+            
+            if (!$campaign) {
+                $this->renderApiJson(['success' => false, 'message' => 'Campaign not found.'], 404);
+                return;
+            }
+            
+            $result = $this->mailService->sendMail(
+                $testEmail,
+                'Test Recipient',
+                $campaign['subject'],
+                $campaign['content']
+            );
+            
+            if ($result) {
+                $this->renderApiJson(['success' => true, 'message' => 'Test email sent successfully.']);
+            } else {
+                $this->renderApiJson(['success' => false, 'message' => 'Failed to send test email. Please check your mail configuration.'], 500);
+            }
         } catch (Exception $e) {
             error_log("Error in sendTestEmail: " . $e->getMessage());
-            $this->renderApiJson(['success' => false, 'message' => 'An unexpected error occurred.'], 500);
-        }
-    }
-
-    /**
-     * Get campaign statistics
-     * GET /api/admin/newsletter/campaigns/{id}/stats
-     */
-    public function getCampaignStats(int $id): void
-    {
-        if (!$this->authService->isLoggedIn() || !$this->authService->hasRole('admin')) {
-            $this->renderApiJson(['success' => false, 'message' => 'Unauthorized access.'], 401);
-            return;
-        }
-
-        try {
-            $result = $this->newsletterService->getCampaignStats($id);
-            $this->renderApiJson($result);
-        } catch (Exception $e) {
-            error_log("Error in getCampaignStats: " . $e->getMessage());
             $this->renderApiJson(['success' => false, 'message' => 'An unexpected error occurred.'], 500);
         }
     }
@@ -566,6 +580,9 @@ class AdminNewsletterController extends Controller
             }
     
             $successCount = 0;
+            $failureCount = 0;
+            $errorMessages = [];
+            
             foreach ($subscribers as $subscriber) {
                 $subscriberName = $subscriber['name'] ?? '';
                 $result = $this->mailService->sendMail(
@@ -577,6 +594,9 @@ class AdminNewsletterController extends Controller
                 
                 if ($result) {
                     $successCount++;
+                } else {
+                    $failureCount++;
+                    $errorMessages[] = "Failed to send to: {$subscriber['email']}";
                 }
             }
             
@@ -586,10 +606,24 @@ class AdminNewsletterController extends Controller
                 'sent_at' => date('Y-m-d H:i:s'),
                 'recipients_count' => $successCount
             ]);
+            
+            // Log any errors for debugging
+            if (!empty($errorMessages)) {
+                error_log("Email sending errors for quick email campaign {$campaignId}: " . implode('; ', $errorMessages));
+            }
     
+            $message = "Group email sent successfully to {$successCount} subscribers.";
+            if ($failureCount > 0) {
+                $message .= " Failed to send to {$failureCount} subscribers.";
+            }
+            
             $this->renderApiJson([
                 'success' => true, 
-                'message' => "Group email sent successfully to {$successCount} subscribers."
+                'message' => $message,
+                'data' => [
+                    'success_count' => $successCount,
+                    'failure_count' => $failureCount
+                ]
             ]);
     
         } catch (PDOException $e) {
@@ -652,33 +686,6 @@ class AdminNewsletterController extends Controller
             $this->renderApiJson(['success' => false, 'message' => 'Database error.'], 500);
         } catch (Exception $e) {
             error_log("General Error in getStats: " . $e->getMessage());
-            $this->renderApiJson(['success' => false, 'message' => 'An unexpected error occurred.'], 500);
-        }
-    }
-
-    /**
-     * Process scheduled campaigns (for cron job)
-     * POST /api/admin/newsletter/process-scheduled
-     */
-    public function processScheduledCampaigns(): void
-    {
-        // This endpoint should be protected by a special token or IP whitelist for cron jobs
-        // For now, we'll just check for admin access
-        
-        if (!$this->authService->isLoggedIn() || !$this->authService->hasRole('admin')) {
-            $this->renderApiJson(['success' => false, 'message' => 'Unauthorized access.'], 401);
-            return;
-        }
-
-        try {
-            $results = $this->newsletterService->processScheduledCampaigns();
-            $this->renderApiJson([
-                'success' => true,
-                'message' => 'Scheduled campaigns processed.',
-                'data' => $results
-            ]);
-        } catch (Exception $e) {
-            error_log("Error in processScheduledCampaigns: " . $e->getMessage());
             $this->renderApiJson(['success' => false, 'message' => 'An unexpected error occurred.'], 500);
         }
     }
