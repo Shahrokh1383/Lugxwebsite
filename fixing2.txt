@@ -1,0 +1,1134 @@
+خیلی خب میخوام که کل کدهای بک اند و فرانت اند برای بخش newsletter رو برام هماهنگ و اصلاح کنی تا به درستی کار بکنه 
+
+من در زیر تمام فایل های مورد نیاز برای اصلاح کدهارو قرار میدم
+
+برات در زیر تمام فایل Model.php رو قرار میدم : 
+
+<?php
+namespace App\Core;
+
+use PDO;
+use PDOException;
+
+class Model
+{
+    protected PDO $db;
+    protected string $table;
+    protected string $primaryKey = 'id';
+
+    public function __construct()
+    {
+        $this->db = Database::getInstance();
+    }
+
+    /**
+     * Find a record by its primary key.
+     *
+     * @param mixed $id
+     * @return array|false
+     */
+    public function find($id): array|false
+    {
+        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id LIMIT 1");
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch();
+    }
+
+    /**
+     * Get all records from the table.
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        $stmt = $this->db->query("SELECT * FROM {$this->table}");
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Insert a new record into the table.
+     *
+     * @param array $data
+     * @return int|false Last inserted ID or false on failure
+     */
+    public function create(array $data): int|false
+    {
+        $columns = implode(', ', array_keys($data));
+        $placeholders = ':' . implode(', :', array_keys($data));
+
+        $sql = "INSERT INTO {$this->table} ({$columns}) VALUES ({$placeholders})";
+        $stmt = $this->db->prepare($sql);
+
+        try {
+            $stmt->execute($data);
+            return (int) $this->db->lastInsertId();
+        } catch (PDOException $e) {
+            // Log the error for debugging
+            error_log("Error creating record in {$this->table}: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Update an existing record in the table.
+     *
+     * @param mixed $id
+     * @param array $data
+     * @return bool
+     */
+    public function update($id, array $data): bool
+    {
+        $set = [];
+        foreach ($data as $key => $value) {
+            $set[] = "{$key} = :{$key}";
+        }
+        $set = implode(', ', $set);
+
+        $sql = "UPDATE {$this->table} SET {$set} WHERE {$this->primaryKey} = :id";
+        $stmt = $this->db->prepare($sql);
+
+        $data['id'] = $id; // Add ID to data for binding
+        try {
+            return $stmt->execute($data);
+        } catch (PDOException $e) {
+            error_log("Error updating record in {$this->table}: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Delete a record from the table.
+     *
+     * @param mixed $id
+     * @return bool
+     */
+    public function delete($id): bool
+    {
+        $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE {$this->primaryKey} = :id");
+        try {
+            return $stmt->execute([':id' => $id]);
+        } catch (PDOException $e) {
+            error_log("Error deleting record from {$this->table}: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Get records based on a WHERE clause.
+     *
+     * @param array $conditions Example: ['column' => 'value', 'another_column >' => 10]
+     * @param string $orderBy
+     * @param string $limit
+     * @param string $offset
+     * @return array
+     */
+    public function where(array $conditions, string $orderBy = '', string $limit = '', string $offset = ''): array
+    {
+        $whereClauses = [];
+        $params = [];
+        foreach ($conditions as $key => $value) {
+            // Handle operators like '>', '<', '!=', 'LIKE'
+            if (preg_match('/(.*?)\s*([<>=!%]|LIKE|NOT LIKE|IN|NOT IN|IS NULL|IS NOT NULL)$/i', $key, $matches)) {
+                $column = trim($matches[1]);
+                $operator = trim($matches[2]);
+                if ($operator === 'IS NULL' || $operator === 'IS NOT NULL') {
+                    $whereClauses[] = "{$column} {$operator}";
+                } else if ($operator === 'IN' || $operator === 'NOT IN') {
+                    // For IN/NOT IN, value should be an array
+                    if (is_array($value)) {
+                        $placeholders = implode(', ', array_fill(0, count($value), '?'));
+                        $whereClauses[] = "{$column} {$operator} ({$placeholders})";
+                        $params = array_merge($params, $value);
+                    } else {
+                        error_log("Invalid value for IN/NOT IN condition: " . $key);
+                        continue;
+                    }
+                } else {
+                    $whereClauses[] = "{$column} {$operator} :{$column}";
+                    $params[":{$column}"] = $value;
+                }
+            } else {
+                // Default to '=' operator
+                $whereClauses[] = "{$key} = :{$key}";
+                $params[":{$key}"] = $value;
+            }
+        }
+
+        $sql = "SELECT * FROM {$this->table}" .
+               (!empty($whereClauses) ? " WHERE " . implode(' AND ', $whereClauses) : "") .
+               ($orderBy ? " ORDER BY {$orderBy}" : "") .
+               ($limit ? " LIMIT {$limit}" : "") .
+               ($offset ? " OFFSET {$offset}" : "");
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Get a single record based on a WHERE clause.
+     *
+     * @param array $conditions
+     * @return array|false
+     */
+    public function first(array $conditions): array|false
+    {
+        $results = $this->where($conditions, '', 1);
+        return $results ? $results[0] : false;
+    }
+
+    /**
+     * Execute a raw SQL query. Use with caution.
+     *
+     * @param string $sql
+     * @param array $params
+     * @param bool $fetch single row or all rows
+     * @return array|false|int
+     */
+    public function query(string $sql, array $params = [], bool $fetchAll = true): array|false|int
+    {
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
+            if (str_starts_with(strtoupper(trim($sql)), 'SELECT')) {
+                return $fetchAll ? $stmt->fetchAll() : $stmt->fetch();
+            }
+            return $stmt->rowCount(); // For INSERT, UPDATE, DELETE
+        } catch (PDOException $e) {
+            error_log("Raw query failed: " . $e->getMessage() . " SQL: " . $sql);
+            return false;
+        }
+    }
+}
+
+
+برات در زیر تمام فایل NewsletterSubscriber.php رو قرار میدم : 
+
+<?php
+namespace App\Models;
+use App\Core\Model;
+use PDO;
+use PDOException;
+
+class NewsletterSubscriber extends Model {
+    protected string $table = 'newsletter_subscribers';
+    protected array $fillable = ['email', 'name', 'status', 'preferences', 'subscribed_at', 'unsubscribed_at'];
+
+    /**
+     * Finds a subscriber by email address.
+     *
+     * @param string $email
+     * @return array|false
+     */
+    public function findByEmail(string $email): array|false
+    {
+        return $this->first(['email', $email]);
+    }
+
+    /**
+     * Subscribes a new email address to the newsletter.
+     *
+     * @param string $email
+     * @return bool
+     */
+    public function subscribe(string $email, ?string $name = null, ?array $preferences = null):bool
+    {
+        $existingSubscriber = $this->findByEmail($email);
+
+        if ($existingSubscriber) {
+             // Subscriber already exists, update their status if necessary
+            if ($existingSubscriber['status'] !== 'active') {
+                $updateData = [
+                    'status' => 'active',
+                    'unsubscribed_at' => null
+                ];
+                
+                if ($name) $updateData['name'] = $name;
+                if ($preferences) $updateData['preferences'] = json_encode($preferences);
+                
+                return $this->update($existingSubscriber[$this->primaryKey], $updateData);
+            }
+            // Already subscribed, so return true
+            return true;
+        }
+
+         // Create a new subscriber
+        $data = [
+            'email' => $email,
+            'status' => 'active',
+            'subscribed_at' => date('Y-m-d H:i:s')
+        ];
+
+        if ($name) $data['name'] = $name;
+        if ($preferences) $data['preferences'] = json_encode($preferences);
+
+        return (bool) $this->create($data);
+    }
+
+     /**
+     * Unsubscribe a user from the newsletter
+     *
+     * @param string $email
+     * @return bool
+     */
+    public function unsubscribe(string $email): bool
+    {
+        $subscriber = $this->findByEmail($email);
+        
+        if (!$subscriber) {
+            return false;
+        }
+        
+        return $this->update($subscriber[$this->primaryKey], [
+            'status' => 'unsubscribed',
+            'unsubscribed_at' => date('Y-m-d H:i:s')
+        ]);
+    }
+
+    /**
+     * Mark a subscriber as bounced
+     *
+     * @param string $email
+     * @return bool
+     */
+    public function markAsBounced(string $email): bool
+    {
+        $subscriber = $this->findByEmail($email);
+        
+        if (!$subscriber) {
+            return false;
+        }
+        
+        return $this->update($subscriber[$this->primaryKey], [
+            'status' => 'bounced'
+        ]);
+    }
+
+    /**
+     * Fetches all newsletter subscribers.
+     * @return array An array of all newsletter subscribers.
+     */
+    public function getAll(array $filters = []): array
+    {
+        try {
+            $where = [];
+            $params = [];
+            
+            if (!empty($filters['status'])) {
+                $where[] = "status = :status";
+                $params[':status'] = $filters['status'];
+            }
+            
+            $sql = "SELECT * FROM {$this->table}";
+            if (!empty($where)) {
+                $sql .= " WHERE " . implode(' AND ', $where);
+            }
+            $sql .= " ORDER BY subscribed_at DESC";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            error_log("Error fetching all newsletter subscribers: " . $e->getMessage());
+            return [];
+        }
+    }
+
+     /**
+     * Get active subscribers count
+     * 
+     * @return int
+     */
+    public function getActiveSubscribersCount(): int
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT COUNT(*) FROM {$this->table} WHERE status = 'active'");
+            $stmt->execute();
+            return (int) $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Error counting active subscribers: " . $e->getMessage());
+            return 0;
+        }
+    }
+
+      /**
+     * Get subscribers with specific preferences
+     * 
+     * @param array $preferences
+     * @return array
+     */
+    public function getSubscribersByPreferences(array $preferences): array
+    {
+        try {
+            $where = [];
+            $params = [];
+            
+            foreach ($preferences as $key => $value) {
+                $where[] = "JSON_CONTAIN(preferences, :{$key}, '$.{$key}')";
+                $params[":{$key}"] = json_encode($value);
+            }
+            
+            $sql = "SELECT * FROM {$this->table} WHERE status = 'active'";
+            if (!empty($where)) {
+                $sql .= " AND " . implode(' AND ', $where);
+            }
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            error_log("Error fetching subscribers by preferences: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Deletes a specific newsletter subscriber.
+     * @param int $id The ID of the subscriber.
+     * @return bool True on success, false on failure.
+     */
+    public function delete($id): bool
+    {
+        return parent::delete($id);
+    }
+}
+
+برات در زیر تمام فایل NewsletterController.php رو قرار میدم :
+
+<?php
+namespace App\Controllers\Api;
+
+use App\Core\Controller;
+use App\Models\NewsletterSubscriber;
+use App\Services\MailService;
+use Exception;
+
+class NewsletterController extends Controller
+{
+    private NewsletterSubscriber $subscriberModel;
+
+    public function __construct()
+    {
+        parent::__construct();
+        try {
+            $this->subscriberModel = new NewsletterSubscriber();
+        }catch (\Throwable $th) {
+            error_log("CRITICAL ERROR: NewsletterController::__construct - Failed to instantiate NewsletterSubscriber model: " . $th->getMessage());
+            $this->renderApiJson(['status' => 'error', 'message' => 'Internal server error during model initialization.'], 500);
+        }
+    }
+
+     /**
+     * Handles newsletter subscription request.
+     * POST /api/newsletter/subscribe
+     */
+    public function subscribe(): void
+    {
+        // Get the raw POST data
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        // Basic validation
+        if (empty($data) || !isset($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $this->renderApiJson(['status' => 'error', 'message' => 'Invalid or empty email address provided.'], 400);
+            return;
+        }
+
+        $email = $data['email'];
+
+        try {
+            if ($this->subscriberModel->subscribe($email)) {
+                // Subscription was successful
+                // Send a notification email to the admin
+                $mailService = new MailService();
+                $subject = "New Newsletter Subscriber!";
+                $body = "<h1>New Subscription to Newsletter</h1><p>A new user with the email address <strong>{$email}</strong> has subscribed to the newsletter.</p><p>Subscription Time: " . date('Y-m-d H:i:s') . "</p>";
+                $altBody = "A new user with email: {$email} has subscribed to the newsletter.";
+
+                $mailService->sendMail('lugx@gamil.com', 'Admin', $subject, $body, $altBody);
+
+                $this->renderApiJson(['status' => 'success', 'message' => 'You have been successfully subscribed to our newsletter!'], 200);
+            } else {
+                // Subscription failed for an unknown reason (e.g., database error)
+                $this->renderApiJson(['status' => 'error', 'message' => 'Could not subscribe you at this time. Please try again later.'], 500);
+            }
+        } catch (\Throwable $th) {
+            // Log any unexpected errors
+            error_log("ERROR: NewsletterController::subscribe - An unexpected error occurred: " . $th->getMessage());
+            $this->renderApiJson(['status' => 'error', 'message' => 'An unexpected server error occurred.'], 500);
+        }
+    }
+}
+
+برات در زیر تمام فایل Controller.php رو قرار میدم :
+
+<?php
+namespace App\Core;
+
+use PDO;
+use PDOException;
+use Exception; // Ensure Exception is imported for general error handling
+
+class Controller
+{
+    // ADDED CONSTRUCTOR FOR DEBUGGING
+    public function __construct()
+    {
+        error_log("DEBUG: Controller::__construct - Called."); // ADDED DEBUG LOG
+        // You might want to initialize common services here in the future, e.g.:
+        // $this->db = Database::getInstance();
+        // $this->auth = new AuthService();
+    }
+
+    /**
+     * Loads a model class.
+     *
+     * @param string $modelName The name of the model class (e.g., 'User').
+     * @return object|null An instance of the model, or null if not found.
+     */
+    protected function model(string $modelName): ?object
+    {
+        error_log("DEBUG: Controller::model - Attempting to load model: " . $modelName); // ADDED DEBUG LOG
+        $modelPath = ROOT_PATH . '/app/Models/' . $modelName . '.php'; // Corrected path for Models folder
+        if (file_exists($modelPath)) {
+            $className = 'App\\Models\\' . $modelName; // Full Qualified Class Name.
+            if (class_exists($className)) {
+                error_log("DEBUG: Controller::model - Instantiating model: " . $className); // ADDED DEBUG LOG
+                try {
+                    return new $className();
+                } catch (\Throwable $e) { // Catch errors during model instantiation
+                    error_log("ERROR: Controller::model - Failed to instantiate model '" . $className . "': " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+                    return null;
+                }
+            }
+        }
+        // Log the error if the model file or class is not found.
+        error_log("ERROR: Controller::model - Model file not found or class not defined: " . $modelName . " at path: " . $modelPath); // IMPROVED LOG
+        return null;
+    }
+
+    /**
+     * Renders a view file. (Primarily for server-side rendered views, not for static HTML redirects).
+     *
+     * @param string $viewPath The path to the view file (e.g., 'errors.404' maps to views/errors/404.php).
+     * @param array $data Data to be passed to the view, which will be extracted into variables.
+     */
+    protected function view(string $viewPath, array $data = []): void
+    {
+        error_log("DEBUG: Controller::view - Attempting to render view: " . $viewPath); // ADDED DEBUG LOG
+        // Extract data array keys into variables for direct use in the view.
+        extract($data);
+
+        // Construct the full path to the view file.
+        $viewFile = ROOT_PATH . '/views/' . str_replace('.', '/', $viewPath) . '.php'; // Allows dot notation for subdirectories.
+
+        if (file_exists($viewFile)) {
+            require_once $viewFile;
+            error_log("DEBUG: Controller::view - View rendered: " . $viewFile); // ADDED DEBUG LOG
+        } else {
+            // Log if the view file is not found and redirect to a 404 page.
+            error_log("ERROR: Controller::view - View file not found: " . $viewFile);
+            $this->redirect('/404'); // Redirect to a general 404 page.
+        }
+    }
+
+    /**
+     * Renders a static HTML file, injecting BASE_URL_PATH for JavaScript.
+     * This method is specifically designed for serving HTML files that contain JavaScript making AJAX calls,
+     * allowing dynamic injection of base URL paths without changing file extensions.
+     *
+     * @param string $htmlFilePath The path to the HTML file relative to ROOT_PATH (e.g., 'public/frontend/admin/admin_login.html').
+     * @param array $data Optional data to pass (not extracted, but useful for future expansion).
+     */
+    protected function renderHtmlView(string $htmlFilePath, array $data = []): void
+    {
+        error_log("DEBUG: Controller::renderHtmlView - Called for HTML file: " . $htmlFilePath);
+
+        $fullPath = ROOT_PATH . '/' . $htmlFilePath;
+
+        if (!file_exists($fullPath)) {
+            error_log("ERROR: Controller::renderHtmlView - HTML view file not found: " . $fullPath);
+            http_response_code(404);
+            echo "<h1>404 Not Found</h1><p>The requested page could not be found.</p>";
+            exit;
+        }
+
+        // Start output buffering specifically for this view rendering to capture its content.
+        ob_start();
+        require_once $fullPath; // Include the HTML file
+        $content = ob_get_clean(); // Get content and clean the buffer
+
+        // Inject BASE_URL_PATH into the HTML.
+        // We'll use a placeholder like '<!-- APP_BASE_URL_PATH_PLACEHOLDER -->' in the HTML.
+        // This allows JavaScript to access the correct base path for AJAX calls.
+        $injectedScript = "<script>window.AppBaseUrlPath = '" . BASE_URL_PATH . "';</script>";
+        // Find the closing </head> tag and insert the script just before it.
+        // This ensures the JS variable is available before other scripts try to use it.
+        $content = str_replace('</head>', $injectedScript . "\n</head>", $content);
+
+        // Send the processed content to the browser.
+        echo $content;
+        error_log("DEBUG: Controller::renderHtmlView - HTML view successfully rendered: " . $htmlFilePath);
+    }
+
+    /**
+     * Renders a JSON response for API endpoints.
+     *
+     * @param array $data The data to be encoded as JSON.
+     * @param int $statusCode The HTTP status code to send with the response (default: 200 OK).
+     */
+    protected function renderApiJson(array $data, int $statusCode = 200): void
+    {
+        error_log("DEBUG: Controller::renderApiJson - Called with data: " . json_encode($data, JSON_THROW_ON_ERROR) . ", status: " . $statusCode);
+
+        // Clear the current output buffer's content.
+        // This is crucial to prevent any premature output (like whitespace) from interfering with headers.
+        if (ob_get_level() > 0) {
+            ob_clean(); 
+        }
+
+        // Check if headers have already been sent *after* clearing the current buffer.
+        if (headers_sent($file, $line)) {
+            error_log("CRITICAL ERROR: Headers already sent from {$file}:{$line} AFTER ob_clean() in renderApiJson. Premature output detected.");
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Internal server error: Headers already sent. Cannot guarantee JSON Content-Type.']);
+            exit;
+        }
+
+        // Set Content-Type header and HTTP status code.
+        header('Content-Type: application/json; charset=utf-8', true, $statusCode);
+        
+        try {
+            // Encode and echo JSON data. This writes to the current active buffer (from index.php).
+            echo json_encode($data, JSON_THROW_ON_ERROR);
+        } catch (Exception $e) { // Use Exception for JSON encoding errors
+            error_log("ERROR: Controller::renderApiJson - JSON encoding failed: " . $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine());
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Internal server error: JSON encoding failed.']);
+        }
+        
+        exit; // Terminate script
+    }
+
+    /**
+     * Redirects the browser to a specified URL.
+     *
+     * @param string $url The URL to redirect to (relative to BASE_URL).
+     * @param int $statusCode The HTTP status code for the redirect (default: 302 Found).
+     */
+    protected function redirect(string $url, int $statusCode = 302): void
+    {
+        // Construct the full URL using BASE_URL defined in constants.php.
+        // This method remains unchanged as per your request.
+        $fullUrl = BASE_URL . $url;
+        error_log("DEBUG: Controller::redirect - Redirecting to: " . $fullUrl);
+        header('Location: ' . $fullUrl, true, $statusCode);
+        exit; // Keep exit here as redirects should terminate script execution
+    }
+
+    /**
+     * Get JSON data from the request body.
+     * @return array
+     */
+    protected function getJsonData(): array
+    {
+        $input = file_get_contents('php://input');
+        return json_decode($input, true) ?? [];
+    }
+}
+
+برات در زیر تمام فایل api.php رو قرار میدم : 
+
+<?php
+// app/routes/api.php
+// Defines API routes for regular users.
+use App\Controllers\Api\AuthController;
+use App\Controllers\Api\UserController;
+use App\Controllers\Api\ProductController;
+use App\Controllers\Api\CategoryController;
+use App\Controllers\Api\PlatformController;
+use App\Controllers\Api\PublisherController;
+use App\Controllers\Api\DeveloperController;
+use App\Controllers\Api\TagController;
+use App\Controllers\Api\FeatureController;
+use App\Controllers\Api\CartController;
+use App\Controllers\Api\WishlistController;
+use App\Controllers\Api\OrderController;
+use App\Controllers\Api\ReviewController;
+use App\Controllers\Api\NewsletterController;
+use App\Controllers\Api\ContactController;
+use App\Middlewares\CsrfMiddleware;
+use App\Middlewares\AuthMiddleware;
+use App\Middlewares\GuestMiddleware;
+use App\Core\Router;
+
+// Apply CsrfMiddleware globally to all POST, PUT, DELETE API requests under /api prefix.
+// This ensures all modifying API requests are CSRF protected by default.
+$router->middleware(CsrfMiddleware::class, '/api', ['POST', 'PUT', 'DELETE']);
+
+// Group routes that require a guest (not logged in) user.
+$router->group('/api', function(Router $router) {
+    $router->post('/register', [AuthController::class, 'register']);
+    $router->post('/login', [AuthController::class, 'login']);
+    $router->post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    $router->post('/reset-password', [AuthController::class, 'resetPassword']);
+    // Frontend login/register routes are served directly, not via API.
+}, [GuestMiddleware::class]); // Apply GuestMiddleware to these routes
+
+// Public API routes (no authentication required)
+$router->get('/api/verify-email', [AuthController::class, 'verifyEmail']); // GET for email verification link
+$router->get('/api/auth/status', [AuthController::class, 'status']); // Check login status
+$router->get('/api/csrf-token', [AuthController::class, 'getCsrfToken']); // Get CSRF token for forms
+
+// Product & Related Entities API Routes (Publicly accessible for browsing)
+$router->get('/api/products', [ProductController::class, 'index']); // Get all products with filters/pagination
+$router->get('/api/products/{id_or_slug}', [ProductController::class, 'show']); // Get single product by ID or slug
+$router->get('/api/categories', [CategoryController::class, 'index']); // Get all categories
+$router->get('/api/categories/{id_or_slug}', [CategoryController::class, 'show']); // Get single category by ID or slug
+$router->get('/api/platforms', [PlatformController::class, 'index']); // Get all platforms
+$router->get('/api/platforms/{id_or_slug}', [PlatformController::class, 'show']); // Get single platform by ID or slug
+$router->get('/api/publishers', [PublisherController::class, 'index']); // Get all publishers
+$router->get('/api/publishers/{id_or_slug}', [PublisherController::class, 'show']); // Get single publisher by ID or slug
+$router->get('/api/developers', [DeveloperController::class, 'index']); // Get all developers
+$router->get('/api/developers/{id_or_slug}', [DeveloperController::class, 'show']); // Get single developer by ID or slug
+$router->get('/api/tags', [TagController::class, 'index']); // Get all tags
+$router->get('/api/tags/{id_or_slug}', [TagController::class, 'show']); // Get single tag by ID or slug
+$router->get('/api/features', [FeatureController::class, 'index']); // Get all features for homepage
+
+// Review System - Public Routes (no authentication required for reading reviews)
+$router->get('/api/products/{id}/reviews', [ReviewController::class, 'getReviews']); // Get reviews for a product
+$router->get('/api/products/{id}/review-status', [ReviewController::class, 'getReviewStatus']); // Check if user can review
+
+// Public API route for contact form submission
+$router->post('/api/contact/message', [ContactController::class, 'submit']);
+
+// Group routes that require an authenticated user.
+$router->group('/api', function(Router $router) {
+    $router->post('/logout', [AuthController::class, 'logout']);
+    
+    // User Profile Management
+    $router->get('/user/profile', [UserController::class, 'getProfile']);
+    $router->put('/user/profile', [UserController::class, 'updateProfile']);
+    $router->put('/user/change-password', [UserController::class, 'changePassword']);
+    
+    // User Address Management
+    $router->get('/user/addresses', [UserController::class, 'getAddresses']);
+    $router->post('/user/addresses', [UserController::class, 'addAddress']);
+    $router->get('/user/addresses/{id}', [UserController::class, 'getAddress']);
+    $router->put('/user/addresses/{id}', [UserController::class, 'updateAddress']);
+    $router->delete('/user/addresses/{id}', [UserController::class, 'deleteAddress']);
+    
+    // User Game Library
+    $router->get('/user/games', [UserController::class, 'getPurchasedGames']);
+    
+    // Cart Management Routes
+    $router->post('/cart/add', [CartController::class, 'addItem']);
+    $router->put('/cart/update', [CartController::class, 'updateItem']);
+    $router->delete('/cart/remove', [CartController::class, 'removeItem']);
+    $router->get('/cart', [CartController::class, 'getCart']);
+    $router->post('/cart/apply-coupon', [CartController::class, 'applyCoupon']);
+    $router->delete('/cart/remove-coupon', [CartController::class, 'removeCoupon']);
+    
+    // Wishlist Management Routes
+    $router->post('/wishlist/add', [WishlistController::class, 'add']);
+    $router->delete('/wishlist/remove', [WishlistController::class, 'remove']);
+    $router->get('/wishlist', [WishlistController::class, 'getWishlist']);
+    
+    // Order Management Routes
+    $router->post('/orders', [OrderController::class, 'createOrder']);
+    $router->get('/orders', [OrderController::class, 'getUserOrders']);
+    $router->get('/orders/{id}', [OrderController::class, 'getOrderDetails']);
+    $router->get('/orders/{id}/keys', [OrderController::class, 'getOrderKeys']);
+    
+    // Review System - Authenticated Routes (require authentication for writing/voting)
+    $router->post('/products/{id}/reviews', [ReviewController::class, 'addReview']); // Add a new review
+    $router->post('/reviews/{id}/reply', [ReviewController::class, 'addReply']); // Reply to a review
+    $router->post('/reviews/{id}/helpful', [ReviewController::class, 'markHelpful']); // Mark review as helpful/unhelpful
+    
+    // Newsletter subscription
+    $router->post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
+}, [AuthMiddleware::class]); // Apply AuthMiddleware to the entire group
+برات در زیر بخش مربوط به newsletter در فایل index.html رو قرا میدم :
+
+ <!-- CTA & Newsletter Section -->
+    <section class="cta-newsletter-section">
+        <div class="container">
+            <div class="cta-content">
+                <div class="shop-promo">
+                    <h6>Exclusive Deals</h6>
+                    <h2>Pre-Order Now & Get <span class="highlight">Special Discounts</span>!</h2>
+                    <p>Be the first to play upcoming blockbuster games. Pre-order today to secure exclusive in-game content, limited edition collectibles, and early access privileges.</p>
+                    <a href="shop.html" class="btn-secondary">Pre-Order Now</a>
+                </div>
+                <div class="newsletter-form">
+                    <h6>Stay Updated</h6>
+                    <h2>Subscribe & Get <span class="highlight">$10 Off</span> Your First Purchase!</h2>
+                    <p>Join our gaming community and receive exclusive offers, game updates, and news about upcoming releases.</p>
+                    <form>
+                        <input type="email" placeholder="Your Email Address" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+برات در زیر تمام فایل newsletter.js رو قرار میدم :
+
+/**
+ * newsletter.js
+ * Handles the logic for the newsletter subscription form.
+ */
+document.addEventListener('DOMContentLoaded', async () => {
+    // Select the newsletter form
+    const newsletterForm = window.select('.newsletter-form form');
+    if (!newsletterForm) {
+        console.error('Newsletter form not found. Please check the selector.');
+        return;
+    }
+
+    const emailInput = window.select('input[type="email"]', newsletterForm);
+    const subscribeButton = window.select('button[type="submit"]', newsletterForm);
+
+    let csrfToken = null;
+
+    // Initially disable the button while we fetch the token
+    if (subscribeButton) {
+        subscribeButton.disabled = true;
+        subscribeButton.textContent = 'Loading...';
+    }
+
+
+    // --- Fetch CSRF token from the API endpoint ---
+    try {
+        const response = await fetch(`${window.API_BASE_URL}/csrf-token`);
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch CSRF token from API.');
+        }
+        const data = await response.json();
+        if (data.status === 'success' && data.csrf_token) {
+            csrfToken = data.csrf_token;
+            console.log('Successfully fetched CSRF token from API.');
+            if (subscribeButton) {
+                subscribeButton.disabled = false; // Enable the button
+                subscribeButton.textContent = 'Subscribe';
+            }
+        } else {
+            throw new Error(data.message || 'Failed to get CSRF token.');
+        }
+    } catch (error) {
+        console.error('Error fetching CSRF token:', error);
+        if (subscribeButton) {
+            subscribeButton.textContent = 'Error';
+        }
+        // Use showToast for global error notification
+        if (typeof showToast === 'function') {
+            showToast('Failed to initialize newsletter form. Please try reloading the page.', 'danger');
+        }
+        return; // Stop execution if token fetch fails
+    }
+
+    // --- Handle form submission ---
+    newsletterForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = emailInput.value.trim();
+        if (!email) {
+            if (typeof showToast === 'function') {
+                showToast('Please enter a valid email address.', 'warning');
+            }
+            return;
+        }
+
+        // Disable button to prevent multiple submissions
+        if (subscribeButton) {
+            subscribeButton.disabled = true;
+            subscribeButton.textContent = 'Subscribing...';
+        }
+
+        try {
+            const response = await fetch(`${window.API_BASE_URL}/newsletter/subscribe`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken, // Use the fetched CSRF token
+                },
+                body: JSON.stringify({ email: email }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Success message using toast
+                if (typeof showToast === 'function') {
+                    showToast(result.message, 'success');
+                }
+                emailInput.value = ''; // Clear the input field
+            } else {
+                // Error message from server using toast
+                if (typeof showToast === 'function') {
+                    showToast(result.message || 'An error occurred. Please try again.', 'danger');
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            // Network error using toast
+            if (typeof showToast === 'function') {
+                showToast('Network error. Please check your connection.', 'danger');
+            }
+        } finally {
+            // Re-enable the button
+            if (subscribeButton) {
+                subscribeButton.disabled = false;
+                subscribeButton.textContent = 'Subscribe';
+            }
+        }
+    });
+});
+
+برات در زیر مسیر کامل 
+پروژه رو هم قرار میدم تا بطور کامل مسیر پروژه را درک کنی 
+
+Lugxwebsite/
+├── .env
+├── .htaccess
+├── composer.json
+├── composer.lock
+├── db.sql
+├── app/
+│   ├── config/
+│   │   ├── constants.php
+│   │   ├── database.php
+│   │   └── mail.php
+│   ├── controllers/
+│   │   ├── FrontendController.php
+│   │   ├── admin/
+│   │   │   ├── AdminAuthController.php
+│   │   │   ├── AdminBannerController.php
+│   │   │   ├── AdminCategoryController.php
+│   │   │   ├── AdminContactMessageController.php
+│   │   │   ├── AdminCouponController.php
+│   │   │   ├── AdminDashboardController.php
+│   │   │   ├── AdminDeveloperController.php
+│   │   │   ├── AdminNewsletterController.php
+│   │   │   ├── AdminOrderController.php
+│   │   │   ├── AdminPageController.php
+│   │   │   ├── AdminPlatformController.php
+│   │   │   ├── AdminProductController.php
+│   │   │   ├── AdminPublisherController.php
+│   │   │   ├── AdminReportController.php
+│   │   │   ├── AdminReviewController.php
+│   │   │   ├── AdminSettingsController.php
+│   │   │   ├── AdminTagController.php
+│   │   │   └── AdminUserController.php
+│   │   └── api/
+│   │       ├── AuthController.php
+│   │       ├── CartController.php
+│   │       ├── CategoryController.php
+│   │       ├── ContactController.php
+│   │       ├── DeveloperController.php
+│   │       ├── FeatureController.php
+│   │       ├── NewsletterController.php
+│   │       ├── OrderController.php
+│   │       ├── PlatformController.php
+│   │       ├── ProductController.php
+│   │       ├── PublisherController.php
+│   │       ├── ReviewController.php
+│   │       ├── TagController.php
+│   │       ├── UserController.php
+│   │       └── WishlistController.php
+│   ├── core/
+│   │   ├── App.php
+│   │   ├── Controller.php
+│   │   ├── Database.php
+│   │   ├── Model.php
+│   │   └── Router.php
+│   ├── middlewares/
+│   │   ├── AdminMiddleware.php
+│   │   ├── AuthMiddleware.php
+│   │   ├── CsrfMiddleware.php
+│   │   └── GuestMiddleware.php
+│   ├── models/
+│   │   ├── ActivityLog.php
+│   │   ├── Banner.php
+│   │   ├── Cart.php
+│   │   ├── Category.php
+│   │   ├── ContactMessage.php
+│   │   ├── Coupon.php
+│   │   ├── DailySalesStat.php
+│   │   ├── Developer.php
+│   │   ├── EmailCampaign.php
+│   │   ├── Menu.php
+│   │   ├── NewsletterSubscriber.php
+│   │   ├── Order.php
+│   │   ├── OrderItem.php
+│   │   ├── OrderStatusHistory.php
+│   │   ├── Page.php
+│   │   ├── PageView.php
+│   │   ├── Platform.php
+│   │   ├── PriceHistory.php
+│   │   ├── Product.php
+│   │   ├── ProductCategory.php
+│   │   ├── ProductKey.php
+│   │   ├── ProductPlatform.php
+│   │   ├── ProductReview.php
+│   │   ├── ProductTag.php
+│   │   ├── Publisher.php
+│   │   ├── RelatedProduct.php
+│   │   ├── ReviewHelpfulness.php
+│   │   ├── ReviewReply.php
+│   │   ├── SiteSetting.php
+│   │   ├── Tag.php
+│   │   ├── User.php
+│   │   ├── UserAddress.php
+│   │   ├── UserRole.php
+│   │   ├── UserSession.php
+│   │   └── Wishlist.php
+│   ├── routes/
+│   │   ├── admin_api.php
+│   │   └── api.php
+│   └── services/
+│       ├── AuthService.php
+│       ├── CartService.php
+│       ├── ContactService.php
+│       ├── MailService.php
+│       ├── OrderService.php
+│       ├── SecurityService.php
+│       ├── UploadService.php
+│       └── ValidationService.php
+├── logs/
+│   ├── error.log
+│   └── php_error_log.log
+├── public/
+│   ├── .htaccess
+│   ├── index.php
+│   ├── test_json.php
+│   ├── test_log.php
+│   ├── assets/
+│   │   ├── css/
+│   │   │   ├── admin_responsive.css
+│   │   │   ├── admin_style.css
+│   │   │   ├── auth.css
+│   │   │   ├── responsive.css
+│   │   │   ├── style.css
+│   │   │   ├── user_responsive.css
+│   │   │   └── user_style.css
+│   │   ├── img/
+│   │   │   ├── action_cat.png.jpg
+│   │   │   ├── acv_featured.jpg.jpg
+│   │   │   ├── banner-bg.jpg
+│   │   │   ├── banner-image.jpg
+│   │   │   ├── caption-dec.png
+│   │   │   ├── categories-01.jpg
+│   │   │   ├── categories-03.jpg
+│   │   │   ├── categories-04.jpg
+│   │   │   ├── categories-05.jpg
+│   │   │   ├── cta-bg.jpg
+│   │   │   ├── featured-01.png
+│   │   │   ├── featured-02.png
+│   │   │   ├── featured-03.png
+│   │   │   ├── featured-04.png
+│   │   │   ├── footer-bg.jpg
+│   │   │   ├── gtav_featured.jpg.jpg
+│   │   │   ├── logo.png
+│   │   │   ├── page-heading-bg.jpg
+│   │   │   ├── single-game.jpg
+│   │   │   ├── top-game-02.jpg
+│   │   │   ├── top-game-03.jpg
+│   │   │   ├── top-game-04.jpg
+│   │   │   ├── top-game-05.jpg
+│   │   │   ├── top-game-06.jpg
+│   │   │   ├── trending-02.jpg
+│   │   │   ├── trending-03.jpg
+│   │   │   └── trending-04.jpg
+│   │   ├── js/
+│   │   │   ├── auth.js
+│   │   │   ├── carousel.js
+│   │   │   ├── cart.js
+│   │   │   ├── checkout.js
+│   │   │   ├── contact.js
+│   │   │   ├── index_page.js
+│   │   │   ├── main.js
+│   │   │   ├── newsletter.js
+│   │   │   ├── order.js
+│   │   │   ├── product.js
+│   │   │   ├── product_detail.js
+│   │   │   ├── review.js
+│   │   │   ├── user_addresses.js
+│   │   │   ├── user_dashboard.js
+│   │   │   ├── user_game_library.js
+│   │   │   ├── user_order_detail.js
+│   │   │   ├── user_profile.js
+│   │   │   └── wishlist.js
+│   │   │   └── admin/
+│   │   │       ├── admin_auth.js
+│   │   │       ├── admin_banners.js
+│   │   │       ├── admin_categories.js
+│   │   │       ├── admin_coupons.js
+│   │   │       ├── admin_dashboard.js
+│   │   │       ├── admin_main.js
+│   │   │       ├── admin_messages.js
+│   │   │       ├── admin_newsletter.js
+│   │   │       ├── admin_order_detail.js
+│   │   │       ├── admin_orders.js
+│   │   │       ├── admin_pages.js
+│   │   │       ├── admin_products.js
+│   │   │       ├── admin_reviews.js
+│   │   │       └── admin_users.js
+│   │   └── uploads/
+│   │       └── action_cat.png.jpg
+│   ├── frontend/
+│   │   ├── 404.html
+│   │   ├── about.html
+│   │   ├── cart.html
+│   │   ├── checkout.html
+│   │   ├── contact.html
+│   │   ├── forgot_password.html
+│   │   ├── index.html
+│   │   ├── login.html
+│   │   ├── privacy_policy.html
+│   │   ├── product_detail.html
+│   │   ├── register.html
+│   │   ├── reset_password.html
+│   │   ├── shop.html
+│   │   ├── terms_conditions.html
+│   │   ├── user_addresses.html
+│   │   ├── user_dashboard.html
+│   │   ├── user_game_library.html
+│   │   ├── user_order_detail.html
+│   │   ├── user_orders.html
+│   │   ├── user_profile.html
+│   │   └── wishlist.html
+│   │   └── admin/
+│   │       ├── admin_banners.html
+│   │       ├── admin_categories.html
+│   │       ├── admin_coupons.html
+│   │       ├── admin_dashboard.html
+│   │       ├── admin_login.html
+│   │       ├── admin_messages.html
+│   │       ├── admin_newsletter.html
+│   │       ├── admin_order_detail.html
+│   │       ├── admin_orders.html
+│   │       ├── admin_pages.html
+│   │       ├── admin_product_add_edit.html
+│   │       ├── admin_products.html
+│   │       ├── admin_reviews.html
+│   │       ├── admin_settings.html
+│   │       └── admin_users.html
+│   └── uploads/
+│       └── products/
+│
+└── views/
+    ├── emails/
+    │   ├── reset_password_email.php
+    │   └── verification_email.php
+    ├── errors/
+    │   ├── 403.php
+    │   ├── 404.php
+    │   └── 500.php
+    └── layout/
+        ├── footer.php
+        └── header.php
+
+حالا بهم کد کامل و اصلاح شده فایل ها رو که کل بک اند و فرانت اند هماهنک شده باشن رو بهم تحویل بده
