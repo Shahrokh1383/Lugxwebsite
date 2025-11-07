@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist - Lugx Gaming</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS (General styles) -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Custom User-specific CSS -->
+    <link rel="stylesheet" href="../assets/css/user_style.css">
+    <!-- Custom Responsive CSS (General) -->
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <!-- Custom User-specific Responsive CSS -->
+    <link rel="stylesheet" href="../assets/css/user_responsive.css">
+</head>
+<body>
+
+    <!-- Header/Navbar - Replicated from user_dashboard.html -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">
+                    <img src="../assets/img/logo.png" alt="Lugx Logo">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <!-- NEW: Shopping Cart Icon with Count -->
+                    <li class="cart-icon-container">
+                        <a href="./cart.html" class="cart-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-item-count" class="badge bg-danger rounded-pill">0</span>
+                        </a>
+                    </li>
+                    <!-- Dynamic Auth Links Container (managed by main.js) -->
+                    <li id="auth-links-container"></li>
+                </ul>
+                <div class="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>        
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container-fluid py-5 user-dashboard-bg flex-grow-1">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Wishlist Items Section -->
+                <section class="col-12">
+                    <div class="card shadow-lg border-0 rounded-4 p-4">
+                        <h1 class="card-title fs-3 fw-bold text-dark-gray mb-4">Your Wishlist</h1>
+                        <div id="wishlist-items-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                            <!-- Wishlist items will be dynamically loaded here by wishlist.js -->
+                            <div class="col">
+                                <div class="card h-100 border-0 rounded-3 shadow-sm product-card">
+                                    <div class="position-relative">
+                                        <img src="https://placehold.co/400x250/E0E0E0/FFFFFF?text=Product" class="card-img-top rounded-top-3" alt="Product Image" style="height: 180px; object-fit: cover;">
+                                        <span class="badge bg-danger position-absolute top-0 start-0 m-2 price-badge">$19.99</span>
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title text-dark-gray fw-bold mb-2">Placeholder Game Title</h5>
+                                        <p class="card-text text-medium-gray small mb-3">Category: Action</p>
+                                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                                            <button class="btn custom-btn-secondary btn-sm add-to-cart-btn" data-product-id="1">
+                                                <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger remove-from-wishlist-btn" data-product-id="1">
+                                                <i class="fas fa-trash-alt"></i> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- More wishlist items will be added here -->
+                        </div>
+                        <div id="wishlist-empty-message" class="alert alert-info text-center mt-4 d-none" role="alert">
+                            Your wishlist is empty. <a href="shop.html" class="alert-link">Explore games to add!</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer - Replicated from user_dashboard.html -->
+    <footer class="custom-footer text-white py-3 mt-auto shadow-inner">
+        <div class="container text-center small">
+            <p class="mb-0">&copy; <span id="current-year-footer"></span> Lugx Gaming. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 JS (Bundle includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Main JavaScript file (for common functions like CSRF, auth status) -->
+    <script src="../assets/js/main.js"></script>
+    <!-- Auth JavaScript file (for login/register/logout forms) -->
+    <script src="../assets/js/auth.js"></script>
+    <!-- Cart JavaScript file (needed for "Add to Cart" from wishlist) -->
+    <script src="../assets/js/cart.js"></script>
+    <!-- Wishlist specific JavaScript (will be created in next step) -->
+    <script src="../assets/js/wishlist.js"></script>
+    <script>
+        // Set current year in footer
+        document.getElementById('current-year-footer').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

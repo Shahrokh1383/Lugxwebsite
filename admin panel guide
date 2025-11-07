@@ -1,0 +1,314 @@
+
+مرحله ۱۴: مدیریت محتوای سایت و فروشگاهی (پنل ادمین - Backend & Frontend)
+
+هدف این مرحله: در این گام، ما پنل ادمین رو به طور کامل برای مدیریت تمام محتوای فروشگاه گسترش می‌دیم. این شامل APIها و رابط‌های کاربری برای عملیات CRUD (ایجاد، خواندن، به‌روزرسانی، حذف) روی محصولات، دسته‌بندی‌ها، سفارشات، کوپن‌ها و سایر بخش‌های حیاتی سایت هست.
+
+کارهایی که در این مرحله انجام می‌دیم:
+
+    پیاده‌سازی کنترلرهای ادمین (Backend):
+
+        تمامی این کنترلرها باید تحت AdminMiddleware باشند.
+
+        app/controllers/admin/AdminProductController.php:
+
+            CRUD کامل برای محصولات: getProducts(), getProduct(), createProduct(), updateProduct(), deleteProduct().
+
+            مدیریت آپلود تصاویر محصول: نیاز به یک UploadService جداگانه برای ذخیره فایل‌ها در public/uploads/ و ثبت مسیر آن‌ها در دیتابیس.
+
+            مدیریت ارتباطات Many-to-Many (دسته‌بندی‌ها، پلتفرم‌ها، تگ‌ها) هنگام ایجاد/ویرایش محصول.
+
+            مدیریت کلیدهای محصول (افزودن/ویرایش/حذف کلیدها).
+
+        app/controllers/admin/AdminCategoryController.php: CRUD برای دسته‌بندی‌ها.
+
+        app/controllers/admin/AdminPlatformController.php: CRUD برای پلتفرم‌ها.
+
+        app/controllers/admin/AdminPublisherController.php: CRUD برای ناشران.
+
+        app/controllers/admin/AdminDeveloperController.php: CRUD برای توسعه‌دهندگان.
+
+        app/controllers/admin/AdminTagController.php: CRUD برای تگ‌ها.
+
+        app/controllers/admin/AdminOrderController.php:
+
+            مشاهده لیست سفارشات، جزئیات سفارش.
+
+            به‌روزرسانی وضعیت سفارش (pending, processing, completed, cancelled).
+
+            امکان تخصیص دستی کلید محصول (در صورت لزوم).
+
+        app/controllers/admin/AdminCouponController.php: CRUD برای کوپن‌های تخفیف.
+
+        app/controllers/admin/AdminReviewController.php:
+
+            مشاهده لیست نظرات کاربران.
+
+            تایید/رد نظرات (approveReview(), disapproveReview()).
+
+            امکان حذف نظرات.
+
+            امکان پاسخ دادن به نظرات.
+
+        app/controllers/admin/AdminContactMessageController.php: مدیریت پیام‌های دریافتی از فرم تماس با ما (مشاهده، حذف، علامت‌گذاری به عنوان خوانده شده).
+
+        app/controllers/admin/AdminNewsletterController.php: مدیریت مشترکین خبرنامه (مشاهده، حذف، امکان ارسال ایمیل‌های گروهی).
+
+        app/controllers/admin/AdminBannerController.php: CRUD برای بنرهای تبلیغاتی در صفحه اصلی یا صفحات دیگر.
+
+        app/controllers/admin/AdminPageController.php: CRUD برای صفحات استاتیک (مثل درباره ما، شرایط و ضوابط).
+
+        امنیت: تمامی ورودی‌ها با ValidationService اعتبارسنجی و پاکسازی بشن.
+
+    بهبود مدل‌های پایگاه داده (یا ایجاد جدید):
+
+        اطمینان از وجود مدل‌های لازم برای تمامی کنترلرهای بالا (مثل ContactMessage.php, NewsletterSubscriber.php, Banner.php, Page.php).
+
+        app/services/UploadService.php: یک کلاس اختصاصی برای مدیریت آپلود فایل‌ها (تصاویر محصولات، بنرها) به public/uploads/.
+
+    بهبود app/routes/admin_api.php (ویرایش):
+
+        اضافه کردن تمامی مسیرهای API برای کنترلرهای ادمین فوق.
+
+ادامه مرحله ۱۴: فرانت‌اند پنل ادمین
+
+    طراحی صفحات HTML فرانت‌اند (برای پنل ادمین):
+
+        frontend/admin/admin_products.html: جدول لیست محصولات با دکمه‌های ویرایش/حذف/افزودن.
+
+        frontend/admin/admin_product_add_edit.html: فرم جامع برای افزودن/ویرایش محصول (شامل فیلدهای متنی، آپلود فایل، چک‌باکس‌ها/سلکت‌باکس‌ها برای دسته‌بندی/پلتفرم/تگ‌ها).
+
+        frontend/admin/admin_categories.html, admin_platforms.html, admin_publishers.html, admin_developers.html, admin_tags.html: صفحات مشابه با جدول و فرم‌های CRUD ساده برای این موجودیت‌ها.
+
+        frontend/admin/admin_orders.html: جدول لیست سفارشات با وضعیت، مبلغ و لینک به جزئیات.
+
+        frontend/admin/admin_order_detail.html: جزئیات کامل سفارش، امکان تغییر وضعیت، نمایش آیتم‌ها و کلیدهای محصول.
+
+        frontend/admin/admin_coupons.html: جدول و فرم‌های CRUD برای کوپن‌ها.
+
+        frontend/admin/admin_reviews.html: جدول لیست نظرات، امکان تایید/رد/حذف/پاسخ.
+
+        frontend/admin/admin_messages.html: لیست پیام‌های تماس با ما.
+
+        frontend/admin/admin_newsletter.html: لیست مشترکین خبرنامه، فرم برای ارسال ایمیل گروهی.
+
+        frontend/admin/admin_banners.html: جدول و فرم‌های CRUD برای بنرها.
+
+        frontend/admin/admin_pages.html: جدول و فرم‌های CRUD برای صفحات استاتیک (با یک ویرایشگر متن غنی/Rich Text Editor اگر نیاز باشد).
+
+    بهبود فایل‌های CSS ادمین (public/assets/css/admin_style.css):
+
+        استایل‌های جدید برای تمام صفحات مدیریت (جدول‌ها، فرم‌ها با فیلدهای مختلف، دکمه‌ها، آیکون‌ها).
+
+        استایل‌های خاص برای آپلود فایل و پیش‌نمایش تصویر.
+
+        طراحی واکنش‌گرای پنل ادمین برای کاربری بهتر.
+
+    پیاده‌سازی فایل‌های JavaScript AJAX (برای پنل ادمین):
+
+        public/assets/js/admin/admin_products.js:
+
+            توابع برای بارگذاری محصولات، فرم‌های افزودن/ویرایش محصول (شامل بارگذاری لیست دسته‌بندی‌ها/پلتفرم‌ها)، آپلود تصاویر با AJAX.
+
+        public/assets/js/admin/admin_categories.js, admin_platforms.js, admin_publishers.js, admin_developers.js, admin_tags.js:
+
+            توابع CRUD برای هر یک از این موجودیت‌ها.
+
+        public/assets/js/admin/admin_orders.js:
+
+            توابع برای بارگذاری لیست سفارشات، جزئیات سفارش، و به‌روزرسانی وضعیت.
+
+        public/assets/js/admin/admin_coupons.js:
+
+            توابع CRUD برای کوپن‌ها.
+
+        public/assets/js/admin/admin_reviews.js:
+
+            توابع برای بارگذاری نظرات، تایید/رد/حذف نظرات، ارسال پاسخ.
+
+        public/assets/js/admin/admin_messages.js، admin_newsletter.js، admin_banners.js، admin_pages.js:
+
+            توابع AJAX مربوط به CRUD و مدیریت UI برای هر بخش.
+
+        جلوه‌های بصری: استفاده از پاپ‌آپ‌ها برای فرم‌ها، نشانه‌های لودینگ، پیام‌های موفقیت/خطا، انیمیشن‌های مناسب برای رابط ادمین.
+
+فایل‌هایی که در این مرحله باید ایجاد/ویرایش بشن:
+
+    app/controllers/admin/AdminProductController.php
+
+    app/controllers/admin/AdminCategoryController.php
+
+    app/controllers/admin/AdminPlatformController.php
+
+    app/controllers/admin/AdminPublisherController.php
+
+    app/controllers/admin/AdminDeveloperController.php
+
+    app/controllers/admin/AdminTagController.php
+
+    app/controllers/admin/AdminOrderController.php
+
+    app/controllers/admin/AdminCouponController.php
+
+    app/controllers/admin/AdminReviewController.php
+
+    app/controllers/admin/AdminContactMessageController.php
+
+    app/controllers/admin/AdminNewsletterController.php
+
+    app/controllers/admin/AdminBannerController.php
+
+    app/controllers/admin/AdminPageController.php
+
+    app/services/UploadService.php
+
+    app/routes/admin_api.php (ویرایش)
+
+    تمام مدل‌های جدیدی که در بالا اشاره شد.
+
+    frontend/admin/admin_products.html و admin_product_add_edit.html
+
+    frontend/admin/admin_categories.html تا admin_pages.html
+
+    تمام فایل‌های JS مربوطه در public/assets/js/admin/
+
+نتیجه این مرحله و آمادگی برای مرحله بعد:
+
+در پایان این مرحله، پنل مدیریت ما کاملاً عملیاتی و جامع خواهد بود. ادمین می‌تونه تقریباً تمامی جنبه‌های فروشگاه، از محصولات و سفارشات گرفته تا محتوای استاتیک و کاربران رو مدیریت کنه. حالا می‌تونیم به سراغ تنظیمات نهایی، گزارش‌گیری و بهینه‌سازی بریم.
+
+مرحله ۱۵: تنظیمات سایت، گزارش‌گیری، لاگینگ و بهینه‌سازی نهایی (Admin Panel & General)
+
+هدف این مرحله: در گام نهایی، به جزئیات مهمی می‌پردازیم که پایداری، عملکرد و قابلیت مدیریت طولانی‌مدت پروژه رو تضمین می‌کنن. این شامل مدیریت تنظیمات عمومی سایت، سیستم‌های گزارش‌گیری و ثبت فعالیت‌ها، بهبود مدیریت خطا و انجام بهینه‌سازی‌های نهایی هست.
+
+کارهایی که در این مرحله انجام می‌دیم:
+
+    تعریف جداول دیتابیس (SQL):
+
+        اسکریپت‌های SQL برای ایجاد جدول‌های زیر رو می‌نویسیم:
+
+            site_settings: id, setting_key (کلید تنظیمات، مثلاً 'site_name'), setting_value, data_type. (برای تنظیمات قابل ویرایش توسط ادمین).
+
+            activity_logs: id, user_id (اختیاری، برای ادمین یا کاربر), action, resource_type, resource_id, ip_address, timestamp. (برای ثبت فعالیت‌های مهم).
+
+            page_views: id, url, user_id (اختیاری), ip_address, timestamp. (برای آمار بازدید).
+
+            daily_sales_stats: id, date, total_sales, total_orders, new_users. (ممکنه یک VIEW در دیتابیس باشه که از جداول اصلی محاسبه می‌شه).
+
+    پیاده‌سازی مدل‌های پایگاه داده:
+
+        app/models/SiteSetting.php: مدل برای مدیریت تنظیمات سایت.
+
+        app/models/ActivityLog.php: مدل برای ثبت فعالیت‌ها.
+
+        app/models/PageView.php: مدل برای ثبت بازدید صفحات.
+
+        app/models/DailySalesStat.php: مدل (اگر جدول باشه) یا کلاس کمکی برای گزارشات.
+
+    app/controllers/admin/AdminSettingsController.php:
+
+        API Endpoints برای دریافت و به‌روزرسانی تنظیمات عمومی سایت.
+
+        getSettings() (GET api/admin/settings): برگرداندن تمام تنظیمات.
+
+        updateSettings() (PUT api/admin/settings): به‌روزرسانی تنظیمات (مثلاً نام سایت، ایمیل تماس، آدرس شبکه‌های اجتماعی).
+
+        امنیت: تحت AdminMiddleware، اعتبارسنجی قوی برای مقادیر تنظیمات.
+
+    app/controllers/admin/AdminReportController.php:
+
+        API Endpoints برای ارائه گزارش‌های مختلف به ادمین.
+
+        getSalesReports() (GET api/admin/reports/sales): گزارش فروش ماهیانه، سالیانه.
+
+        getTopProducts() (GET api/admin/reports/top-products): محصولات پرفروش.
+
+        getUserActivity() (GET api/admin/reports/user-activity): لاگ فعالیت کاربران و مدیران.
+
+        getPageViews() (GET api/admin/reports/page-views): آمار بازدید صفحات.
+
+        امنیت: تحت AdminMiddleware.
+
+    سیستم لاگینگ فعالیت‌ها (Backend):
+
+        در نقاط کلیدی برنامه (هم در بخش کاربر و هم ادمین)، از ActivityLog::addLog() برای ثبت وقایع مهم (مثلاً ورود/خروج، ثبت سفارش، ایجاد محصول جدید توسط ادمین) استفاده می‌کنیم.
+
+    مدیریت خطا و Exception Handling (Backend):
+
+        public/index.php (ویرایش): ثبت یک set_exception_handler و set_error_handler تا تمام خطاها و استثناها توسط یک تابع مرکزی در App.php یا یک کلاس ErrorHandler جداگانه مدیریت بشن.
+
+        app/core/App.php (ویرایش): بهبود App::run() برای گرفتن تمامی Exceptionها و Errorها.
+
+            در حالت DEBUG (که از .env می‌خوانیم)، جزئیات خطا رو نشون می‌ده.
+
+            در حالت PRODUCTION، یک پیام خطای عمومی (مثلاً "خطای داخلی سرور رخ داد") و کد وضعیت HTTP 500 رو برمی‌گردونه و خطا رو به صورت کامل در فایل لاگ سرور ثبت می‌کنه.
+
+        پاسخ‌های خطا در API: اطمینان از اینکه تمامی پاسخ‌های API در صورت بروز خطا، یک کد وضعیت HTTP مناسب (مثلاً 400, 401, 403, 404, 500) و یک پیام خطای JSON واضح (مثلاً {"success": false, "message": "Invalid input.", "errors": {"field": "error_message"}}) رو برمی‌گردونن.
+
+    بهینه‌سازی‌های عملکرد (Performance Optimizations):
+
+        Indexهای دیتابیس: بررسی تمامی جداول و اطمینان از اینکه Indexهای مناسب روی فیلدهای پرکاربرد (مثل user_id, product_id, email, slug, created_at و فیلدهای مورد استفاده در JOINها و WHERE clauses) ایجاد شده باشن.
+
+        Caching (اختیاری، اگر نیاز بود): در صورت نیاز و برای بهبود عملکرد بیشتر، می‌تونیم از سیستم‌های کشینگ (مثل Redis یا Memcached) برای کش کردن داده‌های پرکاربرد (مثلاً لیست دسته‌بندی‌ها) استفاده کنیم. (این بخش در صورت نیاز، بعدا اضافه میشه).
+
+    فایل‌های HTML فرانت‌اند:
+
+        frontend/admin/admin_settings.html: فرمی برای ویرایش تنظیمات سایت.
+
+        frontend/admin/admin_reports.html: صفحه‌ای برای نمایش گزارش‌های مختلف (نمودارها، جداول).
+
+        frontend/404.html: یک صفحه خطای "صفحه یافت نشد" زیبا و کاربرپسند برای کاربران نهایی.
+
+        app/views/errors/404.php و app/views/errors/500.php: فایل‌های PHP برای نمایش خطاهای سرور (اگر مسیری در بک‌اند پیدا نشه یا خطای داخلی رخ بده). این‌ها باید ساده و بدون افشای اطلاعات حساس باشن.
+
+    پیاده‌سازی فایل‌های JavaScript AJAX (برای پنل ادمین):
+
+        public/assets/js/admin/admin_settings.js: توابع برای دریافت و ارسال تنظیمات سایت.
+
+        public/assets/js/admin/admin_reports.js: توابع برای درخواست گزارشات از API و رندر کردن اون‌ها (ممکنه نیاز به کتابخانه‌های نمودار مثل Chart.js داشته باشه).
+
+        جلوه‌های بصری: نمایش نمودارها، فیلترهای تاریخ برای گزارشات، پیام‌های وضعیت.
+
+    مستندسازی و README:
+
+        تکمیل فایل README.md در ریشه پروژه با توضیحات کامل در مورد نصب، پیکربندی، نحوه اجرای پروژه، و مختصری از ساختار.
+
+فایل‌هایی که در این مرحله باید ایجاد/ویرایش بشن:
+
+    فایل‌های SQL برای جداول site_settings, activity_logs, page_views, daily_sales_stats.
+
+    app/models/SiteSetting.php
+
+    app/models/ActivityLog.php
+
+    app/models/PageView.php
+
+    app/models/DailySalesStat.php (اگر جدول باشد)
+
+    app/controllers/admin/AdminSettingsController.php
+
+    app/controllers/admin/AdminReportController.php
+
+    app/routes/admin_api.php (ویرایش)
+
+    public/index.php (ویرایش برای Exception Handling)
+
+    app/core/App.php (ویرایش برای Exception Handling)
+
+    frontend/admin/admin_settings.html
+
+    frontend/admin/admin_reports.html
+
+    frontend/404.html
+
+    app/views/errors/404.php
+
+    app/views/errors/500.php
+
+    public/assets/js/admin/admin_settings.js
+
+    public/assets/js/admin/admin_reports.js
+
+    README.md
+
+نتیجه نهایی پروژه:
+
+در پایان این مرحله، ما یک فروشگاه بازی آنلاین کاملاً عملیاتی، امن، بهینه و با کیفیت بالا خواهیم داشت که شامل پنل کاربری جامع و پنل مدیریت قدرتمند هست. تمامی جنبه‌های اصلی یک فروشگاه آنلاین، از احراز هویت و مدیریت محصول تا سبد خرید و سفارشات، به صورت استاندارد و با رعایت اصول امنیتی پیاده‌سازی شده.

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - Lugx Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../../assets/css/admin_style.css">
+    <link rel="stylesheet" href="../../assets/css/admin_responsive.css">
+    <script>
+        window.AppBaseUrlPath = '/Lugxwebsite/public';
+    </script>
+</head>
+<body>
+    <div class="admin-navbar">
+        <a class="navbar-brand" href="#">Lugx Admin</a>
+        <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebarOffcanvas" aria-controls="adminSidebarOffcanvas" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <ul class="navbar-nav flex-row ms-auto">
+            <li class="nav-item me-3">
+                <a class="nav-link" href="#" id="logoutButton" style="margin-left: 16px;">
+                    <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="admin-wrapper">
+        <nav id="adminSidebar" class="admin-sidebar d-none d-md-block">
+            <div class="sidebar-header">
+                <h3>Admin Panel</h3>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_dashboard.html">
+                        <i class="fa-solid fa-chart-line"></i><span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_users.html">
+                        <i class="fa-solid fa-users"></i><span>Users</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="./admin_products.html">
+                        <i class="fa-solid fa-gamepad"></i><span>Products</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_orders.html">
+                        <i class="fa-solid fa-receipt"></i><span>Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_categories.html">
+                        <i class="fa-solid fa-tags"></i><span>Categories</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_coupons.html">
+                        <i class="fa-solid fa-ticket-alt"></i><span>Coupons</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_reviews.html">
+                        <i class="fa-solid fa-star"></i><span>Reviews</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_messages.html">
+                        <i class="fa-solid fa-envelope"></i><span>Messages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_newsletter.html">
+                        <i class="fa-solid fa-newspaper"></i><span>Newsletter</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_banners.html">
+                        <i class="fa-solid fa-image"></i><span>Banners</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_pages.html">
+                        <i class="fa-solid fa-file-alt"></i><span>Static Pages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_settings.html">
+                        <i class="fa-solid fa-cog"></i><span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_reports.html">
+                        <i class="fa-solid fa-chart-pie"></i><span>Reports</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="adminSidebarOffcanvas" aria-labelledby="adminSidebarOffcanvasLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title text-light" id="adminSidebarOffcanvasLabel">Admin Panel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_dashboard.html">
+                            <i class="fa-solid fa-chart-line"></i><span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_users.html">
+                            <i class="fa-solid fa-users"></i><span>Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./admin_products.html">
+                            <i class="fa-solid fa-gamepad"></i><span>Products</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_orders.html">
+                            <i class="fa-solid fa-receipt"></i><span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_categories.html">
+                            <i class="fa-solid fa-tags"></i><span>Categories</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_coupons.html">
+                            <i class="fa-solid fa-ticket-alt"></i><span>Coupons</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_reviews.html">
+                            <i class="fa-solid fa-star"></i><span>Reviews</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_messages.html">
+                            <i class="fa-solid fa-envelope"></i><span>Messages</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_newsletter.html">
+                            <i class="fa-solid fa-newspaper"></i><span>Newsletter</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_banners.html">
+                            <i class="fa-solid fa-image"></i><span>Banners</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_pages.html">
+                            <i class="fa-solid fa-file-alt"></i><span>Static Pages</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_settings.html">
+                            <i class="fa-solid fa-cog"></i><span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin_reports.html">
+                            <i class="fa-solid fa-chart-pie"></i><span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <main class="admin-content">
+            <h1 class="mb-4 text-light">Product Management</h1>
+            <div id="productManagementMessage" class="alert d-none" role="alert"></div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <button id="addNewProductBtn" class="btn btn-primary"><i class="fa-solid fa-plus me-2"></i>Add New Product</button>
+                <div class="d-flex">
+                    <div class="input-group me-2" style="width: 200px;">
+                        <select class="form-select" id="productStatusFilter">
+                            <option value="">All Status</option>
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                    <div class="input-group w-50">
+                        <input type="text" id="productSearchInput" class="form-control" placeholder="Search products...">
+                        <button class="btn btn-outline-secondary" type="button" id="searchProductsBtn"><i class="fa-solid fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Status</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <!-- Products will be dynamically loaded here -->
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted">Loading products...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="paginationControls" class="d-flex justify-content-center mt-4">
+                <!-- Pagination will be dynamically loaded here -->
+            </div>
+            <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                    <div class="modal-content bg-dark text-light">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productModalLabel">Add New Product</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="modalMessage" class="alert d-none" role="alert"></div>
+                            <form id="productForm" enctype="multipart/form-data">
+                                <input type="hidden" id="productId" name="id">
+                                <input type="hidden" id="productFormCsrfToken" name="csrf_token">
+                                
+                                <!-- Basic Information Tab -->
+                                <ul class="nav nav-tabs mb-3" id="productTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic" type="button" role="tab" aria-controls="basic" aria-selected="true">Basic Information</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="pricing-tab" data-bs-toggle="tab" data-bs-target="#pricing" type="button" role="tab" aria-controls="pricing" aria-selected="false">Pricing & Inventory</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="media-tab" data-bs-toggle="tab" data-bs-target="#media" type="button" role="tab" aria-controls="media" aria-selected="false">Media</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="relations-tab" data-bs-toggle="tab" data-bs-target="#relations" type="button" role="tab" aria-controls="relations" aria-selected="false">Relations</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced" type="button" role="tab" aria-controls="advanced" aria-selected="false">Advanced</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="productTabsContent">
+                                    <!-- Basic Information Tab -->
+                                    <div class="tab-pane fade show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
+                                        <div class="mb-3">
+                                            <label for="productName" class="form-label">Name</label>
+                                            <input type="text" class="form-control" id="productName" name="title" required>
+                                            <div id="nameError" class="invalid-feedback"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productSlug" class="form-label">Slug</label>
+                                            <input type="text" class="form-control" id="productSlug" name="slug" required>
+                                            <div id="slugError" class="invalid-feedback"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productShortDescription" class="form-label">Short Description</label>
+                                            <textarea class="form-control" id="productShortDescription" name="short_description" rows="3" required></textarea>
+                                            <div id="shortDescriptionError" class="invalid-feedback"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productDescription" class="form-label">Description</label>
+                                            <textarea class="form-control" id="productDescription" name="long_description" rows="5" required></textarea>
+                                            <div id="descriptionError" class="invalid-feedback"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productSKU" class="form-label">SKU</label>
+                                                <input type="text" class="form-control" id="productSKU" name="sku">
+                                                <div id="skuError" class="invalid-feedback"></div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productReleaseDate" class="form-label">Release Date</label>
+                                                <input type="date" class="form-control" id="productReleaseDate" name="release_date" required>
+                                                <div id="releaseDateError" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Pricing & Inventory Tab -->
+                                    <div class="tab-pane fade" id="pricing" role="tabpanel" aria-labelledby="pricing-tab">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productPrice" class="form-label">Price ($)</label>
+                                                <input type="number" class="form-control" id="productPrice" name="price" step="0.01" min="0" required>
+                                                <div id="priceError" class="invalid-feedback"></div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productSalePrice" class="form-label">Sale Price ($)</label>
+                                                <input type="number" class="form-control" id="productSalePrice" name="sale_price" step="0.01" min="0">
+                                                <div id="salePriceError" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productStockStatus" class="form-label">Stock Status</label>
+                                                <select class="form-select" id="productStockStatus" name="stock_status" required>
+                                                    <option value="in_stock">In Stock</option>
+                                                    <option value="out_of_stock">Out of Stock</option>
+                                                    <option value="pre_order">Pre-Order</option>
+                                                </select>
+                                                <div id="stockStatusError" class="invalid-feedback"></div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productStatus" class="form-label">Product Status</label>
+                                                <select class="form-select" id="productStatus" name="status" required>
+                                                    <option value="draft">Draft</option>
+                                                    <option value="published">Published</option>
+                                                    <option value="archived">Archived</option>
+                                                </select>
+                                                <div id="statusError" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productAgeRating" class="form-label">Age Rating</label>
+                                                <select class="form-select" id="productAgeRating" name="age_rating">
+                                                    <option value="E">Everyone</option>
+                                                    <option value="E10+">Everyone 10+</option>
+                                                    <option value="T">Teen</option>
+                                                    <option value="M">Mature 17+</option>
+                                                    <option value="AO">Adults Only 18+</option>
+                                                    <option value="RP">Rating Pending</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productFileSize" class="form-label">File Size</label>
+                                                <input type="text" class="form-control" id="productFileSize" name="file_size" placeholder="e.g., 25 GB">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Media Tab -->
+                                    <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
+                                        <div class="mb-3">
+                                            <label for="productFeaturedImage" class="form-label">Featured Image</label>
+                                            <input class="form-control" type="file" id="productFeaturedImage" name="featured_image" accept="image/*">
+                                            <div id="featuredImagePreview" class="mt-2"></div>
+                                            <div id="featuredImageError" class="invalid-feedback"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productGallery" class="form-label">Product Gallery</label>
+                                            <input class="form-control" type="file" id="productGallery" name="images[]" multiple accept="image/*">
+                                            <div id="galleryPreview" class="d-flex flex-wrap mt-2"></div>
+                                            <div id="galleryError" class="invalid-feedback"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="productVideoTrailer" class="form-label">Video Trailer URL</label>
+                                            <input type="text" class="form-control" id="productVideoTrailer" name="video_trailer" placeholder="YouTube or Vimeo URL">
+                                            <div id="videoTrailerError" class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Relations Tab -->
+                                    <div class="tab-pane fade" id="relations" role="tabpanel" aria-labelledby="relations-tab">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productCategories" class="form-label">Categories</label>
+                                                <select class="form-select" id="productCategories" name="categories[]" multiple size="5">
+                                                    <!-- Categories will be loaded dynamically -->
+                                                </select>
+                                                <div id="categoriesError" class="invalid-feedback"></div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productPlatforms" class="form-label">Platforms</label>
+                                                <select class="form-select" id="productPlatforms" name="platforms[]" multiple size="5">
+                                                    <!-- Platforms will be loaded dynamically -->
+                                                </select>
+                                                <div id="platformsError" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productTags" class="form-label">Tags</label>
+                                                <select class="form-select" id="productTags" name="tags[]" multiple size="5">
+                                                    <!-- Tags will be loaded dynamically -->
+                                                </select>
+                                                <div id="tagsError" class="invalid-feedback"></div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productRelatedProducts" class="form-label">Related Products</label>
+                                                <select class="form-select" id="productRelatedProducts" name="related_products[]" multiple size="5">
+                                                    <!-- Products will be loaded dynamically -->
+                                                </select>
+                                                <div class="form-text">Hold Ctrl/Cmd to select multiple products</div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productDeveloper" class="form-label">Developer</label>
+                                                <select class="form-select" id="productDeveloper" name="developer_id" required>
+                                                    <option value="">Select Developer</option>
+                                                    <!-- Developers will be loaded dynamically -->
+                                                </select>
+                                                <div id="developerError" class="invalid-feedback"></div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="productPublisher" class="form-label">Publisher</label>
+                                                <select class="form-select" id="productPublisher" name="publisher_id" required>
+                                                    <option value="">Select Publisher</option>
+                                                    <!-- Publishers will be loaded dynamically -->
+                                                </select>
+                                                <div id="publisherError" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Advanced Tab -->
+                                    <div class="tab-pane fade" id="advanced" role="tabpanel" aria-labelledby="advanced-tab">
+                                        <div class="mb-3">
+                                            <label class="form-label">System Requirements</label>
+                                            <ul class="nav nav-tabs mb-3" id="systemReqTabs" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link active" id="minReq-tab" data-bs-toggle="tab" data-bs-target="#minReq" type="button" role="tab" aria-controls="minReq" aria-selected="true">Minimum Requirements</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="recReq-tab" data-bs-toggle="tab" data-bs-target="#recReq" type="button" role="tab" aria-controls="recReq" aria-selected="false">Recommended Requirements</button>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content" id="systemReqTabsContent">
+                                                <!-- Minimum Requirements Tab -->
+                                                <div class="tab-pane fade show active" id="minReq" role="tabpanel" aria-labelledby="minReq-tab">
+                                                    <div class="mb-3">
+                                                        <label for="minReqOS" class="form-label">Operating System</label>
+                                                        <input type="text" class="form-control" id="minReqOS" name="min_requirements[os]" placeholder="e.g., Windows 10 64-bit">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="minReqProcessor" class="form-label">Processor</label>
+                                                        <input type="text" class="form-control" id="minReqProcessor" name="min_requirements[processor]" placeholder="e.g., Intel Core i5-8400">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="minReqMemory" class="form-label">Memory</label>
+                                                        <input type="text" class="form-control" id="minReqMemory" name="min_requirements[memory]" placeholder="e.g., 8 GB RAM">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="minReqGraphics" class="form-label">Graphics</label>
+                                                        <input type="text" class="form-control" id="minReqGraphics" name="min_requirements[graphics]" placeholder="e.g., NVIDIA GeForce GTX 1060">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="minReqStorage" class="form-label">Storage</label>
+                                                        <input type="text" class="form-control" id="minReqStorage" name="min_requirements[storage]" placeholder="e.g., 25 GB available space">
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Recommended Requirements Tab -->
+                                                <div class="tab-pane fade" id="recReq" role="tabpanel" aria-labelledby="recReq-tab">
+                                                    <div class="mb-3">
+                                                        <label for="recReqOS" class="form-label">Operating System</label>
+                                                        <input type="text" class="form-control" id="recReqOS" name="rec_requirements[os]" placeholder="e.g., Windows 11 64-bit">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="recReqProcessor" class="form-label">Processor</label>
+                                                        <input type="text" class="form-control" id="recReqProcessor" name="rec_requirements[processor]" placeholder="e.g., Intel Core i7-9700K">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="recReqMemory" class="form-label">Memory</label>
+                                                        <input type="text" class="form-control" id="recReqMemory" name="rec_requirements[memory]" placeholder="e.g., 16 GB RAM">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="recReqGraphics" class="form-label">Graphics</label>
+                                                        <input type="text" class="form-control" id="recReqGraphics" name="rec_requirements[graphics]" placeholder="e.g., NVIDIA GeForce RTX 2070">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="recReqStorage" class="form-label">Storage</label>
+                                                        <input type="text" class="form-control" id="recReqStorage" name="rec_requirements[storage]" placeholder="e.g., 50 GB available space">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">Product Keys</label>
+                                            <div class="row mb-2">
+                                                <div class="col-md-6">
+                                                    <label for="productKeyCount" class="form-label">Available Keys</label>
+                                                    <input type="number" class="form-control" id="productKeyCount" name="key_count" min="0" required>
+                                                    <div id="keyCountError" class="invalid-feedback"></div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">&nbsp;</label>
+                                                    <div class="d-grid">
+                                                        <button type="button" id="generateKeysBtn" class="btn btn-secondary">Generate Keys</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="productKeysContainer" class="mb-2">
+                                                <div class="input-group mb-2">
+                                                    <input type="text" class="form-control product-key-input" name="keys[]" placeholder="Enter product key">
+                                                    <button class="btn btn-outline-danger remove-key-btn" type="button" disabled><i class="fa-solid fa-trash"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <button type="button" id="addKeyBtn" class="btn btn-outline-primary">Add Another Key</button>
+                                            </div>
+                                            <div class="form-text text-muted">Key count will be automatically updated based on the number of keys you add.</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="productMetaTitle" class="form-label">Meta Title</label>
+                                            <input type="text" class="form-control" id="productMetaTitle" name="meta_title" maxlength="255">
+                                            <div id="metaTitleError" class="invalid-feedback"></div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="productMetaDescription" class="form-label">Meta Description</label>
+                                            <textarea class="form-control" id="productMetaDescription" name="meta_description" rows="3"></textarea>
+                                            <div id="metaDescriptionError" class="invalid-feedback"></div>
+                                        </div>
+                                        
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="productIsFeatured" name="is_featured" value="1">
+                                            <label class="form-check-label" for="productIsFeatured">Featured Product</label>
+                                        </div>
+                                        
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="productIsTrending" name="is_trending" value="1">
+                                            <label class="form-check-label" for="productIsTrending">Trending Product</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" form="productForm" id="saveProductBtn" class="btn btn-primary"><i class="fa-solid fa-save me-2"></i>Save Product</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content bg-dark text-light">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this product? This action cannot be undone.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="../../assets/js/admin/admin_main.js"></script>
+    <script src="../../assets/js/admin/admin_auth.js"></script>
+    <script src="../../assets/js/admin/admin_products.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutBtn = document.getElementById('logoutButton');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.adminLogout();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

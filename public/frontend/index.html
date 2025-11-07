@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lugx Gaming - Home</title>
+    <link rel="icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Your Custom CSS Files -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/user_style.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="../assets/css/user_responsive.css">
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Message Container (for global messages/toasts) -->
+    <div id="message-container" class="message-container">
+        <!-- Messages will be dynamically inserted here by main.js -->
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="../assets/img/logo.png" alt="Lugx Logo">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li id="auth-links-container"> 
+                    <!-- This content will be dynamically updated by auth.js/main.js -->
+                    <a href="./login.html" id="auth-link" class="btn-primary">Sign In</a>
+                </li> 
+            </ul>
+            <div class="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Header / Hero Section -->
+    <header class="main-header">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h6>Welcome to Lugx</h6>
+                <h1>BEST GAMING<span class="caption_dec"><img src="../assets/img/caption-dec.png" alt="Decorative element"></span> SITE EVER!</h1>
+                <p>Lugx Gaming is your premier destination for the latest and greatest in gaming. Discover exclusive deals, pre-order upcoming releases, and join our community of passionate gamers.</p>
+                <div class="search-box">
+                    <input type="text" id="hero-search-input" placeholder="Search games, consoles, accessories...">
+                    <button type="submit" id="hero-search-button">SEARCH NOW</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="carousel-container">
+                    <div class="carousel-slides">
+                        <!-- Carousel slides will remain static for now, dynamic content for carousel can be added later if needed -->
+                        <div class="carousel-slide active">
+                            <img src="../assets/img/banner-image.jpg" alt="Slide 1: Game controller and headset">
+                            <div class="carousel-caption">
+                                <div class="price-info">
+                                    <span class="old-price">$28</span>
+                                    <span class="new-price">$20</span>
+                                </div>
+                                <h3>Premium Gaming Gear</h3>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i> 4.8
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="../assets/img/single-game.jpg" alt="Slide 2: Gaming keyboard and mouse">
+                            <div class="carousel-caption">
+                                <div class="price-info">
+                                    <span class="old-price">$35</span>
+                                    <span class="new-price">$25</span>
+                                </div>
+                                <h3>Next-Gen Consoles</h3>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i> 4.6
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="../assets/img/categories-01.jpg" alt="Slide 3: VR headset and game">
+                            <div class="carousel-caption">
+                                <div class="price-info">
+                                    <span class="old-price">$50</span>
+                                    <span class="new-price">$30</span>
+                                </div>
+                                <h3>Virtual Reality Experience</h3>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i> 4.9
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="carousel-btn prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    
+                    <div class="carousel-dots">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section - Content will be loaded dynamically by index_page.js -->
+    <!-- Features Section - Content will be loaded dynamically by index_page.js -->
+    <section class="features-section">
+        <!-- Feature Card 1: My Orders -->
+        <a href="./user_orders.html" class="feature-card-link">
+            <div class="feature-card">
+                <div class="icon-wrapper">
+                    <img src="../assets/img/featured-01.png" alt="Order History Icon">
+                </div>
+                <h4>Order History</h4>
+                <p>Track your past purchases and view order details.</p>
+            </div>
+        </a>
+
+        <!-- Feature Card 2: My Profile -->
+        <a href="./user_profile.html" class="feature-card-link">
+            <div class="feature-card">
+                <div class="icon-wrapper">
+                    <img src="../assets/img/featured-02.png" alt="My Profile Icon">
+                </div>
+                <h4>My Profile</h4>
+                <p>Manage your account settings, personal info, and addresses.</p>
+            </div>
+        </a>
+
+        <!-- Feature Card 3: Contact Us -->
+        <a href="./contact.html" class="feature-card-link">
+            <div class="feature-card">
+                <div class="icon-wrapper">
+                    <img src="../assets/img/featured-03.png" alt="Contact Us Icon">
+                </div>
+                <h4>Contact Us</h4>
+                <p>Get quick support for your questions and issues.</p>
+            </div>
+        </a>
+
+        <!-- Feature Card 4: Shop Now -->
+        <a href="./shop.html" class="feature-card-link">
+            <div class="feature-card">
+                <div class="icon-wrapper">
+                    <img src="../assets/img/featured-04.png" alt="Shop Now Icon">
+                </div>
+                <h4>Shop Now</h4>
+                <p>Explore our vast collection of games and find your next adventure.</p>
+            </div>
+        </a>
+    </section>
+
+    <!-- Trending Games Section - Content will be loaded dynamically by index_page.js -->
+    <section class="games-section trending-games">
+        <div class="container">
+            <h6>Trending</h6>
+            <div class="section-header">
+                <h2>Trending Games</h2>
+                <a href="./shop.html?trending=true" class="view-all-btn">View All</a>
+            </div>
+            <div id="trending-games-grid" class="games-grid">
+                <!-- Dynamic game cards will be inserted here by JavaScript -->
+                <p style="text-align: center; color: var(--dark-gray);">Loading trending games...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Most Played Games Section - Content will be loaded dynamically by index_page.js -->
+    <section class="games-section most-played-games">
+        <div class="container">
+            <h6>Top Games</h6>
+            <div class="section-header">
+                <h2>Most Played</h2>
+                <a href="./shop.html?sort_by=downloads_count&sort_order=DESC" class="view-all-btn">View All</a>
+            </div>
+            <div id="most-played-games-grid" class="games-grid-small">
+                <!-- Dynamic game cards will be inserted here by JavaScript -->
+                <p style="text-align: center; color: var(--dark-gray);">Loading most played games...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section - Content will be loaded dynamically by index_page.js -->
+    <section class="categories-section">
+        <div class="container">
+            <div class="section-header center-header">
+                <h6>Categories</h6>
+                <h2>Top Categories</h2>
+            </div>
+            <div id="categories-grid-container" class="categories-grid">
+                <!-- Dynamic category cards will be inserted here by JavaScript -->
+                <p style="text-align: center; color: var(--dark-gray);">Loading categories...</p>
+            </div>
+            <div class="text-center mt-4" style="text-align: center; margin-top: 30px;">
+                <a href="./shop.html" class="view-all-btn">View All Categories</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA & Newsletter Section -->
+    <section class="cta-newsletter-section">
+        <div class="container">
+            <div class="cta-content">
+                <div class="shop-promo">
+                    <h6>Exclusive Deals</h6>
+                    <h2>Pre-Order Now & Get <span class="highlight">Special Discounts</span>!</h2>
+                    <p>Be the first to play upcoming blockbuster games. Pre-order today to secure exclusive in-game content, limited edition collectibles, and early access privileges.</p>
+                    <a href="shop.html" class="btn-secondary">Pre-Order Now</a>
+                </div>
+                <div class="newsletter-form">
+                    <h6>Stay Updated</h6>
+                    <h2>Subscribe & Get <span class="highlight">$10 Off</span> Your First Purchase!</h2>
+                    <p>Join our gaming community and receive exclusive offers, game updates, and news about upcoming releases.</p>
+                    <form>
+                        <input type="email" placeholder="Your Email Address" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>Copyright &copy; 2048 Lugx Gaming Company. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Main JavaScript File -->
+    <script src="../assets/js/main.js"></script>
+    <!-- Auth JavaScript file (for login/register/logout forms) -->
+    <script src="../assets/js/auth.js"></script>    
+    <!-- Carousel JavaScript file -->
+    <script src="../assets/js/carousel.js"></script>
+    <!-- NEW: Index Page specific JavaScript for dynamic content loading -->
+    <script src="../assets/js/index_page.js"></script>
+    <script src="../assets/js/newsletter.js"></script>
+</body>
+</html>

@@ -1,0 +1,1654 @@
+در حال ساحت پنل ادیمینی بخش newsletters هستیم و میخوام که این بخش رو بطور کامل و درست پیاده سازی هاش رو انجام بدم که بخش فرانت اند و بک اند برای عملکرد این بخش بطور کامل به درستی انجام بشه
+
+من در زیر تمام فایل ها و اسکری
+ت دیتابیس رو قرار میدم تا با انالیز کامل این فایل ها بتونیم به درستی 
+پیاده سازی این بخش رو انجام بدیم 
+
+در زیر اسکرپیت کامل دیتابیس رو قرار میدم برات :
+
+CREATE TABLE newsletter_subscribers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    name VARCHAR(100),
+    status ENUM('active', 'unsubscribed', 'bounced') DEFAULT 'active',
+    preferences JSON,
+    subscribed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    unsubscribed_at TIMESTAMP NULL,
+    INDEX idx_subscriber_status (status)
+) ENGINE=InnoDB;
+
+CREATE TABLE email_campaigns (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    content LONGTEXT NOT NULL,
+    sender_name VARCHAR(100) NOT NULL,
+    sender_email VARCHAR(100) NOT NULL,
+    status ENUM('draft', 'scheduled', 'sending', 'sent', 'cancelled') DEFAULT 'draft',
+    scheduled_at TIMESTAMP NULL,
+    sent_at TIMESTAMP NULL,
+    recipients_count INT DEFAULT 0,
+    opened_count INT DEFAULT 0,
+    clicked_count INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_campaign_status (status)
+) ENGINE=InnoDB;
+
+در زیر فایل Controller.php رو قرار میدم برات :
+
+<?php
+namespace App\Core;
+
+use PDO;
+use PDOException;
+use Exception; // Ensure Exception is imported for general error handling
+
+class Controller
+{
+    // ADDED CONSTRUCTOR FOR DEBUGGING
+    public function __construct()
+    {
+        error_log("DEBUG: Controller::__construct - Called."); // ADDED DEBUG LOG
+        // You might want to initialize common services here in the future, e.g.:
+        // $this->db = Database::getInstance();
+        // $this->auth = new AuthService();
+    }
+
+    /**
+     * Loads a model class.
+     *
+     * @param string $modelName The name of the model class (e.g., 'User').
+     * @return object|null An instance of the model, or null if not found.
+     */
+    protected function model(string $modelName): ?object
+    {
+        error_log("DEBUG: Controller::model - Attempting to load model: " . $modelName); // ADDED DEBUG LOG
+        $modelPath = ROOT_PATH . '/app/Models/' . $modelName . '.php'; // Corrected path for Models folder
+        if (file_exists($modelPath)) {
+            $className = 'App\\Models\\' . $modelName; // Full Qualified Class Name.
+            if (class_exists($className)) {
+                error_log("DEBUG: Controller::model - Instantiating model: " . $className); // ADDED DEBUG LOG
+                try {
+                    return new $className();
+                } catch (\Throwable $e) { // Catch errors during model instantiation
+                    error_log("ERROR: Controller::model - Failed to instantiate model '" . $className . "': " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+                    return null;
+                }
+            }
+        }
+        // Log the error if the model file or class is not found.
+        error_log("ERROR: Controller::model - Model file not found or class not defined: " . $modelName . " at path: " . $modelPath); // IMPROVED LOG
+        return null;
+    }
+
+    /**
+     * Renders a view file. (Primarily for server-side rendered views, not for static HTML redirects).
+     *
+     * @param string $viewPath The path to the view file (e.g., 'errors.404' maps to views/errors/404.php).
+     * @param array $data Data to be passed to the view, which will be extracted into variables.
+     */
+    protected function view(string $viewPath, array $data = []): void
+    {
+        error_log("DEBUG: Controller::view - Attempting to render view: " . $viewPath); // ADDED DEBUG LOG
+        // Extract data array keys into variables for direct use in the view.
+        extract($data);
+
+        // Construct the full path to the view file.
+        $viewFile = ROOT_PATH . '/views/' . str_replace('.', '/', $viewPath) . '.php'; // Allows dot notation for subdirectories.
+
+        if (file_exists($viewFile)) {
+            require_once $viewFile;
+            error_log("DEBUG: Controller::view - View rendered: " . $viewFile); // ADDED DEBUG LOG
+        } else {
+            // Log if the view file is not found and redirect to a 404 page.
+            error_log("ERROR: Controller::view - View file not found: " . $viewFile);
+            $this->redirect('/404'); // Redirect to a general 404 page.
+        }
+    }
+
+    /**
+     * Renders a static HTML file, injecting BASE_URL_PATH for JavaScript.
+     * This method is specifically designed for serving HTML files that contain JavaScript making AJAX calls,
+     * allowing dynamic injection of base URL paths without changing file extensions.
+     *
+     * @param string $htmlFilePath The path to the HTML file relative to ROOT_PATH (e.g., 'public/frontend/admin/admin_login.html').
+     * @param array $data Optional data to pass (not extracted, but useful for future expansion).
+     */
+    protected function renderHtmlView(string $htmlFilePath, array $data = []): void
+    {
+        error_log("DEBUG: Controller::renderHtmlView - Called for HTML file: " . $htmlFilePath);
+
+        $fullPath = ROOT_PATH . '/' . $htmlFilePath;
+
+        if (!file_exists($fullPath)) {
+            error_log("ERROR: Controller::renderHtmlView - HTML view file not found: " . $fullPath);
+            http_response_code(404);
+            echo "<h1>404 Not Found</h1><p>The requested page could not be found.</p>";
+            exit;
+        }
+
+        // Start output buffering specifically for this view rendering to capture its content.
+        ob_start();
+        require_once $fullPath; // Include the HTML file
+        $content = ob_get_clean(); // Get content and clean the buffer
+
+        // Inject BASE_URL_PATH into the HTML.
+        // We'll use a placeholder like '<!-- APP_BASE_URL_PATH_PLACEHOLDER -->' in the HTML.
+        // This allows JavaScript to access the correct base path for AJAX calls.
+        $injectedScript = "<script>window.AppBaseUrlPath = '" . BASE_URL_PATH . "';</script>";
+        // Find the closing </head> tag and insert the script just before it.
+        // This ensures the JS variable is available before other scripts try to use it.
+        $content = str_replace('</head>', $injectedScript . "\n</head>", $content);
+
+        // Send the processed content to the browser.
+        echo $content;
+        error_log("DEBUG: Controller::renderHtmlView - HTML view successfully rendered: " . $htmlFilePath);
+    }
+
+    /**
+     * Renders a JSON response for API endpoints.
+     *
+     * @param array $data The data to be encoded as JSON.
+     * @param int $statusCode The HTTP status code to send with the response (default: 200 OK).
+     */
+    protected function renderApiJson(array $data, int $statusCode = 200): void
+    {
+        error_log("DEBUG: Controller::renderApiJson - Called with data: " . json_encode($data, JSON_THROW_ON_ERROR) . ", status: " . $statusCode);
+
+        // Clear the current output buffer's content.
+        // This is crucial to prevent any premature output (like whitespace) from interfering with headers.
+        if (ob_get_level() > 0) {
+            ob_clean(); 
+        }
+
+        // Check if headers have already been sent *after* clearing the current buffer.
+        if (headers_sent($file, $line)) {
+            error_log("CRITICAL ERROR: Headers already sent from {$file}:{$line} AFTER ob_clean() in renderApiJson. Premature output detected.");
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Internal server error: Headers already sent. Cannot guarantee JSON Content-Type.']);
+            exit;
+        }
+
+        // Set Content-Type header and HTTP status code.
+        header('Content-Type: application/json; charset=utf-8', true, $statusCode);
+        
+        try {
+            // Encode and echo JSON data. This writes to the current active buffer (from index.php).
+            echo json_encode($data, JSON_THROW_ON_ERROR);
+        } catch (Exception $e) { // Use Exception for JSON encoding errors
+            error_log("ERROR: Controller::renderApiJson - JSON encoding failed: " . $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine());
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Internal server error: JSON encoding failed.']);
+        }
+        
+        exit; // Terminate script
+    }
+
+    /**
+     * Redirects the browser to a specified URL.
+     *
+     * @param string $url The URL to redirect to (relative to BASE_URL).
+     * @param int $statusCode The HTTP status code for the redirect (default: 302 Found).
+     */
+    protected function redirect(string $url, int $statusCode = 302): void
+    {
+        // Construct the full URL using BASE_URL defined in constants.php.
+        // This method remains unchanged as per your request.
+        $fullUrl = BASE_URL . $url;
+        error_log("DEBUG: Controller::redirect - Redirecting to: " . $fullUrl);
+        header('Location: ' . $fullUrl, true, $statusCode);
+        exit; // Keep exit here as redirects should terminate script execution
+    }
+
+    /**
+     * Get JSON data from the request body.
+     * @return array
+     */
+    protected function getJsonData(): array
+    {
+        $input = file_get_contents('php://input');
+        return json_decode($input, true) ?? [];
+    }
+}
+
+
+در زیر برات فایل NewsletterSubscriber.php رو قرار میدم :
+
+<?php
+namespace App\Models;
+use App\Core\Model;
+use PDO;
+use PDOException;
+
+class NewsletterSubscriber extends Model {
+    protected string $table = 'newsletter_subscribers';
+    protected array $fillable = ['email', 'subscribed_at', 'status'];
+
+    /**
+     * Finds a subscriber by email address.
+     *
+     * @param string $email
+     * @return array|false
+     */
+    public function findByEmail(string $email): array|false
+    {
+        return $this->first(['email', $email]);
+    }
+
+    /**
+     * Subscribes a new email address to the newsletter.
+     *
+     * @param string $email
+     * @return bool
+     */
+    public function subscribe(string $email):bool
+    {
+        $existingSubscriber = $this->findByEmail($email);
+
+        if ($existingSubscriber) {
+            // Subscriber already exists, update their status if necessary
+            if ($existingSubscriber['status'] !== 'subscribed') {
+                return $this->update($existingSubscriber[$this->primaryKey], ['status' => 'subscribed']);
+            }
+            // Already subscribed, so return true
+            return true;
+        }
+
+        // Create a new subscriber
+        $data = [
+            'email' => $email,
+            'subscribed_at' => date('Y-m-d H:i:s'),
+            'status' => 'subscribed'
+        ];
+
+        return (bool) $this->create($data);
+    }
+
+    /**
+     * Fetches all newsletter subscribers.
+     * @return array An array of all newsletter subscribers.
+     */
+    public function getAll(): array
+    {
+        try {
+            return $this->all();
+        }catch (PDOException $e) {
+            error_log("Error fetching all newsletter subscribers: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Deletes a specific newsletter subscriber.
+     * @param int $id The ID of the subscriber.
+     * @return bool True on success, false on failure.
+     */
+    public function delete($id): bool
+    {
+        return parent::delete($id);
+    }
+}
+
+برات در زیر فایل کامل Model.php رو قرار میدم :
+
+<?php
+namespace App\Core;
+
+use PDO;
+use PDOException;
+
+class Model
+{
+    protected PDO $db;
+    protected string $table;
+    protected string $primaryKey = 'id';
+
+    public function __construct()
+    {
+        $this->db = Database::getInstance();
+    }
+
+    /**
+     * Find a record by its primary key.
+     *
+     * @param mixed $id
+     * @return array|false
+     */
+    public function find($id): array|false
+    {
+        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id LIMIT 1");
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch();
+    }
+
+    /**
+     * Get all records from the table.
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        $stmt = $this->db->query("SELECT * FROM {$this->table}");
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Insert a new record into the table.
+     *
+     * @param array $data
+     * @return int|false Last inserted ID or false on failure
+     */
+    public function create(array $data): int|false
+    {
+        $columns = implode(', ', array_keys($data));
+        $placeholders = ':' . implode(', :', array_keys($data));
+
+        $sql = "INSERT INTO {$this->table} ({$columns}) VALUES ({$placeholders})";
+        $stmt = $this->db->prepare($sql);
+
+        try {
+            $stmt->execute($data);
+            return (int) $this->db->lastInsertId();
+        } catch (PDOException $e) {
+            // Log the error for debugging
+            error_log("Error creating record in {$this->table}: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Update an existing record in the table.
+     *
+     * @param mixed $id
+     * @param array $data
+     * @return bool
+     */
+    public function update($id, array $data): bool
+    {
+        $set = [];
+        foreach ($data as $key => $value) {
+            $set[] = "{$key} = :{$key}";
+        }
+        $set = implode(', ', $set);
+
+        $sql = "UPDATE {$this->table} SET {$set} WHERE {$this->primaryKey} = :id";
+        $stmt = $this->db->prepare($sql);
+
+        $data['id'] = $id; // Add ID to data for binding
+        try {
+            return $stmt->execute($data);
+        } catch (PDOException $e) {
+            error_log("Error updating record in {$this->table}: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Delete a record from the table.
+     *
+     * @param mixed $id
+     * @return bool
+     */
+    public function delete($id): bool
+    {
+        $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE {$this->primaryKey} = :id");
+        try {
+            return $stmt->execute([':id' => $id]);
+        } catch (PDOException $e) {
+            error_log("Error deleting record from {$this->table}: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Get records based on a WHERE clause.
+     *
+     * @param array $conditions Example: ['column' => 'value', 'another_column >' => 10]
+     * @param string $orderBy
+     * @param string $limit
+     * @param string $offset
+     * @return array
+     */
+    public function where(array $conditions, string $orderBy = '', string $limit = '', string $offset = ''): array
+    {
+        $whereClauses = [];
+        $params = [];
+        foreach ($conditions as $key => $value) {
+            // Handle operators like '>', '<', '!=', 'LIKE'
+            if (preg_match('/(.*?)\s*([<>=!%]|LIKE|NOT LIKE|IN|NOT IN|IS NULL|IS NOT NULL)$/i', $key, $matches)) {
+                $column = trim($matches[1]);
+                $operator = trim($matches[2]);
+                if ($operator === 'IS NULL' || $operator === 'IS NOT NULL') {
+                    $whereClauses[] = "{$column} {$operator}";
+                } else if ($operator === 'IN' || $operator === 'NOT IN') {
+                    // For IN/NOT IN, value should be an array
+                    if (is_array($value)) {
+                        $placeholders = implode(', ', array_fill(0, count($value), '?'));
+                        $whereClauses[] = "{$column} {$operator} ({$placeholders})";
+                        $params = array_merge($params, $value);
+                    } else {
+                        error_log("Invalid value for IN/NOT IN condition: " . $key);
+                        continue;
+                    }
+                } else {
+                    $whereClauses[] = "{$column} {$operator} :{$column}";
+                    $params[":{$column}"] = $value;
+                }
+            } else {
+                // Default to '=' operator
+                $whereClauses[] = "{$key} = :{$key}";
+                $params[":{$key}"] = $value;
+            }
+        }
+
+        $sql = "SELECT * FROM {$this->table}" .
+               (!empty($whereClauses) ? " WHERE " . implode(' AND ', $whereClauses) : "") .
+               ($orderBy ? " ORDER BY {$orderBy}" : "") .
+               ($limit ? " LIMIT {$limit}" : "") .
+               ($offset ? " OFFSET {$offset}" : "");
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Get a single record based on a WHERE clause.
+     *
+     * @param array $conditions
+     * @return array|false
+     */
+    public function first(array $conditions): array|false
+    {
+        $results = $this->where($conditions, '', 1);
+        return $results ? $results[0] : false;
+    }
+
+    /**
+     * Execute a raw SQL query. Use with caution.
+     *
+     * @param string $sql
+     * @param array $params
+     * @param bool $fetch single row or all rows
+     * @return array|false|int
+     */
+    public function query(string $sql, array $params = [], bool $fetchAll = true): array|false|int
+    {
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
+            if (str_starts_with(strtoupper(trim($sql)), 'SELECT')) {
+                return $fetchAll ? $stmt->fetchAll() : $stmt->fetch();
+            }
+            return $stmt->rowCount(); // For INSERT, UPDATE, DELETE
+        } catch (PDOException $e) {
+            error_log("Raw query failed: " . $e->getMessage() . " SQL: " . $sql);
+            return false;
+        }
+    }
+}
+
+
+به این موضوع توجه داشته باش که ما پیاده سازی های لازم برای ساب اسکرایب کردن یک کاربر رو انجام دادیم و الان میخوایم تمام عملکرد پنل ادمینی برای این بخش رو پیاده سازی کنیم
+
+
+تمام فایل AuthService.php رو در زیر برات قرار میدم :
+
+<?php
+namespace App\Services;
+
+use App\Models\User;
+use App\Models\UserRole;
+use App\Services\SecurityService;
+use App\Services\ValidationService;
+use App\Services\MailService;
+use Exception; // Ensure Exception is imported for general error handling
+
+class AuthService
+{
+    private User $userModel;
+    private UserRole $userRoleModel;
+    private SecurityService $securityService;
+    private ValidationService $validationService;
+    private MailService $mailService;
+
+    public function __construct()
+    {
+        error_log("DEBUG: AuthService::construct - Initializing dependencies");
+        $this->userModel = new User();
+        $this->userRoleModel = new UserRole();
+        $this->securityService = new SecurityService();
+        $this->validationService = new ValidationService();
+        $this->mailService = new MailService();
+    }
+
+    /**
+     * Register a new user account.
+     *
+     * @param array $data Contains 'username', 'email', 'password', 'confirm_password', 'first_name', 'last_name', etc.
+     * @return array Status and message or errors.
+     */
+    public function register(array $data): array
+    {
+        error_log("DEBUG: AuthService::register - Attempting user registration.");
+        // Sanitize input
+        $username = $this->securityService->sanitizeString($data['username'] ?? '');
+        $email = $this->securityService->sanitizeEmail($data['email'] ?? '');
+        $password = $data['password'] ?? '';
+        $confirmPassword = $data['confirm_password'] ?? '';
+        $firstName = $this->securityService->sanitizeString($data['first_name'] ?? '');
+        $lastName = $this->securityService->sanitizeString($data['last_name'] ?? '');
+        $phone = $this->securityService->sanitizeString($data['phone'] ?? '');
+        $dateOfBirth = $this->securityService->sanitizeString($data['date_of_birth'] ?? '');
+        $gender = $this->securityService->sanitizeString($data['gender'] ?? '');
+
+        // Validate input
+        $this->validationService->required($username, 'username', 'Username is required.');
+        $this->validationService->minLength($username, 'username', 3, 'Username must be at least 3 characters long.');
+        $this->validationService->maxLength($username, 'username', 50, 'Username cannot exceed 50 characters.');
+
+        $this->validationService->required($email, 'email', 'Email is required.');
+        $this->validationService->email($email, 'email', 'Invalid email format.');
+
+        $this->validationService->required($password, 'password', 'Password is required.');
+        $this->validationService->minLength($password, 'password', 8, 'Password must be at least 8 characters long.');
+        $this->validationService->matches($password, $confirmPassword, 'confirm_password', 'Passwords do not match.');
+
+        $this->validationService->required($firstName, 'first_name', 'First name is required.');
+        $this->validationService->maxLength($firstName, 'first_name', 50, 'First name cannot exceed 50 characters.');
+
+        $this->validationService->required($lastName, 'last_name', 'Last name is required.');
+        $this->validationService->maxLength($lastName, 'last_name', 50, 'Last name cannot exceed 50 characters.');
+
+        if (!$this->validationService->passes()) {
+            error_log("DEBUG: AuthService::register - Validation failed at initial stage.");
+            return ['status' => 'error', 'message' => 'Validation failed', 'errors' => $this->validationService->getErrors()];
+        }
+
+        // Check if username or email already exists
+        if ($this->userModel->findByUsername($username)) {
+            $this->validationService->addError('username', 'Username already taken.');
+        }
+        if ($this->userModel->findByEmail($email)) {
+            $this->validationService->addError('email', 'Email already registered.');
+        }
+
+        if (!$this->validationService->passes()) {
+            error_log("DEBUG: AuthService::register - Validation failed at uniqueness check.");
+            return ['status' => 'error', 'message' => 'Validation failed', 'errors' => $this->validationService->getErrors()];
+        }
+
+        // Get 'customer' role ID (assuming 'customer' role has id 3 based on your data)
+        $customerRole = $this->userRoleModel->findByName('customer');
+        if (!$customerRole) {
+            error_log("ERROR: AuthService::register - Default 'customer' role not found in database. Please ensure it's inserted.");
+            return ['status' => 'error', 'message' => 'System error during registration. Please contact support.'];
+        }
+
+        // Hash password and generate verification token
+        $hashedPassword = $this->securityService->hashPassword($password);
+        try {
+            $verificationToken = bin2hex(random_bytes(32));
+        } catch (Exception $e) {
+            error_log("ERROR: AuthService::register - Failed to generate verification token: " . $e->getMessage());
+            return ['status' => 'error', 'message' => 'Registration failed due to a server error (token generation).'];
+        }
+
+        $userData = [
+            'username' => $username,
+            'email' => $email,
+            'password_hash' => $hashedPassword,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'phone' => !empty($phone) ? $phone : null,
+            'date_of_birth' => !empty($dateOfBirth) ? $dateOfBirth : null,
+            'gender' => !empty($gender) ? $gender : null,
+            'role_id' => $customerRole['id'],
+            'email_verified' => false,
+            'is_active' => true,
+            'verification_token' => $verificationToken,
+        ];
+
+        $userId = $this->userModel->create($userData);
+
+        if ($userId) {
+            error_log("DEBUG: AuthService::register - User created successfully with ID: {$userId}. Attempting to send verification email.");
+            // Send verification email
+            if ($this->mailService->sendVerificationEmail($email, $username, $verificationToken)) {
+                error_log("DEBUG: AuthService::register - Verification email sent successfully to {$email}.");
+                return ['status' => 'success', 'message' => 'Registration successful! Please check your email to verify your account.'];
+            } else {
+                error_log("ERROR: AuthService::register - Failed to send verification email to {$email} for user ID {$userId}.");
+                return ['status' => 'success', 'message' => 'Registration successful, but failed to send verification email. Please contact support if you do not receive it.'];
+            }
+        }
+        error_log("ERROR: AuthService::register - User creation failed in model.");
+        return ['status' => 'error', 'message' => 'Registration failed due to a server error.'];
+    }
+
+    /**
+     * Verify user's email address using the provided token.
+     *
+     * @param string $token The email verification token.
+     * @return array Status and message.
+     */
+    public function verifyEmail(string $token): array
+    {
+        error_log("DEBUG: AuthService::verifyEmail - Attempting to verify email with token: {$token}.");
+        if (empty($token)) {
+            error_log("DEBUG: AuthService::verifyEmail - Verification token is missing.");
+            return ['status' => 'error', 'message' => 'Verification token is missing.'];
+        }
+
+        $user = $this->userModel->first(['verification_token' => $token]);
+
+        if (!$user) {
+            error_log("DEBUG: AuthService::verifyEmail - Invalid or expired verification token: {$token}.");
+            return ['status' => 'error', 'message' => 'Invalid or expired verification token.'];
+        }
+
+        if ($user['email_verified']) {
+            error_log("DEBUG: AuthService::verifyEmail - Email already verified for user ID: {$user['id']}.");
+            return ['status' => 'info', 'message' => 'Email already verified.'];
+        }
+
+        if ($this->userModel->update($user['id'], [
+            'email_verified' => true,
+            'verification_token' => null,
+        ])) {
+            error_log("DEBUG: AuthService::verifyEmail - Email verified successfully for user ID: {$user['id']}.");
+            return ['status' => 'success', 'message' => 'Email verified successfully! You can now log in.'];
+        }
+
+        error_log("ERROR: AuthService::verifyEmail - Email verification failed for user ID: {$user['id']}.");
+        return ['status' => 'error', 'message' => 'Email verification failed. Please try again or contact support.'];
+    }
+
+    /**
+     * Authenticate user and create session.
+     *
+     * @param string $email The user's email.
+     * @param string $password The user's password.
+     * @param bool $rememberMe Whether to keep the user logged in persistently.
+     * @return array Status and message or user data.
+     */
+    public function login(string $email, string $password, bool $rememberMe = false): array
+    {
+        error_log("DEBUG: AuthService::login - Attempting login for email: " . $email);
+
+        // Sanitize and validate input
+        $email = $this->securityService->sanitizeEmail($email);
+        $this->validationService->required($email, 'email', 'Email is required.');
+        $this->validationService->email($email, 'email', 'Invalid email format.');
+        $this->validationService->required($password, 'password', 'Password is required.');
+
+        if (!$this->validationService->passes()) {
+            error_log("DEBUG: AuthService::login - Validation failed.");
+            return ['status' => 'error', 'message' => 'Validation failed', 'errors' => $this->validationService->getErrors()];
+        }
+
+        $user = $this->userModel->findByEmail($email);
+
+        if (!$user) {
+            error_log("DEBUG: AuthService::login - User not found for email: " . $email);
+            return ['status' => 'error', 'message' => 'Invalid email or password.'];
+        }
+
+        error_log("DEBUG: AuthService::login - User found (ID: {$user['id']}). Comparing password.");
+        // For security, avoid logging raw passwords or hashes in production.
+        // error_log("DEBUG: Login - Input password: " . $password);
+        // error_log("DEBUG: Login - Stored password hash from DB: " . $user['password_hash']);
+
+        if (!$this->securityService->verifyPassword($password, $user['password_hash'])) {
+            error_log("DEBUG: AuthService::login - Password verification FAILED for email: " . $email);
+            return ['status' => 'error', 'message' => 'Invalid email or password.'];
+        }
+        error_log("DEBUG: AuthService::login - Password verification SUCCESS for email: " . $email);
+
+        // Check if account is active and email is verified
+        if (!$user['is_active']) {
+            error_log("DEBUG: AuthService::login - Account not active for user ID: " . $user['id']);
+            return ['status' => 'error', 'message' => 'Your account is currently inactive. Please contact support.'];
+        }
+        if (!$user['email_verified']) {
+            error_log("DEBUG: AuthService::login - Email not verified for user ID: " . $user['id']);
+            return ['status' => 'error', 'message' => 'Your email has not been verified. Please check your inbox for the verification link.'];
+        }
+
+        // Update last login timestamp
+        $this->userModel->update($user['id'], ['last_login' => date('Y-m-d H:i:s')]);
+        error_log("DEBUG: AuthService::login - Updated last_login for user ID: " . $user['id']);
+
+        // Create session
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['role_id'] = $user['role_id'];
+        $_SESSION['logged_in_at'] = time();
+        error_log("DEBUG: AuthService::login - Session created for user ID: " . $user['id']);
+
+        // Handle remember me (future development: implement secure persistent login tokens)
+        if ($rememberMe) {
+            ini_set('session.cookie_lifetime', 60 * 60 * 24 * 30); // 30 days
+            ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 30);
+            error_log("DEBUG: AuthService::login - Remember me enabled.");
+        }
+
+        return ['status' => 'success', 'message' => 'Logged in successfully!', 'user' => [
+            'id' => $user['id'],
+            'username' => $user['username'],
+            'email' => $user['email'],
+            'role_id' => $user['role_id']
+        ]];
+    }
+
+
+    /**
+     * Logs out the current user by destroying the session.
+     *
+     * @return bool True on successful logout.
+     */
+    public function logout(): bool
+    {
+        error_log("DEBUG: AuthService::logout - Attempting user logout.");
+        // Clear all session variables
+        $_SESSION = [];
+        // Invalidate the session cookie
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        // Destroy the session
+        session_destroy();
+        error_log("DEBUG: AuthService::logout - Session destroyed.");
+        return true;
+    }
+
+    /**
+     * Handles forgot password request by sending a reset email.
+     *
+     * @param string $email The email address for which to reset the password.
+     * @return array Status and message. Always returns a generic success message to prevent email enumeration.
+     */
+    public function forgotPassword(string $email): array
+    {
+        error_log("DEBUG: AuthService::forgotPassword - Called for email: " . $email);
+
+        $email = $this->securityService->sanitizeEmail($email);
+        $this->validationService->required($email, 'email', 'Email is required.');
+        $this->validationService->email($email, 'email', 'Invalid email format.');
+
+        if (!$this->validationService->passes()) {
+            error_log("DEBUG: AuthService::forgotPassword - Validation failed.");
+            return ['status' => 'error', 'message' => 'Validation failed', 'errors' => $this->validationService->getErrors()];
+        }
+
+        $user = $this->userModel->findByEmail($email);
+
+        if ($user) {
+            error_log("DEBUG: AuthService::forgotPassword - User found for email: " . $email . " User ID: " . $user['id']);
+            try {
+                $token = bin2hex(random_bytes(32));
+            } catch (Exception $e) {
+                error_log("ERROR: AuthService::forgotPassword - Failed to generate token: " . $e->getMessage());
+                return ['status' => 'error', 'message' => 'Password reset failed due to server error (token generation).'];
+            }
+            $expiresAt = date('Y-m-d H:i:s', time() + (60 * 60)); // Token valid for 1 hour
+
+            error_log("DEBUG: AuthService::forgotPassword - Generated token: " . $token . " Expiry: " . $expiresAt);
+
+            $updateResult = $this->userModel->updatePasswordResetToken($user['id'], $token, $expiresAt);
+            
+            error_log("DEBUG: AuthService::forgotPassword - updatePasswordResetToken result: " . ($updateResult ? 'true' : 'false'));
+
+            if ($updateResult) {
+                error_log("DEBUG: AuthService::forgotPassword - Token saved successfully for user ID: " . $user['id']);
+                if (!$this->mailService->sendResetPasswordEmail($email, $user['username'], $token)) {
+                    error_log("ERROR: AuthService::forgotPassword - Failed to send password reset email to {$email}. Mailer service error.");
+                } else {
+                    error_log("DEBUG: AuthService::forgotPassword - Password reset email sent successfully to {$email}.");
+                }
+            } else {
+                error_log("ERROR: AuthService::forgotPassword - Failed to save password reset token for user ID {$user['id']}.");
+            }
+        } else {
+            error_log("DEBUG: AuthService::forgotPassword - User not found for email: " . $email . ". Returning generic success message.");
+        }
+
+        // Always return a generic success message to prevent email enumeration.
+        return ['status' => 'success', 'message' => 'If your email is registered, a password reset link has been sent to your inbox.'];
+    }
+
+    /**
+     * Resets user's password using a valid token.
+     *
+     * @param string $token The password reset token from the URL/form.
+     * @param string $newPassword The new password.
+     * @param string $confirmNewPassword Confirmation of the new password.
+     * @return array Status and message.
+     */
+    public function resetPassword(string $token, string $newPassword, string $confirmNewPassword): array
+    {
+        error_log("DEBUG: AuthService::resetPassword - Attempting to reset password with token: {$token}.");
+        if (empty($token)) {
+            error_log("DEBUG: AuthService::resetPassword - Password reset token is missing.");
+            return ['status' => 'error', 'message' => 'Password reset token is missing.'];
+        }
+
+        // Validate new password input
+        $this->validationService->required($newPassword, 'new_password', 'New password is required.');
+        $this->validationService->minLength($newPassword, 'new_password', 8, 'New password must be at least 8 characters long.');
+        $this->validationService->matches($newPassword, $confirmNewPassword, 'confirm_new_password', 'New passwords do not match.');
+
+        if (!$this->validationService->passes()) {
+            error_log("DEBUG: AuthService::resetPassword - Validation failed.");
+            return ['status' => 'error', 'message' => 'Validation failed', 'errors' => $this->validationService->getErrors()];
+        }
+
+        // Find user by reset token and check expiry
+        $user = $this->userModel->findByResetToken($token);
+
+        if (!$user || empty($user['password_reset_token']) || strtotime($user['password_reset_expiry']) < time()) {
+            error_log("DEBUG: AuthService::resetPassword - Invalid or expired password reset token: {$token}.");
+            return ['status' => 'error', 'message' => 'Invalid or expired password reset token.'];
+        }
+        error_log("DEBUG: AuthService::resetPassword - User found for token: {$token}. User ID: {$user['id']}.");
+
+        // Update password and clear the token and expiry
+        $hashedPassword = $this->securityService->hashPassword($newPassword);
+        if ($this->userModel->update($user['id'], ['password_hash' => $hashedPassword])) {
+            // Clear the token and expiry after successful reset
+            $this->userModel->updatePasswordResetToken($user['id'], null, null);
+            error_log("DEBUG: AuthService::resetPassword - Password successfully reset for user ID: {$user['id']}.");
+            return ['status' => 'success', 'message' => 'Your password has been successfully reset.'];
+        }
+
+        error_log("ERROR: AuthService::resetPassword - Password reset failed for user ID: {$user['id']}.");
+        return ['status' => 'error', 'message' => 'Password reset failed. Please try again.'];
+    }
+
+    /**
+     * Check if a user is currently logged in based on session data.
+     *
+     * @return bool True if a user ID is present in the session, false otherwise.
+     */
+    public function isLoggedIn(): bool
+    {
+        $loggedIn = isset($_SESSION['user_id']);
+        // error_log("DEBUG: AuthService::isLoggedIn - User logged in: " . ($loggedIn ? 'true' : 'false')); // Keep this commented unless needed for specific debug
+        return $loggedIn;
+    }
+
+    /**
+     * Get data for the currently logged-in user from the session.
+     *
+     * @return array|null An associative array of user session data, or null if no user is logged in.
+     */
+    public function getCurrentUser(): ?array
+    {
+        if ($this->isLoggedIn()) {
+            error_log("DEBUG: AuthService::getCurrentUser - Retrieved user: " . json_encode([
+                'id' => $_SESSION['user_id'],
+                'username' => $_SESSION['username'],
+                'email' => $_SESSION['email'],
+                'role_id' => $_SESSION['role_id']
+            ]));
+            return [
+                'id' => $_SESSION['user_id'],
+                'username' => $_SESSION['username'],
+                'email' => $_SESSION['email'],
+                'role_id' => $_SESSION['role_id'],
+            ];
+        }
+        error_log("DEBUG: AuthService::getCurrentUser - No user logged in.");
+        return null;
+    }
+
+    /**
+     * Get the ID of the currently authenticated user.
+     * This is a new helper method for controllers.
+     *
+     * @return int|null The user ID or null if not authenticated.
+     */
+    public function getAuthenticatedUserId(): ?int
+    {
+        return $_SESSION['user_id'] ?? null;
+    }
+
+    /**
+     * Checks if the currently logged-in user has a specific role.
+     *
+     * @param string $roleName The name of the role (e.g., 'admin', 'customer').
+     * @return bool
+     */
+    public function hasRole(string $roleName): bool
+    {
+        error_log("DEBUG: AuthService::hasRole - Checking role '{$roleName}'.");
+        if (!$this->isLoggedIn()) {
+            error_log("DEBUG: AuthService::hasRole - User not logged in.");
+            return false;
+        }
+        $currentUser = $this->getCurrentUser();
+        if (!$currentUser) {
+            error_log("ERROR: AuthService::hasRole - Current user data not available despite being logged in.");
+            return false;
+        }
+        // Delegate role check to the User model, which can perform a join.
+        $hasRole = $this->userModel->hasRole($currentUser['id'], $roleName);
+        error_log("DEBUG: AuthService::hasRole - User ID {$currentUser['id']} has role '{$roleName}': " . ($hasRole ? 'true' : 'false'));
+        return $hasRole;
+    }
+}
+
+تمام فایل MailService.php رو هم در زیر برات قرار میدم :
+
+<?php
+namespace App\Services;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+// use PSpell\Config; // This import seems incorrect or unused. Should be removed.
+
+class MailService
+{
+    private PHPMailer $mailer;
+    private array $config;
+
+    public function __construct()
+    {
+        // Ensure ROOT_PATH is defined (e.g., in public/index.php or a bootstrap file)
+        $this->config = require ROOT_PATH . '/app/config/mail.php';
+
+        $this->mailer = new PHPMailer(true); // Passing `true` enables exceptions
+        try {
+            // Server settings
+            $this->mailer->isSMTP(); // Send using SMTP
+            $this->mailer->Host = $this->config['host']; // Set the SMTP server to send through
+            $this->mailer->SMTPAuth = true; // Enable SMTP authentication
+            $this->mailer->Username = $this->config['username']; // SMTP username
+            $this->mailer->Password = $this->config['password']; // SMTP password
+            // Use PHPMailer::ENCRYPTION_SMTPS for port 465 (SSL)
+            // Use PHPMailer::ENCRYPTION_STARTTLS for port 587 (TLS)
+            $this->mailer->SMTPSecure = $this->config['encryption'] === 'tls' ? PHPMailer::ENCRYPTION_STARTTLS : PHPMailer::ENCRYPTION_SMTPS;
+            $this->mailer->Port = (int)$this->config['port']; // TCP port to connect to
+
+            // Recipients
+            $this->mailer->setFrom($this->config['from_address'], $this->config['from_name']);
+            $this->mailer->isHTML(true); // Set email format to HTML
+            $this->mailer->CharSet = 'UTF-8';
+            // Optional: Enable SMTP debugging for troubleshooting
+            $this->mailer->SMTPDebug = 2; // Enable verbose debug output
+            $this->mailer->Debugoutput = function($str, $level) { error_log("SMTP Debug: $str"); };
+
+        } catch (Exception $e) {
+            // This catch block only handles PHPMailer configuration errors during __construct
+            error_log("Mailer configuration error: {$e->getMessage()}"); // Use $e->getMessage() for better error
+            // It's crucial to know if the mailer object is not properly initialized.
+            // You might want to throw the exception or set a flag to prevent further mail sending attempts.
+            // For now, we'll just log.
+        }
+    }
+
+    /**
+     * Sends an email.
+     *
+     * @param string $toEmail The recipient's email address.
+     * @param string $toName The recipient's name.
+     * @param string $subject The subject of the email.
+     * @param string $body HTML content of the email.
+     * @param string $altBody Plain text content for non-HTML mail clients.
+     * @return bool True on success, false on failure.
+     */
+    public function sendMail(string $toEmail, string $toName, string $subject, string $body, string $altBody = ''): bool
+    {
+        try {
+            // It's good practice to reset mailer properties before sending a new email
+            // to avoid carrying over settings from previous sends (e.g., multiple recipients).
+            $this->mailer->clearAddresses();
+            $this->mailer->clearAttachments();
+            $this->mailer->clearCustomHeaders(); // Also clear custom headers if any
+
+            $this->mailer->addAddress($toEmail, $toName);
+            $this->mailer->Subject = $subject;
+            $this->mailer->Body = $body;
+            $this->mailer->AltBody = $altBody;
+
+            $this->mailer->send();
+            return true;
+        } catch (Exception $e) {
+            // Log the specific PHPMailer error info
+            error_log("Message could not be sent to {$toEmail}. Mailer Error: {$this->mailer->ErrorInfo}. Exception: {$e->getMessage()}");
+            return false;
+        }
+    }
+
+    /**
+     * Sends an email verification link.
+     *
+     * @param string $toEmail The recipient's email address.
+     * @param string $toName The recipient's name (username).
+     * @param string $token The verification token.
+     * @return bool True on success, false on failure.
+     */
+    public function sendVerificationEmail(string $toEmail, string $toName, string $token): bool
+    {
+        $subject = APP_NAME . ' - Email Verification';
+        // The verification link will point to a frontend route that then calls the backend API.
+        $verificationLink = BASE_URL . '/public/verify-email?token=' . $token;
+
+        // Load HTML email template. Corrected path based on your structure.
+        ob_start();
+        // Ensure this path is correct: ROOT_PATH . '/views/emails/verification_email.php'
+        require ROOT_PATH . '/views/emails/verification_email.php'; 
+        $body = ob_get_clean();
+
+        // Replace placeholders in the template.
+        $body = str_replace('{{appName}}', APP_NAME, $body);
+        $body = str_replace('{{userName}}', $toName, $body);
+        $body = str_replace('{{verificationLink}}', $verificationLink, $body);
+        $body = str_replace('{{currentYear}}', date('Y'), $body);
+
+        $altBody = "Hello {$toName},\n\nPlease verify your email address by clicking on the link below:\n{$verificationLink}\n\nThank you,\n" . APP_NAME;
+        return $this->sendMail($toEmail, $toName, $subject, $body, $altBody);
+    }
+
+    /**
+     * Sends a password reset link.
+     *
+     * @param string $toEmail The recipient's email address.
+     * @param string $toName The recipient's name (username).
+     * @param string $token The password reset token.
+     * @return bool True on success, false on failure.
+     */
+    public function sendResetPasswordEmail(string $toEmail, string $toName, string $token): bool
+    {
+        $subject = APP_NAME . ' - Password Reset Request';
+        // The reset link will point to a frontend route that then calls the backend API.
+        $resetLink = BASE_URL . '/public/reset-password?token=' . $token; 
+
+        // Load HTML email template. Corrected path based on your structure.
+        ob_start();
+        // Ensure this path is correct: ROOT_PATH . '/views/emails/reset_password_email.php'
+        require ROOT_PATH . '/views/emails/reset_password_email.php'; 
+        $body = ob_get_clean();
+
+        // Replace placeholders in the template.
+        $body = str_replace('{{appName}}', APP_NAME, $body);
+        $body = str_replace('{{userName}}', $toName, $body);
+        $body = str_replace('{{resetLink}}', $resetLink, $body);
+        $body = str_replace('{{resetLinkExpiry}}', 1, $body); // Hardcoded 1 hour expiry for template placeholder
+        $body = str_replace('{{currentYear}}', date('Y'), $body);
+
+        $altBody = "Hello {$toName},\n\nYou have requested to reset your password. Please click on the link below:\n{$resetLink}\n\nIf you did not request a password reset, please ignore this email.\n\nThank you,\n" . APP_NAME;
+
+        return $this->sendMail($toEmail, $toName, $subject, $body, $altBody);
+    }
+}
+
+
+فایل AdminNewsletterController.php رو در زیر برات قرار میدم :
+
+<?php
+namespace App\Controllers\Admin;
+
+use App\Core\Controller;
+use App\Models\NewsletterSubscriber;
+use App\Services\AuthService;
+use App\Services\MailService;
+use PDOException;
+use Exception;
+
+class AdminNewsletterController extends Controller
+{
+    private AuthService $authService;
+    private NewsletterSubscriber $subscriberModel;
+    private MailService $mailService;
+
+    public function __construct()
+    {
+        $this->authService = new AuthService();
+        $this->subscriberModel = new NewsletterSubscriber();
+        $this->mailService = new MailService();
+
+        if (!$this->subscriberModel) {
+            error_log("ERROR: AdminNewsletterController - Failed to load NewsletterSubscriber model.");
+        }
+    }
+
+    /**
+     * Renders the static HTML view for managing newsletter subscribers.
+     * GET /admin/newsletter
+     */
+    public function index(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!$this->authService->isLoggedIn() || !$this->authService->hasRole('admin')) {
+            $this->redirect('/admin/login');
+            return;
+        }
+        
+        $this->renderHtmlView('frontend/admin/admin_newsletter.html');
+    }
+
+     /**
+     * Retrieves all newsletter subscribers for the admin panel.
+     * This method acts as an API endpoint.
+     * GET /api/admin/newsletter
+     */
+    public function getSubscribers(): void
+    {
+        if (!$this->authService->isLoggedIn() || !$this->authService->hasRole('admin')) {
+            $this->renderApiJson(['success' => false, 'message' => 'Unauthorized access.'], 401);
+            return;
+        }
+
+        try {
+            $subscribers = $this->subscriberModel->getAll();
+            $this->renderApiJson([
+                'success' => true,
+                'message' => 'Newsletter subscribers fetched successfully.',
+                'data' => $subscribers
+            ]);
+        }catch (PDOException $e) {
+            error_log("Database Error in getSubscribers: " . $e->getMessage());
+            $this->renderApiJson(['success' => false, 'message' => 'Database error.'], 500);
+        }catch (Exception $e) {
+            error_log("General Error in getSubscribers: " . $e->getMessage());
+            $this->renderApiJson(['success' => false, 'message' => 'An unexpected error occurred.'], 500);
+        }
+    }
+
+    /**
+     * Deletes a specific newsletter subscriber.
+     * DELETE /api/admin/newsletter/{id}
+     *
+     * @param int $id The ID of the subscriber to delete.
+     */
+    public function deleteSubscriber(int $id): void
+    {
+        if (!$this->authService->isLoggedIn() || !$this->authService->hasRole('admin')) {
+            $this->renderApiJson(['success' => false, 'message' => 'Unauthorized access.'], 401);
+            return;
+        }
+
+        try {
+            $result = $this->subscriberModel->delete($id);
+            if ($result) {
+                $this->renderApiJson(['success' => true, 'message' => 'Subscriber deleted successfully.']);
+            } else {
+                $this->renderApiJson(['success' => false, 'message' => 'Failed to delete subscriber. Subscriber not found.'], 404);
+            }
+        }catch (PDOException $e) {
+            error_log("Database Error in deleteSubscriber: " . $e->getMessage());
+            $this->renderApiJson(['success' => false, 'message' => 'Database error.'], 500);
+        }
+    }
+
+    /**
+     * Sends a group email to all active subscribers.
+     * NOTE: This is a placeholder and requires a proper email sending service.
+     * POST /api/admin/newsletter/send-email
+     */
+    public function sendGroupEmail(): void
+    {
+        if (!$this->authService->isLoggedIn() || !$this->authService->hasRole('admin')) {
+            $this->renderApiJson(['success' => false, 'message' => 'Unauthorized access.'], 401);
+            return;
+        }
+
+        $data = $this->getJsonData();
+        $subject = $data['subject'] ?? null;
+        $body = $data['body'] ?? null;
+
+        if (!$subject || !$body) {
+            $this->renderApiJson(['success' => false, 'message' => 'Subject and body are required.'], 400);
+            return;
+        }
+
+        try {
+            $subscribers = $this->subscriberModel->where(['status' => 'active']);
+    
+            if (empty($subscribers)) {
+                $this->renderApiJson(['success' => false, 'message' => 'No active subscribers to send email to.'], 404);
+                return;
+            }
+    
+            foreach ($subscribers as $subscriber) {
+                $subscriberName = $subscriber['name'] ?? '';
+                $this->mailService->sendMail(
+                    $subscriber['email'],
+                    $subscriberName,
+                    $subject,
+                    $body
+                );
+            }
+    
+            $this->renderApiJson(['success' => true, 'message' => 'Group email process started successfully.']);
+    
+        } catch (PDOException $e) {
+            error_log("Database Error in sendGroupEmail: " . $e->getMessage());
+            $this->renderApiJson(['success' => false, 'message' => 'Database error.'], 500);
+        } catch (Exception $e) {
+            error_log("General Error in sendGroupEmail: " . $e->getMessage());
+            $this->renderApiJson(['success' => false, 'message' => 'An unexpected error occurred.'], 500);
+        }
+    }
+}
+
+
+برات در زیر فایل کامل admin_api.php رو قرار میدم : 
+
+<?php
+use App\Core\Router;
+use App\Controllers\Admin\AdminAuthController;
+use App\Controllers\Admin\AdminDashboardController;
+use App\Controllers\Admin\AdminUserController;
+use App\Controllers\Admin\AdminProductController;
+use App\Controllers\Admin\AdminCategoryController;
+use App\Controllers\Admin\AdminPlatformController;
+use App\Controllers\Admin\AdminPublisherController;
+use App\Controllers\Admin\AdminDeveloperController;
+use App\Controllers\Admin\AdminTagController;
+use App\Controllers\Admin\AdminOrderController;
+use App\Controllers\Admin\AdminCouponController;
+use App\Controllers\Admin\AdminReviewController;
+use App\Controllers\Admin\AdminContactMessageController;
+use App\Controllers\Admin\AdminNewsletterController;
+use App\Controllers\Admin\AdminBannerController;
+use App\Controllers\Admin\AdminPageController;
+use App\Middlewares\AdminMiddleware;
+use App\Middlewares\CsrfMiddleware;
+
+// --- Admin Authentication Routes ---
+// These routes are public for the admin panel and do not require AdminMiddleware
+$router->post('/api/admin/auth/login', [AdminAuthController::class, 'login'], [CsrfMiddleware::class]);
+
+// All following routes require authentication (AdminMiddleware)
+// The CsrfMiddleware is applied globally to this group
+$router->group('/api/admin', function(Router $router) {
+    // Admin Auth Routes
+    $router->post('/auth/logout', [AdminAuthController::class, 'logout']);
+    
+    // Admin Dashboard Routes
+    $router->get('/dashboard/stats', [AdminDashboardController::class, 'getDashboardStats']);
+    
+    // Admin User Management Routes (CRUD)
+    $router->get('/users', [AdminUserController::class, 'getUsers']);
+    $router->get('/users/{id}', [AdminUserController::class, 'getUser']);
+    $router->post('/users', [AdminUserController::class, 'createUser']);
+    $router->put('/users/{id}', [AdminUserController::class, 'updateUser']);
+    $router->delete('/users/{id}', [AdminUserController::class, 'deleteUser']);
+    
+    // Route for fetching user roles
+    $router->get('/roles', [AdminUserController::class, 'getRoles']);
+    
+    // --- Admin Product Management Routes (CRUD) ---
+    $router->get('/products', [AdminProductController::class, 'indexApi']);
+    $router->get('/products/form-data', [AdminProductController::class, 'getFormData']); // Added this route
+    $router->get('/products/{id}', [AdminProductController::class, 'show']);
+    $router->post('/products', [AdminProductController::class, 'store']);
+    $router->put('/products/{id}', [AdminProductController::class, 'update']);
+    $router->post('/products/{id}', [AdminProductController::class, 'update']);
+    $router->delete('/products/{id}', [AdminProductController::class, 'destroy']);
+    
+   // --- Admin Category Management Routes (CRUD) ---
+    $router->get('/categories', [AdminCategoryController::class, 'indexApi']);
+    $router->get('/categories/top-level', [AdminCategoryController::class, 'getTopLevel']);
+    $router->get('/categories/{id}', [AdminCategoryController::class, 'show']);
+    $router->post('/categories', [AdminCategoryController::class, 'store'], ['enctype' => 'multipart/form-data']);
+    $router->put('/categories/{id}', [AdminCategoryController::class, 'update'], ['enctype' => 'multipart/form-data']);
+    $router->post('/categories/{id}', [AdminCategoryController::class, 'update'], ['enctype' => 'multipart/form-data']);
+    $router->delete('/categories/{id}', [AdminCategoryController::class, 'destroy']);
+    
+    // --- Admin Platform Management Routes (CRUD) ---
+    $router->get('/platforms', [AdminPlatformController::class, 'indexApi']);
+    $router->get('/platforms/{id}', [AdminPlatformController::class, 'show']);
+    $router->post('/platforms', [AdminPlatformController::class, 'store']);
+    $router->put('/platforms/{id}', [AdminPlatformController::class, 'update']);
+    $router->post('/platforms/{id}', [AdminPlatformController::class, 'update']);
+    $router->delete('/platforms/{id}', [AdminPlatformController::class, 'destroy']);
+    
+    // --- Admin Publisher Management Routes (CRUD) ---
+    $router->get('/publishers/search', [AdminPublisherController::class, 'search']);
+    $router->get('/publishers', [AdminPublisherController::class, 'indexApi']);
+    $router->get('/publishers/{id}', [AdminPublisherController::class, 'show']);
+    $router->post('/publishers', [AdminPublisherController::class, 'store']);
+    $router->put('/publishers/{id}', [AdminPublisherController::class, 'update']);
+    $router->post('/publishers/{id}', [AdminPublisherController::class, 'update']);
+    $router->delete('/publishers/{id}', [AdminPublisherController::class, 'destroy']);
+    
+    // --- Admin Developer Management Routes (CRUD) ---
+    $router->get('/developers/search', [AdminDeveloperController::class, 'search']);
+    $router->get('/developers', [AdminDeveloperController::class, 'indexApi']);
+    $router->get('/developers/{id}', [AdminDeveloperController::class, 'show']);
+    $router->post('/developers', [AdminDeveloperController::class, 'store']);
+    $router->put('/developers/{id}', [AdminDeveloperController::class, 'update']);
+    $router->post('/developers/{id}', [AdminDeveloperController::class, 'update']);
+    $router->delete('/developers/{id}', [AdminDeveloperController::class, 'destroy']);
+    
+    // --- Admin Tag Management Routes (CRUD) ---
+    $router->get('/tags', [AdminTagController::class, 'indexApi']);
+    $router->get('/tags/{id}', [AdminTagController::class, 'show']);
+    $router->post('/tags', [AdminTagController::class, 'store']);
+    $router->put('/tags/{id}', [AdminTagController::class, 'update']);
+    $router->post('/tags/{id}', [AdminTagController::class, 'update']);
+    $router->delete('/tags/{id}', [AdminTagController::class, 'destroy']);
+    
+    // --- Admin Order Management Routes ---
+    $router->get('/orders', [AdminOrderController::class, 'indexApi']);
+    $router->get('/orders/{id}', [AdminOrderController::class, 'show']);
+    $router->put('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
+    $router->put('/orders/{id}/payment-status', [AdminOrderController::class, 'updatePaymentStatus']);
+    $router->post('/orders/item/{itemId}/key', [AdminOrderController::class, 'assignKey']);
+    $router->get('/orders/{id}/status-history', [AdminOrderController::class, 'getStatusHistory']);
+    
+    // --- Admin Coupon Management Routes (CRUD) ---
+    $router->get('/coupons', [AdminCouponController::class, 'indexApi']);
+    $router->get('/coupons/{id}', [AdminCouponController::class, 'show']);
+    $router->post('/coupons', [AdminCouponController::class, 'store']);
+    $router->put('/coupons/{id}', [AdminCouponController::class, 'update']);
+    $router->post('/coupons/{id}', [AdminCouponController::class, 'update']);
+    $router->delete('/coupons/{id}', [AdminCouponController::class, 'destroy']);
+    
+    // --- Admin Review Management Routes ---
+    $router->get('/reviews', [AdminReviewController::class, 'indexApi']);
+    $router->get('/reviews/statistics', [AdminReviewController::class, 'statistics']);
+    $router->get('/reviews/{id}', [AdminReviewController::class, 'show']);
+    $router->get('/reviews/{id}/replies', [AdminReviewController::class, 'getReplies']);
+    $router->post('/reviews/{id}/approve', [AdminReviewController::class, 'approve']);
+    $router->post('/reviews/{id}/reject', [AdminReviewController::class, 'reject']);
+    $router->post('/reviews/{id}/reply', [AdminReviewController::class, 'reply']);
+    $router->delete('/reviews/{id}', [AdminReviewController::class, 'destroy']);
+    
+    // --- Admin Contact Messages Routes ---
+    $router->get('/messages', [AdminContactMessageController::class, 'index']); // Renders the HTML page
+    $router->get('/messages/data', [AdminContactMessageController::class, 'getMessages']); // Fetches message data via AJAX
+    $router->post('/messages/{id}/mark-read', [AdminContactMessageController::class, 'markAsRead']);
+    $router->delete('/messages/{id}', [AdminContactMessageController::class, 'deleteMessage']);
+    
+    // --- Admin Newsletter Routes ---
+    $router->get('/newsletter', [AdminNewsletterController::class, 'index']); // Renders the HTML page
+    $router->get('/newsletter/data', [AdminNewsletterController::class, 'getSubscribers']); // Fetches subscriber data via AJAX
+    $router->delete('/newsletter/{id}', [AdminNewsletterController::class, 'deleteSubscriber']);
+    $router->post('/newsletter/send-email', [AdminNewsletterController::class, 'sendGroupEmail']);
+    
+    // --- Admin Banner Routes ---
+    $router->get('/banners', [AdminBannerController::class, 'index']);
+    $router->get('/banners/data', [AdminBannerController::class, 'getBanners']);
+    $router->get('/banners/{id}', [AdminBannerController::class, 'getBanner']);
+    $router->post('/banners', [AdminBannerController::class, 'createBanner'], ['enctype' => 'multipart/form-data']);
+    $router->put('/banners/{id}', [AdminBannerController::class, 'updateBanner'], ['enctype' => 'multipart/form-data']);
+    $router->post('/banners/{id}', [AdminBannerController::class, 'updateBanner'], ['enctype' => 'multipart/form-data']);
+    $router->delete('/banners/{id}', [AdminBannerController::class, 'deleteBanner']);
+    
+     // --- Admin Page Routes ---
+    $router->get('/pages', [AdminPageController::class, 'index']);
+    $router->get('/pages/data', [AdminPageController::class, 'getPages']);
+    $router->get('/pages/{id}', [AdminPageController::class, 'getPage']);
+    $router->post('/pages', [AdminPageController::class, 'createPage'], ['enctype' => 'multipart/form-data']);
+    $router->put('/pages/{id}', [AdminPageController::class, 'updatePage'], ['enctype' => 'multipart/form-data']);
+    $router->post('/pages/{id}', [AdminPageController::class, 'updatePage'], ['enctype' => 'multipart/form-data']);
+    $router->delete('/pages/{id}', [AdminPageController::class, 'deletePage']);
+    
+    // --- Admin Menu Routes ---
+    $router->get('/menus', [AdminPageController::class, 'getMenus']);
+    $router->post('/menus', [AdminPageController::class, 'createMenu']);
+    $router->put('/menus/{id}', [AdminPageController::class, 'updateMenu']);
+    $router->post('/menus/{id}', [AdminPageController::class, 'updateMenu']);
+    $router->delete('/menus/{id}', [AdminPageController::class, 'deleteMenu']);
+}, [AdminMiddleware::class]);
+
+
+تمامی فایل های بک اند رو قرار دادم 
+
+حالا در زیر برات مسیر کامل پروژه رو قرار میدم : 
+
+Lugxwebsite/
+├── .env
+├── .htaccess
+├── composer.json
+├── composer.lock
+├── db.sql
+├── app/
+│   ├── config/
+│   │   ├── constants.php
+│   │   ├── database.php
+│   │   └── mail.php
+│   ├── controllers/
+│   │   ├── FrontendController.php
+│   │   ├── admin/
+│   │   │   ├── AdminAuthController.php
+│   │   │   ├── AdminBannerController.php
+│   │   │   ├── AdminCategoryController.php
+│   │   │   ├── AdminContactMessageController.php
+│   │   │   ├── AdminCouponController.php
+│   │   │   ├── AdminDashboardController.php
+│   │   │   ├── AdminDeveloperController.php
+│   │   │   ├── AdminNewsletterController.php
+│   │   │   ├── AdminOrderController.php
+│   │   │   ├── AdminPageController.php
+│   │   │   ├── AdminPlatformController.php
+│   │   │   ├── AdminProductController.php
+│   │   │   ├── AdminPublisherController.php
+│   │   │   ├── AdminReportController.php
+│   │   │   ├── AdminReviewController.php
+│   │   │   ├── AdminSettingsController.php
+│   │   │   ├── AdminTagController.php
+│   │   │   └── AdminUserController.php
+│   │   └── api/
+│   │       ├── AuthController.php
+│   │       ├── CartController.php
+│   │       ├── CategoryController.php
+│   │       ├── ContactController.php
+│   │       ├── DeveloperController.php
+│   │       ├── FeatureController.php
+│   │       ├── NewsletterController.php
+│   │       ├── OrderController.php
+│   │       ├── PlatformController.php
+│   │       ├── ProductController.php
+│   │       ├── PublisherController.php
+│   │       ├── ReviewController.php
+│   │       ├── TagController.php
+│   │       ├── UserController.php
+│   │       └── WishlistController.php
+│   ├── core/
+│   │   ├── App.php
+│   │   ├── Controller.php
+│   │   ├── Database.php
+│   │   ├── Model.php
+│   │   └── Router.php
+│   ├── middlewares/
+│   │   ├── AdminMiddleware.php
+│   │   ├── AuthMiddleware.php
+│   │   ├── CsrfMiddleware.php
+│   │   └── GuestMiddleware.php
+│   ├── models/
+│   │   ├── ActivityLog.php
+│   │   ├── Banner.php
+│   │   ├── Cart.php
+│   │   ├── Category.php
+│   │   ├── ContactMessage.php
+│   │   ├── Coupon.php
+│   │   ├── DailySalesStat.php
+│   │   ├── Developer.php
+│   │   ├── EmailCampaign.php
+│   │   ├── Menu.php
+│   │   ├── NewsletterSubscriber.php
+│   │   ├── Order.php
+│   │   ├── OrderItem.php
+│   │   ├── OrderStatusHistory.php
+│   │   ├── Page.php
+│   │   ├── PageView.php
+│   │   ├── Platform.php
+│   │   ├── PriceHistory.php
+│   │   ├── Product.php
+│   │   ├── ProductCategory.php
+│   │   ├── ProductKey.php
+│   │   ├── ProductPlatform.php
+│   │   ├── ProductReview.php
+│   │   ├── ProductTag.php
+│   │   ├── Publisher.php
+│   │   ├── RelatedProduct.php
+│   │   ├── ReviewHelpfulness.php
+│   │   ├── ReviewReply.php
+│   │   ├── SiteSetting.php
+│   │   ├── Tag.php
+│   │   ├── User.php
+│   │   ├── UserAddress.php
+│   │   ├── UserRole.php
+│   │   ├── UserSession.php
+│   │   └── Wishlist.php
+│   ├── routes/
+│   │   ├── admin_api.php
+│   │   └── api.php
+│   └── services/
+│       ├── AuthService.php
+│       ├── CartService.php
+│       ├── ContactService.php
+│       ├── MailService.php
+│       ├── OrderService.php
+│       ├── SecurityService.php
+│       ├── UploadService.php
+│       └── ValidationService.php
+├── logs/
+│   ├── error.log
+│   └── php_error_log.log
+├── public/
+│   ├── .htaccess
+│   ├── index.php
+│   ├── test_json.php
+│   ├── test_log.php
+│   ├── assets/
+│   │   ├── css/
+│   │   │   ├── admin_responsive.css
+│   │   │   ├── admin_style.css
+│   │   │   ├── auth.css
+│   │   │   ├── responsive.css
+│   │   │   ├── style.css
+│   │   │   ├── user_responsive.css
+│   │   │   └── user_style.css
+│   │   ├── img/
+│   │   │   ├── action_cat.png.jpg
+│   │   │   ├── acv_featured.jpg.jpg
+│   │   │   ├── banner-bg.jpg
+│   │   │   ├── banner-image.jpg
+│   │   │   ├── caption-dec.png
+│   │   │   ├── categories-01.jpg
+│   │   │   ├── categories-03.jpg
+│   │   │   ├── categories-04.jpg
+│   │   │   ├── categories-05.jpg
+│   │   │   ├── cta-bg.jpg
+│   │   │   ├── featured-01.png
+│   │   │   ├── featured-02.png
+│   │   │   ├── featured-03.png
+│   │   │   ├── featured-04.png
+│   │   │   ├── footer-bg.jpg
+│   │   │   ├── gtav_featured.jpg.jpg
+│   │   │   ├── logo.png
+│   │   │   ├── page-heading-bg.jpg
+│   │   │   ├── single-game.jpg
+│   │   │   ├── top-game-02.jpg
+│   │   │   ├── top-game-03.jpg
+│   │   │   ├── top-game-04.jpg
+│   │   │   ├── top-game-05.jpg
+│   │   │   ├── top-game-06.jpg
+│   │   │   ├── trending-02.jpg
+│   │   │   ├── trending-03.jpg
+│   │   │   └── trending-04.jpg
+│   │   ├── js/
+│   │   │   ├── auth.js
+│   │   │   ├── carousel.js
+│   │   │   ├── cart.js
+│   │   │   ├── checkout.js
+│   │   │   ├── contact.js
+│   │   │   ├── index_page.js
+│   │   │   ├── main.js
+│   │   │   ├── newsletter.js
+│   │   │   ├── order.js
+│   │   │   ├── product.js
+│   │   │   ├── product_detail.js
+│   │   │   ├── review.js
+│   │   │   ├── user_addresses.js
+│   │   │   ├── user_dashboard.js
+│   │   │   ├── user_game_library.js
+│   │   │   ├── user_order_detail.js
+│   │   │   ├── user_profile.js
+│   │   │   └── wishlist.js
+│   │   │   └── admin/
+│   │   │       ├── admin_auth.js
+│   │   │       ├── admin_banners.js
+│   │   │       ├── admin_categories.js
+│   │   │       ├── admin_coupons.js
+│   │   │       ├── admin_dashboard.js
+│   │   │       ├── admin_main.js
+│   │   │       ├── admin_messages.js
+│   │   │       ├── admin_newsletter.js
+│   │   │       ├── admin_order_detail.js
+│   │   │       ├── admin_orders.js
+│   │   │       ├── admin_pages.js
+│   │   │       ├── admin_products.js
+│   │   │       ├── admin_reviews.js
+│   │   │       └── admin_users.js
+│   │   └── uploads/
+│   │       └── action_cat.png.jpg
+│   ├── frontend/
+│   │   ├── 404.html
+│   │   ├── about.html
+│   │   ├── cart.html
+│   │   ├── checkout.html
+│   │   ├── contact.html
+│   │   ├── forgot_password.html
+│   │   ├── index.html
+│   │   ├── login.html
+│   │   ├── privacy_policy.html
+│   │   ├── product_detail.html
+│   │   ├── register.html
+│   │   ├── reset_password.html
+│   │   ├── shop.html
+│   │   ├── terms_conditions.html
+│   │   ├── user_addresses.html
+│   │   ├── user_dashboard.html
+│   │   ├── user_game_library.html
+│   │   ├── user_order_detail.html
+│   │   ├── user_orders.html
+│   │   ├── user_profile.html
+│   │   └── wishlist.html
+│   │   └── admin/
+│   │       ├── admin_banners.html
+│   │       ├── admin_categories.html
+│   │       ├── admin_coupons.html
+│   │       ├── admin_dashboard.html
+│   │       ├── admin_login.html
+│   │       ├── admin_messages.html
+│   │       ├── admin_newsletter.html
+│   │       ├── admin_order_detail.html
+│   │       ├── admin_orders.html
+│   │       ├── admin_pages.html
+│   │       ├── admin_product_add_edit.html
+│   │       ├── admin_products.html
+│   │       ├── admin_reviews.html
+│   │       ├── admin_settings.html
+│   │       └── admin_users.html
+│   └── uploads/
+│       └── products/
+│
+└── views/
+    ├── emails/
+    │   ├── reset_password_email.php
+    │   └── verification_email.php
+    ├── errors/
+    │   ├── 403.php
+    │   ├── 404.php
+    │   └── 500.php
+    └── layout/
+        ├── footer.php
+        └── header.php
+
+خیلی خب تمام اطلاعات رو در اختیارت قرار دادم حالا بهم کد کامل و درست و امن که ارتباط کامل و درست بین دیتابیس و کدهای بک اند برقرار باشه برای پیاده سازی newsletter رو برام قرار بده و فعلا نیازی نیست که کد فرانت اندی تحویل من بدی به هیج عنوان . فقط منتظر دستورات من باش

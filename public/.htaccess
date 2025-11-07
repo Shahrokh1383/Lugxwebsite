@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Set RewriteBase to the public directory within your project.
+    # For http://localhost/Lugxwebsite/public/, RewriteBase should be /Lugxwebsite/public/
+    RewriteBase /Lugxwebsite/public/
+
+    # If the requested file or directory does not exist,
+    # rewrite the request to index.php.
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

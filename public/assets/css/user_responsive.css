@@ -1,0 +1,251 @@
+/* User Dashboard and Profile specific responsive styles */
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .user-dashboard-bg .container .row {
+        flex-direction: column; /* Stack sidebar and content vertically */
+    }
+
+    aside.col-md-3 {
+        width: 100%; /* Full width for sidebar */
+        margin-bottom: var(--spacing-md); /* Add space below sidebar */
+    }
+
+    section.col-md-9 {
+        width: 100%; /* Full width for content */
+    }
+
+    .card-body {
+        padding: var(--spacing-md) !important; /* Adjust padding */
+    }
+
+    .card-title.fs-3 {
+        font-size: 1.75rem !important; /* Adjust font size */
+    }
+
+    .card-text.fs-5 {
+        font-size: 1.25rem !important;
+    }
+
+    /* Address card adjustments */
+    .address-card .address-actions {
+        position: static; /* Remove absolute positioning */
+        margin-top: var(--spacing-sm);
+        justify-content: center; /* Center buttons */
+    }
+    .address-card .default-badge {
+        position: static; /* Remove absolute positioning */
+        margin-top: var(--spacing-sm);
+        display: block; /* Make it a block element */
+        text-align: center;
+    }
+    .address-card .address-details {
+        margin-top: var(--spacing-md); /* Adjust margin */
+        text-align: center;
+    }
+
+    /* Modal adjustments */
+    .modal-body {
+        padding: var(--spacing-md) !important;
+    }
+
+    /* NEW: Responsive adjustments for cart table on extra small devices */
+    #cart-items-container table {
+        display: block;
+        width: 100%;
+        /* overflow-x: auto; /* Removed as flexbox handles wrapping */
+        white-space: normal; /* Allow text wrapping */
+    }
+    #cart-items-container thead {
+        display: none; /* Hide table header on small screens */
+    }
+    #cart-items-container tbody, #cart-items-container tr {
+        display: block;
+        width: 100%;
+    }
+    #cart-items-container tbody tr {
+        margin-bottom: var(--spacing-md);
+        display: flex;
+        flex-wrap: wrap; /* Allow items to wrap */
+        align-items: center;
+        padding: var(--spacing-md);
+        box-shadow: var(--box-shadow); /* Ensure shadow is visible */
+        border-radius: var(--border-radius-md); /* Ensure rounded corners */
+    }
+    #cart-items-container tbody td {
+        border: none !important;
+        position: relative;
+        padding-left: 0; /* Reset padding-left */
+        text-align: left; /* Default text alignment */
+        width: 100%; /* Take full width */
+        display: flex;
+        justify-content: space-between; /* Space out label and value */
+        align-items: center;
+        padding: var(--spacing-xs) 0; /* Adjust padding for mobile cells */
+    }
+    #cart-items-container tbody td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--dark-gray);
+        flex-shrink: 0; /* Prevent label from shrinking */
+        margin-right: var(--spacing-sm); /* Space between label and value */
+    }
+    #cart-items-container tbody td:first-child {
+        display: flex;
+        flex-direction: column; /* Stack image/title vertically */
+        align-items: flex-start;
+        width: 100%;
+        padding-left: 0;
+        padding-top: 0;
+    }
+    #cart-items-container tbody td:first-child:before {
+        content: ''; /* Remove label for product column */
+        display: none;
+    }
+    #cart-items-container tbody td:last-child {
+        text-align: center;
+        width: 100%;
+        justify-content: center;
+        padding-bottom: 0; /* Remove extra padding at bottom */
+    }
+    .quantity-input-group {
+        width: 100% !important; /* Full width for quantity control */
+        max-width: 150px; /* Max width to keep it neat */
+        margin: 0 auto; /* Center the quantity input */
+    }
+    .quantity-input-group .form-control {
+        flex-grow: 1; /* Allow input to grow */
+    }
+    .navbar .nav-links .dropdown-menu {
+        margin-right: 200px;
+    }
+}
+
+/* Small devices (phones, 576px to 767px) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .user-dashboard-bg .container .row {
+        flex-direction: column; /* Stack sidebar and content vertically */
+    }
+
+    aside.col-md-3 {
+        width: 100%; /* Full width for sidebar */
+        margin-bottom: var(--spacing-md);
+    }
+
+    section.col-md-9 {
+        width: 100%; /* Full width for content */
+    }
+
+    /* Address card adjustments */
+    .address-card .address-actions {
+        position: static;
+        margin-top: var(--spacing-sm);
+        justify-content: center;
+    }
+    .address-card .default-badge {
+        position: static;
+        margin-top: var(--spacing-sm);
+        display: block;
+        text-align: center;
+    }
+    .address-card .address-details {
+        margin-top: var(--spacing-md);
+        text-align: center;
+    }
+
+    /* NEW: Responsive adjustments for cart table on small devices */
+    #cart-items-container table {
+        display: block;
+        width: 100%;
+        white-space: normal;
+    }
+    #cart-items-container thead {
+        display: none;
+    }
+    #cart-items-container tbody, #cart-items-container tr {
+        display: block;
+        width: 100%;
+    }
+    #cart-items-container tbody tr {
+        margin-bottom: var(--spacing-md);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: var(--spacing-md);
+        box-shadow: var(--box-shadow);
+        border-radius: var(--border-radius-md);
+    }
+    #cart-items-container tbody td {
+        border: none !important;
+        position: relative;
+        padding-left: 0;
+        text-align: left;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-xs) 0;
+    }
+    #cart-items-container tbody td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--dark-gray);
+        flex-shrink: 0;
+        margin-right: var(--spacing-sm);
+    }
+    #cart-items-container tbody td:first-child {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        padding-left: 0;
+        padding-top: 0;
+    }
+    #cart-items-container tbody td:first-child:before {
+        content: '';
+        display: none;
+    }
+    #cart-items-container tbody td:last-child {
+        text-align: center;
+        width: 100%;
+        justify-content: center;
+        padding-bottom: 0;
+    }
+    .quantity-input-group {
+        width: 100% !important;
+        max-width: 150px;
+        margin: 0 auto;
+    }
+    .quantity-input-group .form-control {
+        flex-grow: 1;
+    }
+    .navbar .nav-links .dropdown-menu {
+        margin-right: 200px;
+    }
+}
+
+/* Medium devices (tablets, 768px to 991px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    aside.col-md-3 {
+        width: 30%; /* Adjust sidebar width for tablets */
+    }
+
+    section.col-md-9 {
+        width: 70%; /* Adjust content width for tablets */
+    }
+
+    .card-body {
+        padding: var(--spacing-lg) !important; /* Slightly more padding */
+    }
+
+    .card-title.fs-3 {
+        font-size: 2rem !important;
+    }
+
+    .card-text.fs-5 {
+        font-size: 1.35rem !important;
+    }
+    .navbar .nav-links .dropdown-menu {
+        margin-right: 200px;
+    }
+}

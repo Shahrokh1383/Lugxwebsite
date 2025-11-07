@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Lugx Gaming</title>
+    <link rel="icon" href="../assets/img/logo.png" type="image/x-icon">
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="../assets/css/user_style.css"> <!-- Reusing user dashboard styles -->
+    <link rel="stylesheet" href="../assets/css/user_responsive.css">
+</head>
+<body>
+
+    <!-- Header/Navbar - Replicated from index.html -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">
+                    <img src="../assets/img/logo.png" alt="Lugx Logo">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li class="cart-icon-container">
+                        <a href="./cart.html" class="cart-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-item-count" class="badge bg-danger rounded-pill">0</span>
+                        </a>
+                    </li>
+                    <li id="auth-links-container"> 
+                        <!-- This content will be dynamically updated by auth.js/main.js -->
+                        <a href="./login.html" id="auth-link" class="btn-primary">Sign In</a>
+                    </li> 
+                </ul>
+                <div class="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>        
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container-fluid py-5 user-dashboard-bg flex-grow-1">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Checkout Sections -->
+                <section class="col-12">
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <div class="card-body p-4">
+                            <h1 class="card-title fs-3 fw-bold text-dark-gray mb-4">Checkout</h1>
+                            <div id="message-container" class="mb-4"></div>
+
+                            <form id="checkoutForm">
+                                <!-- Order Summary Section -->
+                                <div class="mb-5">
+                                    <h2 class="fs-4 fw-bold text-dark-gray mb-3">Order Summary</h2>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Quantity</th>
+                                                    <th scope="col">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="checkout-cart-items">
+                                                <!-- Cart items will be loaded here by checkout.js -->
+                                                <tr>
+                                                    <td colspan="4" class="text-center text-medium-gray py-4">Loading cart summary...</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <div class="col-md-4">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Subtotal: <span id="checkout-subtotal" class="fw-bold">$0.00</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Discount: <span id="checkout-discount" class="fw-bold text-danger">-$0.00</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Tax: <span id="checkout-tax" class="fw-bold">$0.00</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Shipping: <span id="checkout-shipping" class="fw-bold">$0.00</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center fs-5 fw-bold text-primary-blue">
+                                                    Total: <span id="checkout-total">$0.00</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Coupon Code Section -->
+                                <div class="mb-5 p-4 bg-light rounded-3 shadow-sm">
+                                    <h2 class="fs-5 fw-bold text-dark-gray mb-3">Apply Coupon</h2>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" id="coupon-code-input" placeholder="Enter coupon code">
+                                        <button class="btn btn-primary" type="button" id="apply-coupon-btn">Apply Coupon</button>
+                                    </div>
+                                    <div id="coupon-message" class="text-info small"></div>
+                                </div>
+
+
+                                <!-- Shipping Address Section -->
+                                <div class="mb-5">
+                                    <h2 class="fs-4 fw-bold text-dark-gray mb-3">Shipping Address</h2>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="use-saved-shipping-address" checked>
+                                        <label class="form-check-label" for="use-saved-shipping-address">
+                                            Use a saved address
+                                        </label>
+                                    </div>
+                                    <div id="saved-shipping-addresses-container" class="mb-4">
+                                        <!-- Saved addresses will be loaded here by checkout.js -->
+                                        <p class="text-medium-gray">Loading saved addresses...</p>
+                                    </div>
+
+                                    <div id="new-shipping-address-form" class="card p-4 shadow-sm d-none">
+                                        <h3 class="fs-5 fw-bold text-dark-gray mb-3">New Shipping Address</h3>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="shipping_first_name" class="form-label">First Name</label>
+                                                <input type="text" class="form-control" id="shipping_first_name" name="shipping_first_name" required>
+                                                <div class="error-message" id="shipping_first_name-error"></div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="shipping_last_name" class="form-label">Last Name</label>
+                                                <input type="text" class="form-control" id="shipping_last_name" name="shipping_last_name" required>
+                                                <div class="error-message" id="shipping_last_name-error"></div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="shipping_address_line1" class="form-label">Address Line 1</label>
+                                                <input type="text" class="form-control" id="shipping_address_line1" name="shipping_address_line1" placeholder="1234 Main St" required>
+                                                <div class="error-message" id="shipping_address_line1-error"></div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="shipping_address_line2" class="form-label">Address Line 2 (Optional)</label>
+                                                <input type="text" class="form-control" id="shipping_address_line2" name="shipping_address_line2" placeholder="Apartment, studio, or floor">
+                                                <div class="error-message" id="shipping_address_line2-error"></div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="shipping_city" class="form-label">City</label>
+                                                <input type="text" class="form-control" id="shipping_city" name="shipping_city" required>
+                                                <div class="error-message" id="shipping_city-error"></div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="shipping_state" class="form-label">State/Province</label>
+                                                <input type="text" class="form-control" id="shipping_state" name="shipping_state" required>
+                                                <div class="error-message" id="shipping_state-error"></div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="shipping_zip_code" class="form-label">Zip</label>
+                                                <input type="text" class="form-control" id="shipping_zip_code" name="shipping_zip_code" required>
+                                                <div class="error-message" id="shipping_zip_code-error"></div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="shipping_country" class="form-label">Country</label>
+                                                <input type="text" class="form-control" id="shipping_country" name="shipping_country" required>
+                                                <div class="error-message" id="shipping_country-error"></div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="shipping_phone" class="form-label">Phone (Optional)</label>
+                                                <input type="text" class="form-control" id="shipping_phone" name="shipping_phone">
+                                                <div class="error-message" id="shipping_phone-error"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Billing Address Section -->
+                                <div class="mb-5">
+                                    <h2 class="fs-4 fw-bold text-dark-gray mb-3">Billing Address</h2>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="same-as-shipping" checked>
+                                        <label class="form-check-label" for="same-as-shipping">
+                                            Same as shipping address
+                                        </label>
+                                    </div>
+                                    <div id="billing-address-container">
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="use-saved-billing-address" checked>
+                                            <label class="form-check-label" for="use-saved-billing-address">
+                                                Use a saved address
+                                            </label>
+                                        </div>
+                                        <div id="saved-billing-addresses-container" class="mb-4">
+                                            <!-- Saved addresses will be loaded here by checkout.js -->
+                                            <p class="text-medium-gray">Loading saved addresses...</p>
+                                        </div>
+
+                                        <div id="new-billing-address-form" class="card p-4 shadow-sm d-none">
+                                            <h3 class="fs-5 fw-bold text-dark-gray mb-3">New Billing Address</h3>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label for="billing_first_name" class="form-label">First Name</label>
+                                                    <input type="text" class="form-control" id="billing_first_name" name="billing_first_name" required>
+                                                    <div class="error-message" id="billing_first_name-error"></div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="billing_last_name" class="form-label">Last Name</label>
+                                                    <input type="text" class="form-control" id="billing_last_name" name="billing_last_name" required>
+                                                    <div class="error-message" id="billing_last_name-error"></div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="billing_address_line1" class="form-label">Address Line 1</label>
+                                                    <input type="text" class="form-control" id="billing_address_line1" name="billing_address_line1" placeholder="1234 Main St" required>
+                                                    <div class="error-message" id="billing_address_line1-error"></div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="billing_address_line2" class="form-label">Address Line 2 (Optional)</label>
+                                                    <input type="text" class="form-control" id="billing_address_line2" name="billing_address_line2" placeholder="Apartment, studio, or floor">
+                                                    <div class="error-message" id="billing_address_line2-error"></div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="billing_city" class="form-label">City</label>
+                                                    <input type="text" class="form-control" id="billing_city" name="billing_city" required>
+                                                    <div class="error-message" id="billing_city-error"></div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="billing_state" class="form-label">State/Province</label>
+                                                    <input type="text" class="form-control" id="billing_state" name="billing_state" required>
+                                                    <div class="error-message" id="billing_state-error"></div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="billing_zip_code" class="form-label">Zip</label>
+                                                    <input type="text" class="form-control" id="billing_zip_code" name="billing_zip_code" required>
+                                                    <div class="error-message" id="billing_zip_code-error"></div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="billing_country" class="form-label">Country</label>
+                                                    <input type="text" class="form-control" id="billing_country" name="billing_country" required>
+                                                    <div class="error-message" id="billing_country-error"></div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="billing_phone" class="form-label">Phone (Optional)</label>
+                                                    <input type="text" class="form-control" id="billing_phone" name="billing_phone">
+                                                    <div class="error-message" id="billing_phone-error"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Method Section -->
+                                <div class="mb-5">
+                                    <h2 class="fs-4 fw-bold text-dark-gray mb-3">Payment Method</h2>
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_credit_card" value="credit_card" checked>
+                                            <label class="form-check-label" for="payment_credit_card">
+                                                Credit Card
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_paypal" value="paypal">
+                                            <label class="form-check-label" for="payment_paypal">
+                                                PayPal
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_bank_transfer" value="bank_transfer">
+                                            <label class="form-check-label" for="payment_bank_transfer">
+                                                Bank Transfer
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_crypto" value="crypto">
+                                            <label class="form-check-label" for="payment_crypto">
+                                                Cryptocurrency
+                                            </label>
+                                        </div>
+                                        <div class="error-message" id="payment_method-error"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Notes Section -->
+                                <div class="mb-5">
+                                    <h2 class="fs-4 fw-bold text-dark-gray mb-3">Order Notes (Optional)</h2>
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="order_notes" name="order_notes" rows="3" placeholder="Any special instructions or notes for your order..."></textarea>
+                                        <div class="error-message" id="order_notes-error"></div>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" id="place-order-btn" class="btn btn-primary btn-lg full-width">Place Order</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="custom-footer text-white py-3 mt-auto shadow-inner">
+        <div class="container text-center small">
+            <p class="mb-0">&copy; <span id="current-year-footer"></span> Lugx Gaming. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 JS (Bundle includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Main JavaScript file (must be loaded first for common functions) -->
+    <script src="../assets/js/main.js"></script>
+    <!-- Auth JavaScript file (for login/register/logout forms and auth status) -->
+    <script src="../assets/js/auth.js"></script>
+    <!-- Cart JavaScript file -->
+    <script src="../assets/js/cart.js"></script>
+    <!-- Checkout specific JavaScript -->
+    <script src="../assets/js/checkout.js"></script>
+    <script>
+        // Set current year in footer
+        document.getElementById('current-year-footer').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+# Lugxwebsite/.htaccess
+# This file routes all requests to the public directory, acting as the primary entry point.
+# It also prevents direct access to sensitive application folders and files.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Set RewriteBase to your project's subdirectory if it's not at the domain root.
+    # For http://localhost/Lugxwebsite/, RewriteBase should be /Lugxwebsite/
+    RewriteBase /Lugxwebsite/
+
+    # Deny direct access to sensitive folders and files for security
+    # These folders/files should only be accessed via the application's logic.
+    RewriteRule ^app/ - [F,L]
+    RewriteRule ^vendor/ - [F,L]
+    RewriteRule ^\.env$ - [F,L]
+    RewriteRule ^composer\.(json|lock)$ - [F,L]
+    RewriteRule ^README\.md$ - [F,L]
+
+    # Redirect all requests not explicitly targeting the public/ directory to public/
+    # This ensures that all web requests are handled by public/index.php.
+    # It avoids users having to type /public/ in their URLs.
+    RewriteCond %{REQUEST_URI} !^/Lugxwebsite/public/ [NC]
+    RewriteRule ^(.*)$ public/$1 [L]
+
+</IfModule>
+
+# Prevent direct PHP file execution outside of the intended entry point (index.php).
+# This is a security measure to ensure PHP scripts are processed by the framework.
+<FilesMatch "\.(php)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Explicitly allow access to index.php within the public/ directory,
+# as it is our front controller.
+<FilesMatch "index\.php$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>

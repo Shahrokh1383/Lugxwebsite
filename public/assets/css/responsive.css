@@ -1,0 +1,1426 @@
+/* Responsive Styles */
+
+/* Common adjustments for smaller screens */
+.container {
+    padding: 0 15px; /* Adjust container padding for all smaller screens */
+}
+
+/* Tablet and Small Desktop Adjustments (max-width: 991px) */
+@media (max-width: 991px) {
+    /* Header Section (applies to .main-header on index.html and .shop-header on shop.html) */
+    /* Assuming .main-header and .shop-header share similar base styles or are adjusted */
+    .main-header,
+    .shop-header { /* Targeting both headers for consistent responsive behavior */
+        height: auto; /* Allow height to adjust */
+        padding-bottom: var(--spacing-xxl); /* Adjust padding */
+        border-bottom-left-radius: 100px;
+        border-bottom-right-radius: 100px;
+    }
+
+    /* Navbar */
+    .navbar .container {
+        flex-wrap: wrap; /* Allow logo and toggle to wrap if needed, though they usually stay on one line */
+        justify-content: space-between; /* Keep logo and toggle at ends */
+    }
+
+    .navbar .nav-links {
+        display: none; /* Hide nav links on smaller screens by default */
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* Position below navbar */
+        left: 0;
+        width: 100%;
+        background-color: var(--white);
+        box-shadow: var(--box-shadow);
+        border-radius: var(--border-radius-md);
+        padding: var(--spacing-md) 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+        /* Ensure z-index is high enough for mobile menu to overlap content */
+        z-index: 1000; 
+    }
+
+    .navbar .nav-links.active {
+        display: flex; /* Show when active */
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .navbar .nav-links li {
+        margin: var(--spacing-sm) 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar .nav-links li a {
+        color: var(--dark-gray); /* Darker text for mobile menu */
+        padding: 10px 0;
+        display: block;
+        border-radius: 0; /* Remove border-radius for full-width links */
+    }
+
+    .navbar .nav-links li a.active {
+        background-color: var(--light-blue);
+        color: var(--primary-blue);
+    }
+
+    .navbar .nav-links li:last-child {
+        margin-top: var(--spacing-md);
+        margin-left: 0; /* Reset margin */
+    }
+
+    .navbar .nav-links .btn-primary {
+        width: calc(100% - 40px); /* Adjust button width */
+        margin: 0 auto;
+        display: block;
+        background-color: var(--red-discount); /* Ensure red color */
+    }
+
+    .navbar .menu-toggle {
+        display: block; /* Show hamburger icon */
+        color: var(--white); /* Default color, assuming header is dark */
+    }
+    .navbar.sticky .menu-toggle {
+        color: var(--dark-gray); /* Sticky color, assuming sticky navbar is light */
+    }
+
+    /* Hero Section (specific to index.html) */
+    .hero-section {
+        flex-direction: column; /* Stack content and image */
+        text-align: center;
+        padding-top: var(--spacing-xl);
+        padding-bottom: var(--spacing-xl); /* Adjust padding */
+        gap: var(--spacing-xl);
+        align-items: center;
+        flex-grow: 0; /* No longer growing, height determined by content */
+        height: auto; /* Allow hero-section to adjust its height based on content */
+    }
+
+    .hero-content {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+        order: 1; /* Put content below carousel on mobile */
+    }
+
+    .hero-content h1 {
+        font-size: 45px;
+    }
+
+    .hero-content p {
+        width: auto;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-content .search-box {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .caption_dec {
+        display: none;
+    }
+
+    /* Carousel Specific Adjustments for Tablets (UPDATED FOR DIMENSIONS & CAPTION) */
+    .hero-image {
+        max-width: 90%; /* Adjust image container size for tablets */
+        margin-top: var(--spacing-md);
+        text-align: center;
+        height: 300px; /* Fixed height for tablet, adjust as needed to match original feel */
+        width: 400px; /* Allow it to take full width of its max-width */
+        order: 1; /* Put carousel above content on mobile */
+        justify-content: center; /* Center the carousel in hero-image */
+        margin: 0 auto;
+    }
+
+    .carousel-container {
+        width: 100%;
+        height: 100%; /* Take full height of hero-image */
+        /* No fixed height needed here, it scales with hero-image */
+    }
+
+    .carousel-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .carousel-caption {
+        bottom: var(--spacing-md); /* Adjusted for smaller screens */
+        left: var(--spacing-md);
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .carousel-caption .old-price {
+        font-size: 12px;
+    }
+    .carousel-caption .new-price {
+        font-size: 18px;
+    }
+
+    .carousel-caption h3 {
+        font-size: 18px;
+    }
+
+    .carousel-caption .rating {
+        font-size: 13px;
+    }
+
+    .carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+
+    /* Features Section (specific to index.html) */
+    .features-section {
+        margin-top: -100px; /* Adjust overlap */
+        padding: var(--spacing-lg) 0; /* Reduced padding */
+        flex-wrap: wrap; /* Allow cards to wrap */
+        gap: var(--spacing-md);
+        justify-content: center; /* Center cards */
+        align-items: center;
+    }
+
+    .feature-card {
+        width: 400px;
+        height: auto; /* Allow height to adjust */
+        padding: var(--spacing-lg);
+        text-align: center; /* Center text within card */
+    }
+    .feature-card .icon-wrapper img {
+        object-fit: contain; /* Display full icon */
+    }
+
+
+    .section-header {
+        flex-direction: column;
+        align-items: center; /* Center text for section header */
+        gap: var(--spacing-sm);
+        text-align: center; /* Ensure text is centered */
+    }
+
+    .section-header h2 {
+        font-size: 32px;
+        text-align: center; /* Center heading */
+    }
+
+    .section-header .view-all-btn {
+        margin-top: var(--spacing-sm);
+        align-self: center; /* Center the button */
+    }
+
+    /* Trending Games (specific to index.html) */
+    .trending-games .games-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns */
+        gap: var(--spacing-md); /* Adjust gap */
+        justify-items: center; /* Center grid items horizontally */
+    }
+
+    .game-card { /* Applies to both index.html and shop.html if structure is similar */
+        width: 100%; /* Occupy full column width */
+        margin: 0; /* Remove specific margin from desktop */
+        /* Ensure .game-card has position: relative in your base style.css for price-info/play-btn absolute positioning */
+    }
+
+    .game-card img {
+        width: 100%;
+        height: 180px; /* Keep consistent height or adjust */
+        object-fit: contain; /* Display full game image */
+        border-radius: var(--border-radius-md); /* Keep radius */
+    }
+
+    .game-card .game-info {
+        padding: 10px 15px; /* Reduced padding */
+        /* For game-info, if it's already flex, align-items: center will center its children vertically.
+           If you want horizontally centered text within it, text-align: center is needed.
+           Usually, game info has text aligned to left or center, so adjust as needed. */
+        text-align: center; /* Center text within game-info */
+        align-items: center; /* Align items if it's a flex container */
+    }
+
+    .game-card .category {
+        /* If category is inline-block or similar, margin auto will center it.
+           If it's block level and its parent is text-align: center, it will be centered. */
+        margin-left: auto;
+        margin-right: auto; /* Center category */
+    }
+
+    .game-card .price-info {
+        top: 10px;
+        right: 10px;
+        width: 70px; /* Smaller size for price badge */
+        height: 70px;
+        font-size: 16px;
+    }
+
+    .game-card .old-price,
+    .game-card .new-price {
+        font-size: 16px; /* Adjust font size */
+    }
+
+    .game-card .play-btn {
+        bottom: 10px;
+        right: 10px;
+    }
+
+
+    /* Most Played Games (specific to index.html) - Revised for Tablet */
+    .most-played-games {
+        padding: var(--spacing-xxl) 0; /* Ensure consistent padding */
+    }
+    .most-played-games .games-grid-small {
+        grid-template-columns: repeat(3, 1fr); /* Three columns on tablet */
+        gap: var(--spacing-md);
+        justify-items: center; /* Center grid items */
+    }
+    .game-card-small {
+        width: auto; /* Let grid control width */
+        display: flex; /* For centering internal content */
+        flex-direction: column;
+        align-items: center; /* Center the entire card */
+        text-align: center;
+    }
+    .game-card-small img {
+        width: 100%;
+        height: 120px; /* Keep consistent height */
+        object-fit: contain; /* Display full small game image */
+        border-radius: var(--border-radius-md);
+    }
+    .game-card-small .game-info-small {
+        align-items: center; /* Center info content if it's a flex container */
+        text-align: center; /* Center text within info */
+    }
+    .game-card-small .category {
+        margin-left: auto;
+        margin-right: auto; /* Center category */
+    }
+    .game-card-small h3 {
+        font-size: 15px; /* Adjust font size */
+    }
+    .game-card-small .explore-btn {
+        padding: 5px 10px; /* Smaller button */
+        font-size: 11px;
+    }
+
+    /* Categories Section (specific to index.html) */
+    .categories-grid {
+        grid-template-columns: repeat(3, 1fr); /* Three columns */
+        gap: var(--spacing-md);
+        justify-items: center; /* Center grid items */
+    }
+
+    .category-card {
+        display: flex; /* For centering internal content */
+        flex-direction: column;
+        align-items: center; /* Center the entire card */
+        text-align: center;
+    }
+
+    .category-card img {
+        width: 100%;
+        height: 150px; /* Adjust height */
+        margin-top: 40px; /* Adjust top margin for image */
+        object-fit: contain; /* Display full category image */
+        border-radius: 0; /* Remove radius from image itself, let parent handle */
+    }
+    .category-card .category-tag {
+        padding-bottom: 15px; /* Adjust padding */
+    }
+
+
+    /* CTA / Newsletter Section (specific to index.html) */
+    .cta-newsletter-section {
+        padding: var(--spacing-xxl) 0; /* Ensure consistent padding */
+    }
+    .cta-content {
+        flex-direction: column; /* Stack columns vertically */
+        gap: var(--spacing-md);
+        align-items: center; /* Center the content blocks */
+    }
+
+    .shop-promo,
+    .newsletter-form {
+        padding: var(--spacing-lg); /* Adjust padding */
+        width: 90%; /* Adjust width for better fit on tablet */
+        max-width: 500px; /* Limit max width */
+        text-align: center; /* Center text inside promo/newsletter */
+        display: flex; /* Use flex for internal centering */
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .shop-promo h2,
+    .newsletter-form h2 {
+        font-size: 30px;
+    }
+
+    .newsletter-form form {
+        flex-direction: column; /* Stack input and button */
+        width: 100%;
+    }
+
+    .newsletter-form form input {
+        margin-bottom: var(--spacing-sm);
+        border-radius: var(--border-radius-md); /* Apply radius to input */
+    }
+
+    .newsletter-form form button {
+        width: 100%; /* Full width button */
+    }
+
+    /* Footer */
+    .main-footer {
+        border-top-left-radius: 100px;
+        border-top-right-radius: 100px;
+        padding-bottom: var(--spacing-xl);
+    }
+
+    /* ************************************************************ */
+    /* SHOP PAGE SPECIFIC STYLES FOR TABLET (max-width: 991px) */
+    /* ************************************************************ */
+
+    .page-heading {
+        padding: var(--spacing-xl) 0; /* Adjust padding for page heading */
+        text-align: center;
+    }
+
+    .shop-content {
+        padding: var(--spacing-xxl) 0; /* Adjust general section padding */
+    }
+
+    .shop-content .container{
+        margin-left: 20px ;
+    }
+    .shop-filters {
+        flex-wrap: wrap; /* Allow buttons to wrap */
+        justify-content: center; /* Center filter buttons */
+        gap: 10px; /* Small gap between buttons */
+        margin-bottom: var(--spacing-xl); /* Space below filters */
+        margin-right: 20px;
+    }
+
+    .shop-filters .filter-btn {
+        padding: 10px 15px; /* Adjust button padding */
+        font-size: 14px; /* Adjust font size */
+    }
+
+    .shop-games-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on tablet */
+        gap: var(--spacing-md); /* Match trending grid gap */
+        justify-items: center; /* Center game cards */
+    }
+
+    /* Pagination for Shop Page */
+    .pagination {
+        margin-top: var(--spacing-xxl); /* Add space above pagination */
+        justify-content: center; /* Center pagination links */
+    }
+    .product-detail-section .product-content {
+        flex-direction: column; /* Stack image and info vertically */
+        align-items: center; /* Center content when stacked */
+        gap: var(--spacing-xl); /* Adjust gap for vertical stacking */
+    }
+
+    .product-detail-section .product-image,
+    .product-detail-section .product-info {
+        max-width: 100%; /* Take full width */
+        flex: none; /* Remove flex grow/shrink */
+        width: 100%; /* Ensure they take full width */
+    }
+
+    .product-detail-section .product-info {
+        text-align: center; /* Center text info */
+        align-items: center; /* Center align items like category */
+    }
+
+    .product-detail-section .product-info h2 {
+        font-size: 34px; /* Slightly smaller heading */
+    }
+
+    .product-detail-section .product-info .category {
+        align-self: center; /* Center align category badge */
+    }
+
+    .product-detail-section .product-info .prices {
+        justify-content: center; /* Center prices */
+    }
+
+    .product-detail-section .product-info p {
+        font-size: 14px; /* Smaller paragraph font */
+        text-align: center; /* Center align paragraph text */
+    }
+
+    .product-detail-section .quantity-add-cart {
+        flex-direction: column; /* Stack quantity and add-to-cart button */
+        gap: var(--spacing-lg); /* Adjust gap */
+        width: 100%; /* Ensure full width */
+    }
+
+    .product-detail-section .quantity-input {
+        width: 100%; /* Full width for quantity input */
+        max-width: 250px; /* Limit width to keep it reasonable */
+        margin: 0 auto; /* Center the quantity input */
+    }
+
+    .product-detail-section .quantity-input input.quantity {
+        width: 100px; /* Adjust input width within its container */
+    }
+
+    .product-detail-section .add-to-cart-btn {
+        width: 100%; /* Full width button */
+        justify-content: center; /* Center content of button */
+        font-size: 15px; /* Slightly smaller font for button */
+    }
+
+    .description-reviews {
+        padding: var(--spacing-xl); /* Reduce padding for smaller screens */
+    }
+
+    .description-reviews .tabs {
+        flex-wrap: wrap; /* Allow tabs to wrap to next line if needed */
+        justify-content: center; /* Center tabs */
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .description-reviews .tab-item {
+        padding: 12px 20px; /* Adjust tab item padding */
+        font-size: 15px; /* Adjust tab item font size */
+    }
+
+    .review-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .review-card-header .review-meta {
+        text-align: left;
+        width: 100%;
+    }
+
+    .star-rating-input {
+        font-size: 1.8em; /* Slightly smaller stars for input on tablets */
+    }
+
+    .contact-content-wrapper {
+        grid-template-columns: 1fr; /* Stack columns on top of each other */
+        gap: var(--spacing-lg); /* Reduce gap between stacked blocks */
+    }
+
+    .contact-info-block,
+    .contact-form-map-block {
+        padding: var(--spacing-lg); /* Adjust padding for tablet size */
+    }
+
+    .contact-info-block .section-heading h2 {
+        font-size: 32px; /* Slightly smaller heading on tablets */
+    }
+     /* General Section Adjustments */
+     .games-section {
+        padding: 60px 0; /* Adjusted section padding for tablets */
+        border-top-left-radius: 150px;
+        border-top-right-radius: 150px;
+        margin-top: 60px;
+    }
+    .games-section h2 {
+        font-size: 32px;
+    }
+
+    /* Game Grids */
+    .trending-games .games-grid,
+    .shop-games-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 2-3 columns */
+        gap: 25px;
+    }
+    .most-played-games .games-grid-small {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* 3-4 columns */
+        gap: 15px;
+    }
+
+    /* Game Card Elements */
+    .game-card {
+        padding-bottom: 55px; /* Ensure space for buttons */
+    }
+    .game-card img {
+        height: 180px; /* Slightly reduced image height */
+    }
+    .game-card .game-info {
+        padding: 12px 18px;
+    }
+    .game-card h3 {
+        font-size: 16px;
+        max-height: 3.6em; /* Adjust line clamp for smaller font */
+    }
+    .game-card .category {
+        font-size: 11px;
+        padding: 3px 8px;
+    }
+    .game-card .price-info {
+        top: 12px;
+        right: 12px;
+        padding: 7px 10px;
+        min-width: 65px;
+        font-size: 16px;
+    }
+    .game-card .old-price {
+        font-size: 12px;
+    }
+    .game-card .new-price {
+        font-size: 16px;
+    }
+    .game-card .product-actions button { /* For individual buttons within product-actions */
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+    }
+    /* Shop Filters */
+    .shop-filters {
+        gap: 12px;
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+    .shop-filters .filter-btn {
+        padding: 9px 18px;
+        font-size: 14px;
+    }
+
+    /* Search Box */
+    .page-heading .search-box {
+        max-width: 500px;
+        margin: 40px auto;
+    }
+    .page-heading .search-box input[type="text"],
+    .page-heading .search-box button {
+        padding: 14px 20px;
+        font-size: 15px;
+    }
+
+    /* Pagination */
+    .pagination {
+        margin-top: 40px;
+        margin-bottom: 40px;
+        gap: 8px;
+    }
+    .pagination-list li a {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+}
+
+/* Mobile Adjustments (max-width: 767px) */
+@media (max-width: 767px) {
+    /* Header */
+    .main-header,
+    .shop-header { /* Target both headers */
+        border-bottom-left-radius: 50px; /* Smaller radius for mobile */
+        border-bottom-right-radius: 50px;
+    }
+
+    /* Navbar */
+    .navbar .logo img {
+        height: 35px; /* Smaller logo */
+    }
+
+    /* Hero Section */
+    .main-header {
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
+        min-height: 380px;
+        padding-bottom: var(--spacing-xl);
+    }
+    .hero-content{
+        order: 1;
+    }
+    .hero-content h1 {
+        font-size: 35px;
+    }
+
+    .hero-content p {
+        font-size: 14px;
+    }
+
+    .hero-image {
+        max-width: 100%; /* Full width */
+        height: 250px; /* Adjusted fixed height for smaller mobile */
+        margin-top: var(--spacing-md);
+        margin: 0 auto;
+        order: 2;
+    }
+
+    .carousel-caption {
+        bottom: var(--spacing-sm);
+        left: var(--spacing-sm);
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .carousel-caption .old-price {
+        font-size: 11px;
+    }
+    .carousel-caption .new-price {
+        font-size: 15px;
+    }
+
+    .carousel-caption h3 {
+        font-size: 15px;
+    }
+
+    .carousel-caption .rating {
+        font-size: 11px;
+    }
+
+    .carousel-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .carousel-btn.prev-btn {
+        left: var(--spacing-sm);
+    }
+    
+    .carousel-btn.next-btn {
+        right: var(--spacing-sm);
+    }
+
+    .carousel-dots {
+        bottom: var(--spacing-sm);
+        gap: var(--spacing-xs);
+    }
+
+    .carousel-dot {
+        width: 8px;
+        height: 8px;
+    }
+  
+    /* Features Section */
+    .features-section {
+        margin-top: -80px; /* Further adjust overlap for mobile */
+        gap: var(--spacing-sm);
+    }
+
+    .feature-card {
+        width: 100%; /* Always full width on mobile */
+        padding: var(--spacing-md);
+    }
+
+    /* Games Section - General */
+    .section-header h2 {
+        font-size: 28px;
+    }
+
+    /* Trending Games */
+    .trending-games .games-grid {
+        grid-template-columns: 1fr; /* Single column */
+        gap: var(--spacing-xl); /* Increased gap for single column */
+    }
+    .game-card img {
+        height: 200px; /* Maintain good image size */
+        object-fit: contain; /* Display full */
+    }
+    .game-card .price-info {
+        width: 60px; /* Smaller badge for mobile */
+        height: 60px;
+        font-size: 14px;
+    }
+    .game-card .old-price,
+    .game-card .new-price {
+        font-size: 14px;
+    }
+
+
+    /* Most Played Games - Revised for Mobile */
+    .most-played-games .games-grid-small {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on mobile */
+        gap: var(--spacing-md);
+    }
+    .game-card-small{
+        width: 350px;
+    }
+    .game-card-small img {
+        height: 100px; /* Smaller height for very small cards */
+        object-fit: contain; /* Display full */
+    }
+    .game-card-small h3 {
+        font-size: 13px; /* Smaller font */
+    }
+    .game-card-small .explore-btn {
+        padding: 4px 8px; /* Even smaller button */
+        font-size: 10px;
+    }
+
+
+    /* Categories Section */
+    .categories-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: var(--spacing-md);
+    }
+    .category-card {
+        width: 350px;
+    }
+    .category-card img {
+        height: 150px; /* Adjust for single column */
+        margin-top: 30px;
+        object-fit: contain; /* Display full */
+    }
+    .category-card .category-tag {
+        font-size: 14px;
+    }
+
+    /* CTA / Newsletter Section */
+    .cta-newsletter-section {
+        padding: var(--spacing-xxl) 15px; /* Adjust padding */
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
+    }
+    .shop-promo h2,
+    .newsletter-form h2 {
+        font-size: 24px;
+    }
+    .newsletter-form form input,
+    .newsletter-form form button {
+        padding: 12px 15px; /* Smaller padding for inputs/buttons */
+    }
+
+    /* Footer */
+    .main-footer {
+        border-top-left-radius: 50px;
+        border-top-right-radius: 50px;
+        padding-bottom: var(--spacing-lg);
+    }
+
+    /* ************************************************************ */
+    /* SHOP PAGE SPECIFIC STYLES FOR MOBILE (max-width: 767px) */
+    /* ************************************************************ */
+
+    .page-heading {
+        padding: var(--spacing-lg) 0; /* Further reduce padding */
+    }
+    .page-heading h2 {
+        font-size: 28px;
+    }
+    .page-heading h6 {
+        font-size: 14px;
+    }
+    .breadcrumb {
+        font-size: 14px;
+    }
+
+    .shop-filters {
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: center; /* Center stacked buttons */
+    }
+    .shop-filters .filter-btn {
+        width: 100%; /* Full width buttons */
+        max-width: 200px; /* Optional: limit max width of individual buttons */
+    }
+
+    .shop-games-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: var(--spacing-xl); /* Increased gap for single column */
+    }
+
+    /* Pagination for Shop Page */
+    .pagination {
+        font-size: 15px; /* Smaller pagination font */
+    }
+    .pagination a {
+        padding: 8px 12px; /* Smaller pagination buttons */
+    }
+    .product-detail-section {
+        padding: var(--section-padding-tablet) 0; /* Adjust section padding for mobile */
+    }
+
+    .product-detail-section .product-image {
+        padding: 15px; /* Smaller padding for image container */
+    }
+
+    .product-detail-section .product-info h2 {
+        font-size: 30px; /* Smaller heading for mobile */
+    }
+
+    .product-detail-section .product-info .prices .old-price {
+        font-size: 18px; /* Smaller price font */
+    }
+
+    .product-detail-section .product-info .prices .new-price {
+        font-size: 28px; /* Smaller price font */
+    }
+
+    .product-detail-section .product-info p {
+        font-size: 13px; /* Even smaller paragraph font */
+    }
+
+    .product-detail-section .game-details-list li {
+        flex-direction: column; /* Stack list items vertically if content is too long */
+        align-items: flex-start; /* Align stacked list items to start */
+        gap: 5px; /* Small gap between stacked items */
+    }
+
+    .description-reviews {
+        padding: var(--spacing-lg); /* Even smaller padding for mobile */
+    }
+
+    .description-reviews .tab-item {
+        padding: 10px 15px; /* Further adjust tab item padding */
+        font-size: 14px; /* Further adjust tab item font size */
+    }
+
+    .description-reviews .tab-pane p {
+        font-size: 14px; /* Adjust paragraph font in tabs */
+    }
+
+    .review-card-body p {
+        font-size: 0.9em; /* Smaller font for review text */
+    }
+
+    .review-helpful-buttons button {
+        padding: 4px 8px; /* Smaller button padding */
+        font-size: 0.8em; /* Smaller font for button */
+    }
+
+    .star-rating-input {
+        font-size: 1.5em; /* Smaller stars for input on mobiles */
+    }
+
+    .contact-content.section {
+        padding: var(--section-padding-tablet) 0; /* Adjust section padding for smaller screens */
+    }
+
+    .contact-content .container {
+        padding-bottom: var(--spacing-xl); /* Adjust container padding */
+    }
+
+    .contact-info-block {
+        padding: var(--spacing-md); /* Further adjust padding */
+    }
+
+    .contact-info-block .section-heading h2 {
+        font-size: 28px; /* Even smaller heading */
+        margin-bottom: var(--spacing-md);
+    }
+
+    .contact-info-block p {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .contact-details-list li {
+        margin-bottom: var(--spacing-sm); /* Reduce space between contact details */
+    }
+
+    .contact-details-list li h6 {
+        font-size: 15px;
+    }
+
+    .contact-details-list li span {
+        font-size: 14px;
+    }
+
+    .contact-form-map-block {
+        padding: var(--spacing-md); /* Adjust padding for form/map block */
+    }
+
+    .form-fields-grid {
+        grid-template-columns: 1fr; /* Stack form fields vertically on smaller screens */
+        gap: var(--spacing-sm); /* Keep small gap between fields */
+    }
+
+    .form-field-full {
+        grid-column: span 1; /* Reset span to 1 for full width when stacked */
+    }
+
+    #contact-form input,
+    #contact-form textarea {
+        padding: 12px 15px; /* Slightly less padding for inputs */
+        font-size: 14px;
+    }
+
+    #contact-form textarea {
+        min-height: 100px; /* Reduce minimum height for textarea */
+    }
+
+    .orange-button {
+        padding: 12px 25px; /* Adjust button padding */
+        font-size: 15px;
+    }
+
+    #map iframe {
+        height: 250px; /* Adjust map height for smaller screens */
+    }
+     /* General Section Adjustments */
+     .games-section {
+        padding: 40px 0; /* More aggressive padding reduction */
+        border-top-left-radius: 100px;
+        border-top-right-radius: 100px;
+        margin-top: 40px;
+    }
+    .games-section h2 {
+        font-size: 28px;
+    }
+    .games-section h6 {
+        font-size: 18px;
+    }
+
+    /* Game Grids */
+    .trending-games .games-grid,
+    .shop-games-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* 2-3 columns, even smaller cards */
+        gap: 15px;
+    }
+    .most-played-games .games-grid-small {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 3-5 columns, very small cards */
+        gap: 8px;
+    }
+
+    /* Game Card Elements */
+    .game-card {
+        padding-bottom: 50px; /* Reduced padding for smaller cards */
+    }
+    .game-card img {
+        height: 140px; /* Significantly reduced image height */
+    }
+    .game-card .game-info {
+        padding: 10px 15px;
+    }
+    .game-card h3 {
+        font-size: 14px; /* Smaller font for title */
+        max-height: 3.6em; /* Keep line clamp consistent */
+        margin-bottom: 5px;
+    }
+    .game-card .category {
+        font-size: 10px;
+        padding: 2px 6px;
+        margin-bottom: 5px;
+    }
+    .game-card .price-info {
+        top: 10px;
+        right: 10px;
+        padding: 5px 8px;
+        min-width: 55px;
+        font-size: 14px;
+    }
+    .game-card .old-price {
+        font-size: 11px;
+    }
+    .game-card .new-price {
+        font-size: 14px;
+    }
+
+    /* Shop Filters */
+    .shop-filters {
+        flex-direction: column; /* Stack filters vertically */
+        align-items: center; /* Center them */
+        gap: 8px;
+        padding: 10px;
+        margin-bottom: 25px;
+    }
+    .shop-filters .filter-btn {
+        width: 100%; /* Full width for filter buttons */
+        max-width: 220px; /* Limit max width for readability */
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+
+    /* Search Box */
+    .page-heading .search-box {
+        flex-direction: column; /* Stack search input and button */
+        margin: 25px auto;
+        max-width: 90%;
+    }
+    .page-heading .search-box input[type="text"],
+    .page-heading .search-box button {
+        width: 100%;
+        border-radius: var(--border-radius-md); /* Apply radius to both */
+        margin-bottom: 10px;
+    }
+    .page-heading .search-box input[type="text"] {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    .page-heading .search-box button {
+        margin-bottom: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    /* Pagination */
+    .pagination {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        gap: 5px;
+    }
+    .pagination-list li a {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+}
+
+/* Very Small Mobile Adjustments (max-width: 575px) */
+@media (max-width: 575px) {
+    /* General Spacing */
+    /* These should ideally be in your base CSS if you want them to apply globally,
+       or you can explicitly redefine them here if these are only for very small screens.
+       It's generally better to define variables at :root globally and then use them. */
+    /* Reconfirming: are these variables defined at the top of your style.css in :root? */
+    /* If so, you're overriding them here for this breakpoint, which is fine. */
+
+    :root {
+        --spacing-md: 10px; /* Reduced for very small screens */
+        --spacing-lg: 15px;
+        --spacing-xl: 20px;
+        --spacing-xxl: 30px;
+        /* --section-padding-desktop: 60px 0; - This is likely a mistake, should be padding for sections, not a variable for desktop specific padding */
+    }
+    .container {
+        padding: 0 10px;
+    }
+
+    /* Navbar */
+    .navbar .logo img {
+        height: 30px;
+    }
+
+    /* Hero Section */
+    .main-header {
+        min-height: 300px;
+        padding-bottom: var(--spacing-md);
+    }
+    .hero-content {
+        order: 1;
+    }
+    .hero-content h1 {
+        font-size: 30px;
+    }
+
+    .hero-content p {
+        font-size: 13px;
+    }
+
+    .hero-content .search-box {
+        flex-direction: column;
+    }
+
+    .hero-content .search-box input,
+    .hero-content .search-box button {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: var(--border-radius-md);
+    }
+
+    .hero-content .search-box button {
+        margin-top: var(--spacing-sm);
+    }
+    .hero-image {
+        margin: 0 auto;
+    }
+
+    /* Features Section */
+    .features-section {
+        margin-top: -60px; /* Adjust overlap for very small mobile */
+    }
+    .feature-card {
+        width: 100%; /* Always full width */
+        padding: var(--spacing-md);
+    }
+
+    /* Trending Games */
+    .trending-games .games-grid {
+        gap: var(--spacing-lg); /* Slightly more gap if single column */
+    }
+    .game-card .game-info {
+        padding: 10px; /* Reduced padding */
+    }
+    .game-card h3 {
+        font-size: 16px;
+    }
+    .game-card .price-info {
+        width: 50px;
+        height: 50px;
+        font-size: 12px;
+        padding: 5px; /* Reduced padding for smaller badge */
+    }
+    .game-card .old-price,
+    .game-card .new-price {
+        font-size: 12px;
+    }
+    .game-card .play-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+
+    /* Most Played Games */
+    .most-played-games .games-grid-small {
+        grid-template-columns: 1fr; /* Single column */
+    }
+    .game-card-small img {
+        height: 150px;
+    }
+    .game-card-small .game-info-small {
+        padding: var(--spacing-sm);
+    }
+
+
+    /* Categories Section */
+    .categories-grid {
+        grid-template-columns: 1fr; /* Single column */
+    }
+    .category-card img {
+        height: 200px;
+        margin-top: 50px;
+    }
+
+    /* CTA / Newsletter Section */
+    .cta-newsletter-section {
+        padding: var(--spacing-xl) 10px;
+    }
+    .shop-promo h2,
+    .newsletter-form h2 {
+        font-size: 20px;
+    }
+    .newsletter-form form input,
+    .newsletter-form form button {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+
+    /* Footer */
+    .main-footer {
+        padding-bottom: var(--spacing-lg);
+    }
+
+    /* ************************************************************ */
+    /* SHOP PAGE SPECIFIC STYLES FOR VERY SMALL MOBILE (max-width: 575px) */
+    /* ************************************************************ */
+    .page-heading {
+        padding: var(--spacing-md) 0; /* Even smaller padding */
+    }
+    .page-heading h2 {
+        font-size: 24px;
+    }
+    .page-heading h6 {
+        font-size: 12px;
+    }
+    .breadcrumb {
+        font-size: 12px;
+    }
+
+    .shop-content {
+        padding: var(--spacing-xl) 0; /* Adjust overall padding */
+    }
+
+    .shop-filters {
+        margin-bottom: var(--spacing-lg); /* Adjust space below filters */
+    }
+
+    /* shop-games-grid will remain 1 column from 767px breakpoint */
+
+    /* Pagination for Shop Page */
+    .pagination a {
+        padding: 6px 10px; /* Even smaller pagination buttons */
+        font-size: 14px;
+    }
+    .product-detail-section {
+        padding: var(--section-padding-mobile) 0; /* Smallest section padding */
+    }
+
+    .product-detail-section .product-image {
+        padding: 10px; /* Minimal padding for image container */
+    }
+
+    .product-detail-section .product-info h2 {
+        font-size: 26px; /* Even smaller heading */
+    }
+
+    .product-detail-section .product-info .prices .old-price {
+        font-size: 16px;
+    }
+
+    .product-detail-section .product-info .prices .new-price {
+        font-size: 24px;
+    }
+
+    .product-detail-section .add-to-cart-btn {
+        padding: 12px 20px; /* Smaller button padding */
+        font-size: 14px; /* Smaller button font */
+    }
+
+    .description-reviews {
+        padding: var(--spacing-md); /* Smallest padding for reviews section */
+    }
+
+    .description-reviews .tabs {
+        flex-direction: column; /* Stack tabs vertically if very narrow */
+        align-items: stretch; /* Make stacked tabs fill width */
+    }
+
+    .description-reviews .tab-item {
+        border-bottom: none; /* Remove bottom border for stacked tabs */
+        text-align: center; /* Center text in stacked tabs */
+        border-radius: var(--border-radius-sm); /* Add some border-radius for stacked buttons */
+        margin-bottom: 5px; /* Small gap between stacked tabs */
+        /* To simulate active state border when stacked, you might add a background-color */
+    }
+
+    .description-reviews .tab-item.active {
+        border-bottom: none; /* No bottom border when stacked */
+        background-color: var(--primary-blue); /* Highlight active tab with background */
+        color: var(--white); /* White text for active tab */
+    }
+
+    .description-reviews .tab-item.active:hover {
+        color: var(--white); /* Keep text white on hover for active stacked tab */
+    }
+
+    .review-card-header .username {
+        font-size: 1em; /* Smaller username font */
+    }
+
+    .star-rating-input {
+        font-size: 1.2em; /* Even smaller stars for input on very small screens */
+    }
+    
+    .contact-content.section {
+        padding: var(--section-padding-mobile) 0; /* Smallest section padding */
+    }
+
+    .contact-content .container {
+        padding-bottom: var(--spacing-lg); /* Adjust container padding */
+    }
+
+    .contact-info-block {
+        padding: var(--spacing-sm); /* Smallest padding for info block */
+    }
+
+    .contact-info-block .section-heading h2 {
+        font-size: 24px; /* Smallest heading size */
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .contact-info-block p {
+        font-size: 14px;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .contact-details-list li {
+        margin-bottom: var(--spacing-xs); /* Minimal space between contact details */
+    }
+
+    .contact-details-list li h6 {
+        font-size: 14px;
+    }
+
+    .contact-details-list li span {
+        font-size: 13px;
+    }
+
+    .contact-form-map-block {
+        padding: var(--spacing-sm); /* Smallest padding for form/map block */
+    }
+
+    #contact-form input,
+    #contact-form textarea {
+        padding: 10px 12px; /* Even less padding for inputs */
+        font-size: 13px;
+    }
+
+    #contact-form textarea {
+        min-height: 80px; /* Further reduce textarea height */
+    }
+
+    .orange-button {
+        padding: 10px 20px; /* Adjust button padding */
+        font-size: 14px;
+    }
+
+    #map iframe {
+        height: 200px; /* Smallest map height */
+    }
+
+     /* General Section Adjustments */
+     .games-section {
+        padding: 30px 0;
+        border-top-left-radius: 80px;
+        border-top-right-radius: 80px;
+        margin-top: 30px;
+    }
+    .games-section h2 {
+        font-size: 24px;
+    }
+    .games-section h6 {
+        font-size: 16px;
+    }
+
+    /* Game Grids - Force single column */
+    .trending-games .games-grid,
+    .shop-games-grid,
+    .most-played-games .games-grid-small {
+        grid-template-columns: 1fr; /* Single column */
+        gap: 20px; /* More space between stacked cards */
+    }
+
+    /* Game Card Elements */
+    .game-card {
+        padding-bottom: 60px; /* Revert to larger padding for single column */
+        width: 350px;
+    }
+    .game-card img {
+        height: 200px; /* Larger image height for single column */
+    }
+    .game-info {
+        padding: 15px 20px;
+    }
+    .game-card h3 {
+        font-size: 18px; /* Revert to larger font for single column */
+        max-height: 3.9em; /* Revert line clamp */
+    }
+    .game-card .category {
+        font-size: 13px;
+        padding: 4px 10px;
+    }
+    .game-card .price-info {
+        top: 15px;
+        right: 15px;
+        padding: 8px 12px;
+        min-width: 70px;
+        font-size: 18px;
+    }
+    .game-card .old-price {
+        font-size: 14px;
+    }
+    .game-card .new-price {
+        font-size: 18px;
+    }
+
+    .game-card .product-actions button { /* For individual buttons within product-actions */
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    /* Shop Filters */
+    .shop-filters .filter-btn {
+        max-width: 100%; /* Ensure full width on smallest screens */
+    }
+
+    /* Search Box */
+    .page-heading .search-box input[type="text"],
+    .page-heading .search-box button {
+        border-radius: var(--border-radius-md); /* Full radius again for single elements */
+    }
+
+    /* Pagination */
+    .pagination-list li a {
+        width: 35px;
+        height: 35px;
+        font-size: 15px;
+    }
+}

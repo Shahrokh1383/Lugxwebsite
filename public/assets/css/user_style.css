@@ -1,0 +1,445 @@
+/* User Dashboard and Profile specific styles */
+
+/* Import Poppins font if not already imported in style.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Define custom CSS variables based on your :root from style.css */
+/* These are duplicated here for standalone testing, but ideally style.css should be loaded first */
+:root {
+    /* Colors */
+    --primary-blue: #0d6efd;
+    --dark-blue: #0a4fbe; /* Darker shade for buttons/hover */
+    --light-blue: #e8f0fe; /* For active menu item / light backgrounds */
+    --dark-gray: #1e1e1e;
+    --medium-gray: #333;
+    --light-gray: #f7f7f7;
+    --text-color: #7a7a7a;
+    --white: #fff;
+    --red-discount: #ee626b;
+    --green-price: #62bd66;
+
+    /* Fonts */
+    --font-family: 'Poppins', sans-serif;
+
+    /* Spacing */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 30px;
+    --spacing-xl: 40px;
+    --spacing-xxl: 60px;
+    --section-padding-desktop: 100px 0;
+    --card-padding: 30px;
+
+    /* Border Radius */
+    --border-radius-sm: 5px;
+    --border-radius-md: 15px;
+    --border-radius-lg: 25px;
+    --border-radius-full: 50%;
+
+    /* Shadow */
+    --box-shadow: 0 0 15px rgba(0, 0, 0, 0.07);
+
+    /* Specific colors for user pages background (as requested) */
+    --user-page-bg: #27517b;
+    --red-light: #fee8e9; /* Light red for hover/backgrounds */
+    --green-light-bg: #e8f9e8; /* Light green for card backgrounds */
+    --yellow-light-bg: #fffbe6; /* Light yellow for card backgrounds */
+    --default-badge-bg: #d1e7dd; /* For default address badge */
+    --default-badge-color: #0f5132; /* For default address badge text */
+
+    /* Define primary-blue-rgb for rgba usage in box-shadows */
+    --primary-blue-rgb: 13, 110, 253; /* R, G, B values for --primary-blue */
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--text-color);
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Custom Navbar styles (rely on .navbar from style.css) */
+/* No specific styles needed here, as .navbar is now handled by style.css */
+
+/* Custom Footer style */
+.custom-footer {
+    background-color: var(--primary-blue); /* Footer background color */
+}
+
+
+/* Specific background for user dashboard/profile pages */
+.user-dashboard-bg {
+    background-color: var(--user-page-bg);
+}
+
+/* Custom button primary style (using your red-discount and dark-blue for hover) */
+.custom-btn-primary {
+    background-color: var(--red-discount);
+    border-color: var(--red-discount);
+    color: var(--white);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    transition: all 0.3s ease;
+}
+
+.custom-btn-primary:hover {
+    background-color: var(--dark-blue);
+    border-color: var(--dark-blue);
+    color: var(--white);
+}
+
+/* New custom button styles for secondary and danger */
+.custom-btn-secondary {
+    background-color: var(--primary-blue); /* Example: use primary blue for secondary */
+    border-color: var(--primary-blue);
+    color: var(--white);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    transition: all 0.3s ease;
+}
+
+.custom-btn-secondary:hover {
+    background-color: var(--dark-blue);
+    border-color: var(--dark-blue);
+    color: var(--white);
+}
+
+.custom-btn-danger {
+    background-color: var(--red-discount); /* Use red-discount for danger */
+    border-color: var(--red-discount);
+    color: var(--white);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    transition: all 0.3s ease;
+}
+
+.custom-btn-danger:hover {
+    background-color: var(--dark-blue); /* Darker blue on hover for consistency */
+    border-color: var(--dark-blue);
+    color: var(--white);
+}
+
+
+/* Navbar hover effect for links (retained for general use if not overridden by custom-navbar) */
+/* This class might not be strictly needed if .navbar .nav-links li a:hover in style.css covers it */
+.hover-orange:hover {
+    color: var(--red-discount) !important; /* Use red-discount for hover, !important to override Bootstrap */
+}
+
+/* Sidebar active link style */
+.active-link {
+    background-color: var(--light-blue) !important;
+    color: var(--primary-blue) !important;
+    font-weight: 500;
+}
+
+/* Sidebar general link hover */
+.hover-bg-light-gray:hover {
+    background-color: var(--light-gray) !important;
+    color: var(--dark-gray) !important;
+}
+
+/* Custom text colors (to use your defined variables with Bootstrap classes) */
+.text-primary-blue { color: var(--primary-blue) !important; }
+.text-dark-blue { color: var(--dark-blue) !important; }
+.text-light-blue { color: var(--light-blue) !important; }
+.text-dark-gray { color: var(--dark-gray) !important; }
+.text-medium-gray { color: var(--medium-gray) !important; }
+.text-light-gray { color: var(--light-gray) !important; }
+.text-text-color { color: var(--text-color) !important; }
+.text-white { color: var(--white) !important; }
+.text-red-discount { color: var(--red-discount) !important; }
+.text-green-price { color: var(--green-price) !important; }
+.text-red-light { color: var(--red-light) !important; } /* For danger hover in sidebar */
+
+
+/* Custom background colors */
+.bg-light-blue-bg { background-color: var(--light-blue) !important; }
+.bg-green-light-bg { background-color: var(--green-light-bg) !important; }
+.bg-yellow-light-bg { background-color: var(--yellow-light-bg) !important; }
+
+/* Card styles */
+.card {
+    border-radius: var(--border-radius-md) !important;
+    box-shadow: var(--box-shadow) !important;
+}
+
+/* Ensure footer sticks to the bottom */
+footer {
+    margin-top: auto; /* Push footer to the bottom */
+}
+
+/* Form specific styles for user profile/addresses */
+.form-control, .form-select {
+    border-radius: var(--border-radius-sm);
+    border: 1px solid #ced4da;
+    padding: var(--spacing-sm);
+    color: var(--dark-gray);
+    background-color: var(--white);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-blue);
+    /* Corrected: Use rgba with defined primary-blue-rgb */
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-blue-rgb), 0.25);
+    outline: 0;
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--dark-gray);
+    margin-bottom: var(--spacing-xs);
+}
+
+.invalid-feedback {
+    font-size: 0.875em;
+    color: var(--red-discount);
+    margin-top: var(--spacing-xs);
+}
+
+/* Address card specific styles */
+.address-card {
+    border: 1px solid var(--light-gray);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    position: relative;
+}
+
+.address-card.default-address {
+    border: 2px solid var(--green-price); /* Highlight default address */
+}
+
+.address-card .address-actions {
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md); /* Adjusted for RTL */
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.address-card .address-details {
+    margin-top: var(--spacing-lg); /* Space for action buttons */
+}
+
+.address-card .address-details p {
+    margin-bottom: var(--spacing-xs);
+    color: var(--medium-gray);
+}
+
+.address-card .address-details strong {
+    color: var(--dark-gray);
+}
+
+.address-card .default-badge {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md); /* Adjusted for RTL */
+    background-color: var(--default-badge-bg);
+    color: var(--default-badge-color);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+/* Modal specific styles */
+.modal-content {
+    border-radius: var(--border-radius-md) !important;
+}
+
+.modal-header {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+}
+
+.modal-body {
+    padding: var(--spacing-lg) !important;
+}
+
+.modal-footer {
+    border-top: none !important;
+    padding-top: 0 !important;
+}
+
+/* New style for long email text to break words */
+.email-text {
+    word-break: break-all;
+}
+
+/* --- NEW STYLES FOR SHOPPING CART (cart.html) --- */
+
+/* Table for cart items */
+#cart-items-container .table {
+    border-collapse: separate;
+    border-spacing: 0 10px; /* Space between rows */
+}
+
+#cart-items-container .table thead th {
+    border-bottom: 2px solid var(--light-gray);
+    padding-bottom: var(--spacing-sm);
+    font-weight: 600;
+    color: var(--dark-gray);
+}
+
+#cart-items-container .table tbody tr {
+    background-color: var(--white);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s ease-in-out;
+}
+
+#cart-items-container .table tbody tr:hover {
+    transform: translateY(-3px);
+}
+
+#cart-items-container .table tbody td {
+    padding: var(--spacing-md);
+    border-top: none; /* Remove default table borders */
+}
+
+/* Specific styling for the first and last cells of a row to ensure rounded corners */
+#cart-items-container .table tbody tr td:first-child {
+    border-top-left-radius: var(--border-radius-md);
+    border-bottom-left-radius: var(--border-radius-md);
+}
+
+#cart-items-container .table tbody tr td:last-child {
+    border-top-right-radius: var(--border-radius-md);
+    border-bottom-right-radius: var(--border-radius-md);
+}
+
+/* Quantity input group */
+.quantity-input-group {
+    width: 120px; /* Fixed width for quantity control */
+}
+
+.quantity-input-group .btn {
+    border-radius: var(--border-radius-sm);
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    background-color: var(--white);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.quantity-input-group .btn:hover {
+    background-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.quantity-input-group .form-control {
+    text-align: center;
+    border-left: 1px solid var(--primary-blue);
+    border-right: 1px solid var(--primary-blue);
+    border-radius: 0; /* Remove rounded corners for middle input */
+    background-color: var(--light-blue); /* Light background for input */
+    color: var(--dark-gray);
+    font-weight: 500;
+}
+
+.quantity-input-group .form-control:focus {
+    box-shadow: none; /* Remove focus shadow for middle input */
+}
+
+/* Remove item button */
+.remove-item-btn {
+    background-color: var(--red-light); /* Light red background */
+    border-color: var(--red-light);
+    color: var(--red-discount); /* Red icon color */
+    border-radius: var(--border-radius-sm);
+    transition: all 0.3s ease;
+}
+
+.remove-item-btn:hover {
+    background-color: var(--red-discount);
+    color: var(--white);
+}
+
+/* Cart Summary Section */
+.sticky-top {
+    top: 20px; /* Adjust as needed to prevent it from overlapping header */
+}
+
+/* Coupon form input */
+#coupon-form .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#coupon-form .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Coupon message (success/error) */
+#coupon-message {
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+#coupon-message.text-success {
+    color: var(--green-price) !important;
+}
+
+#coupon-message.text-danger {
+    color: var(--red-discount) !important;
+}
+
+/* Empty cart message */
+#cart-empty-message {
+    border-radius: var(--border-radius-md);
+    background-color: var(--light-blue);
+    color: var(--primary-blue);
+    padding: var(--spacing-lg);
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+#cart-empty-message .alert-link {
+    color: var(--dark-blue);
+    text-decoration: underline;
+}
+
+/* This targets the dropdown menu that appears when clicking the user button */
+.navbar .nav-links .dropdown-menu {
+    background-color: #007bff; /* Blue background */
+    border: none; /* Remove default border */
+    border-radius: 0.5rem; /* Rounded corners */
+    padding: 0.5rem 0; /* Some padding */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Soft shadow */
+}
+
+.navbar .nav-links .dropdown-menu .dropdown-item {
+    color: #ffffff; /* White text for items */
+    padding: 0.75rem 1.25rem; /* Padding for items */
+    transition: background-color 0.2s ease; /* Smooth hover effect */
+}
+
+.navbar .nav-links .dropdown-menu .dropdown-item:hover,
+.navbar .nav-links .dropdown-menu .dropdown-item:focus {
+    background-color: #0056b3; /* Darker blue on hover/focus */
+    color: #ffffff; /* Ensure text remains white */
+}
+
+/* Adjusting the dropdown toggle button for better visibility if needed */
+.navbar .nav-links .dropdown-toggle {
+    color: #ffffff; /* Example: white text for the button itself */
+    background-color: #007bff; /* Example: blue background for the button */
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+}
+.navbar .nav-links .dropdown-toggle:hover {
+    background-color: #0056b3;
+}
+
+/* Ensure the main auth-links-container is a relative position for dropdown positioning */
+#auth-links-container {
+    position: relative;
+}

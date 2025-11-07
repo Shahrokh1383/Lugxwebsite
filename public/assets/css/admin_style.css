@@ -1,0 +1,283 @@
+/* General styles for the Lugx Admin Panel */
+
+/* Base body styles for dark theme and font */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #1a202c; /* Dark background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #e2e8f0; /* Light text color */
+}
+
+/* Login Container Styles */
+.login-container {
+    background-color: #2d3748; /* Slightly lighter dark background for card */
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Login Header Styles */
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #f7fafc;
+}
+
+.login-header h2 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* Form Control (Input) Styles */
+.form-control {
+    background-color: #4a5568; /* Darker input background */
+    border: 1px solid #6b7280;
+    color: #e2e8f0; /* Light text in inputs */
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.form-control::placeholder {
+    color: #a0aec0; /* Lighter placeholder text */
+}
+
+.form-control:focus {
+    background-color: #4a5568;
+    border-color: #63b3ed; /* Blue focus border */
+    box-shadow: 0 0 0 0.25rem rgba(99, 179, 237, 0.25);
+    color: #e2e8f0;
+}
+
+/* Form Label Styles */
+.form-label {
+    color: #a0aec0; /* Label color */
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Primary Button Styles */
+.btn-primary {
+    background-color: #4299e1; /* Blue button */
+    border-color: #4299e1;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #3182ce; /* Darker blue on hover */
+    border-color: #3182ce;
+    transform: translateY(-2px);
+}
+
+/* Alert Message Styles */
+.alert {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    margin-top: 1rem;
+}
+
+.alert-danger {
+    background-color: #f56565; /* Red for errors */
+    color: #fff;
+    border-color: #e53e3e;
+}
+
+.alert-success {
+    background-color: #48bb78; /* Green for success */
+    color: #fff;
+    border-color: #38a169;
+}
+
+/* Checkbox Styles */
+.form-check-input:checked {
+    background-color: #4299e1;
+    border-color: #4299e1;
+}
+
+.form-check-label {
+    color: #a0aec0;
+}
+
+/* Password input with toggle icon */
+.password-input-group {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #a0aec0;
+    z-index: 10;
+}
+
+.password-toggle:hover {
+    color: #e2e8f0;
+}
+
+/* Specific styles for dashboard layout */
+body {
+    display: flex; /* Use flexbox for main layout */
+    flex-direction: column; /* Stack header, content vertically */
+    min-height: 100vh;
+    background-color: #1a202c; /* Dark background */
+    color: #e2e8f0; /* Light text color */
+    font-family: 'Inter', sans-serif;
+}
+.admin-wrapper {
+    display: flex;
+    flex: 1; /* Allow wrapper to take remaining height */
+}
+.admin-sidebar {
+    width: 250px; /* Fixed width for sidebar */
+    background-color: #2d3748; /* Darker sidebar background */
+    padding: 1.5rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    position: sticky; /* Sticky sidebar */
+    top: 0;
+    height: 100vh; /* Full height */
+    overflow-y: auto; /* Scrollable if content overflows */
+    transition: width 0.3s ease;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+.admin-sidebar.collapsed {
+    width: 70px; /* Collapsed width */
+}
+.admin-sidebar .nav-link {
+    color: #a0aec0; /* Lighter link color */
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link.active {
+    background-color: #4299e1; /* Blue highlight on hover/active */
+    color: #ffffff;
+}
+.admin-sidebar .nav-link i {
+    margin-right: 0.75rem;
+    width: 20px; /* Fixed width for icon to align text */
+    text-align: center;
+}
+.admin-sidebar.collapsed .nav-link span {
+    display: none; /* Hide text when collapsed */
+}
+.admin-sidebar.collapsed .nav-link i {
+    margin-right: 0; /* Remove margin when collapsed */
+}
+.admin-sidebar .sidebar-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.admin-sidebar .sidebar-header h3 {
+    color: #f7fafc;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+.admin-content {
+    flex-grow: 1; /* Allow content to take remaining width */
+    padding: 2rem;
+    background-color: #1a202c; /* Main content background */
+}
+.admin-navbar {
+    background-color: #2d3748;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.admin-navbar .navbar-brand {
+    color: #f7fafc;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+.admin-navbar .nav-item .nav-link {
+    color: #a0aec0;
+    transition: color 0.2s ease;
+}
+.admin-navbar .nav-item .nav-link:hover {
+    color: #f7fafc;
+}
+.card {
+    background-color: #2d3748; /* Card background */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    color: #e2e8f0;
+}
+.card-header {
+    background-color: #4a5568; /* Card header background */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f7fafc;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+}
+.card-body {
+    padding: 1.5rem;
+}
+.stat-card {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    background-color: #4a5568; /* Slightly lighter card for stats */
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px; /* Ensure consistent height */
+}
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+.stat-card .icon {
+    font-size: 2.5rem;
+    color: #63b3ed; /* Blue icon color */
+    margin-bottom: 0.5rem;
+}
+.stat-card .value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f7fafc;
+}
+.stat-card .label {
+    font-size: 0.9rem;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Table styles for data display */
+.table-dark {
+    --bs-table-bg: #2d3748;
+    --bs-table-striped-bg: #4a5568;
+    --bs-table-striped-color: #e2e8f0;
+    --bs-table-active-bg: #4a5568;
+    --bs-table-active-color: #e2e8f0;
+    --bs-table-hover-bg: #4a5568;
+    --bs-table-hover-color: #e2e8f0;
+    color: #e2e8f0;
+    border-color: #6b7280;
+}
+.table-dark th, .table-dark td {
+    border-color: #6b7280;
+}

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories Management - Lugx Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../../assets/css/admin_style.css">
+    <link rel="stylesheet" href="../../assets/css/admin_responsive.css">
+    <script>
+        window.AppBaseUrlPath = '/Lugxwebsite/public';
+    </script>
+</head>
+<body>
+    <div class="admin-navbar">
+        <a class="navbar-brand" href="#">Lugx Admin</a>
+        <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebarOffcanvas" aria-controls="adminSidebarOffcanvas" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <ul class="navbar-nav flex-row ms-auto">
+            <li class="nav-item me-3">
+                <a class="nav-link" href="#" id="logoutButton" style="margin-left: 16px;">
+                    <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="admin-wrapper">
+        <nav id="adminSidebar" class="admin-sidebar d-none d-md-block">
+            <div class="sidebar-header">
+                <h4>Admin Panel</h4>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_dashboard.html">
+                        <i class="fa-solid fa-chart-line"></i><span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_users.html">
+                        <i class="fa-solid fa-users"></i><span>Users</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_products.html">
+                        <i class="fa-solid fa-gamepad"></i><span>Products</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_orders.html">
+                        <i class="fa-solid fa-receipt"></i><span>Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="./admin_categories.html">
+                        <i class="fa-solid fa-tags"></i><span>Categories</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_coupons.html">
+                        <i class="fa-solid fa-ticket-alt"></i><span>Coupons</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_reviews.html">
+                        <i class="fa-solid fa-star"></i><span>Reviews</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_messages.html">
+                        <i class="fa-solid fa-envelope"></i><span>Messages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_newsletter.html">
+                        <i class="fa-solid fa-newspaper"></i><span>Newsletter</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_banners.html">
+                        <i class="fa-solid fa-image"></i><span>Banners</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_pages.html">
+                        <i class="fa-solid fa-file-alt"></i><span>Static Pages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_settings.html">
+                        <i class="fa-solid fa-cog"></i><span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./admin_reports.html">
+                        <i class="fa-solid fa-chart-pie"></i><span>Reports</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="adminSidebarOffcanvas" aria-labelledby="adminSidebarOffcanvasLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title text-light" id="adminSidebarOffcanvasLabel">Admin Panel</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_dashboard.html">
+                            <i class="fa-solid fa-chart-line"></i><span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_users.html">
+                            <i class="fa-solid fa-users"></i><span>Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_products.html">
+                            <i class="fa-solid fa-gamepad"></i><span>Products</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_orders.html">
+                            <i class="fa-solid fa-receipt"></i><span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/frontend/admin/admin_categories.html">
+                            <i class="fa-solid fa-tags"></i><span>Categories</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_coupons.html">
+                            <i class="fa-solid fa-ticket-alt"></i><span>Coupons</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_reviews.html">
+                            <i class="fa-solid fa-star"></i><span>Reviews</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_messages.html">
+                            <i class="fa-solid fa-envelope"></i><span>Messages</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_newsletter.html">
+                            <i class="fa-solid fa-newspaper"></i><span>Newsletter</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_banners.html">
+                            <i class="fa-solid fa-image"></i><span>Banners</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_pages.html">
+                            <i class="fa-solid fa-file-alt"></i><span>Static Pages</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_settings.html">
+                            <i class="fa-solid fa-cog"></i><span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/frontend/admin/admin_reports.html">
+                            <i class="fa-solid fa-chart-pie"></i><span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <main class="admin-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0 text-light">Categories Management</h1>
+                <button type="button" class="btn btn-primary" id="addNewCategoryBtn" data-bs-toggle="modal" data-bs-target="#categoryModal" style="margin-left: 5px;">
+                    <i class="fa-solid fa-plus me-2"></i>Add New Category
+                </button>
+            </div>
+            <div id="loadingSpinner" class="text-center my-5 d-none">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2 text-muted">Loading categories...</p>
+            </div>
+            <div id="message" class="alert d-none" role="alert"></div>
+            <div class="card" id="categoriesTableCard" style="display: none;">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Slug</th>
+                                    <th>Parent</th>
+                                    <th>Active</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoriesTableBody">
+                                <!-- Categories will be populated here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Category Add/Edit Modal -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-light">
+                <form id="categoryForm" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="categoryModalLabel">Add New Category</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="categoryId" name="id">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="categoryName" class="form-label">Category Name</label>
+                                    <input type="text" class="form-control" id="categoryName" name="name" required>
+                                    <div class="invalid-feedback">Please enter a category name.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="categorySlug" class="form-label">Slug</label>
+                                    <input type="text" class="form-control" id="categorySlug" name="slug" required>
+                                    <div class="invalid-feedback">Please enter a slug.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="parentCategory" class="form-label">Parent Category</label>
+                                    <select class="form-select" id="parentCategory" name="parent_id">
+                                        <option value="">None (Top Level)</option>
+                                        <!-- Parent categories will be loaded here -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="sortOrder" class="form-label">Sort Order</label>
+                                    <input type="number" class="form-control" id="sortOrder" name="sort_order" min="0" value="0">
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="isActive" name="is_active" checked>
+                                    <label class="form-check-label" for="isActive">Active</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="categoryImage" class="form-label">Image</label>
+                                    <input type="file" class="form-control" id="categoryImage" name="image" accept="image/*">
+                                    <div class="form-text">Recommended size: 300x300 pixels</div>
+                                    <div id="currentImageContainer" class="mt-2 d-none">
+                                        <label class="form-label">Current Image:</label>
+                                        <div>
+                                            <img id="currentImage" src="" class="img-fluid rounded" style="max-height: 150px;">
+                                            <button type="button" class="btn btn-sm btn-outline-danger mt-2" id="removeImage">Remove Image</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="categoryDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="categoryDescription" name="description" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="metaTitle" class="form-label">Meta Title</label>
+                                    <input type="text" class="form-control" id="metaTitle" name="meta_title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="metaDescription" class="form-label">Meta Description</label>
+                                    <textarea class="form-control" id="metaDescription" name="meta_description" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="../../assets/js/admin/admin_main.js"></script>
+    <script src="../../assets/js/admin/admin_auth.js"></script>
+    <script src="../../assets/js/admin/admin_categories.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutBtn = document.getElementById('logoutButton');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.adminLogout();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

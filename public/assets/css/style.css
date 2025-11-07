@@ -1,0 +1,2485 @@
+/* Basic Reset & Base Styles */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    /* Colors */
+    --primary-blue: #0d6efd;
+    --dark-blue: #0a4fbe; /* Darker shade for buttons/hover */
+    --light-blue: #e8f0fe; /* For active menu item / light backgrounds */
+    --dark-gray: #1e1e1e;
+    --medium-gray: #333;
+    --light-gray: #f7f7f7;
+    --text-color: #7a7a7a;
+    --white: #fff;
+    --red-discount: #ee626b;
+    --green-price: #62bd66;
+
+    /* Fonts */
+    --font-family: 'Poppins', sans-serif;
+
+    /* Spacing */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 30px;
+    --spacing-xl: 40px;
+    --spacing-xxl: 60px;
+    --section-padding-desktop: 100px 0;
+    --card-padding: 30px;
+
+    /* Border Radius */
+    --border-radius-sm: 5px;
+    --border-radius-md: 15px;
+    --border-radius-lg: 25px;
+    --border-radius-full: 50%;
+
+    /* Shadow */
+    --box-shadow: 0 0 15px rgba(0, 0, 0, 0.07);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--white); /* Default background */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-blue);
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--dark-blue);
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--dark-gray);
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+}
+
+.container {
+    max-width: 1200px; /* Adjust based on your design's content width */
+    margin: 0 auto;
+    padding: 0 var(--spacing-md); /* horizontal padding for smaller screens within desktop */
+}
+
+/* Preloader Styles */
+#preloader {
+    background-color: var(--primary-blue);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid rgba(255, 255, 255, 0.3);
+    border-top: 6px solid var(--white);
+    border-radius: var(--border-radius-full);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Utility Classes */
+.btn-primary {
+    display: inline-block;
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-blue);
+    color: var(--white);
+}
+
+.btn-secondary {
+    display: inline-block;
+    background-color: var(--dark-gray);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: var(--medium-gray);
+    color: var(--white);
+}
+
+.section-header {
+    text-align: left;
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-header h6 {
+    color: var(--primary-blue);
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-sm);
+}
+
+.section-header h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 0; /* Override default h2 margin */
+}
+
+.section-header .view-all-btn {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: var(--border-radius-md);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.section-header .view-all-btn i {
+    margin-left: var(--spacing-sm);
+}
+
+.section-header .view-all-btn:hover {
+    background-color: var(--dark-blue);
+}
+
+.section-header.center-header {
+    text-align: center;
+    display: block; /* Override flex for centered text */
+}
+
+.section-header.center-header h2 {
+    margin-bottom: var(--spacing-md);
+}
+
+/* Header Section */
+.main-header {
+    background: url('../img/banner-bg.jpg') no-repeat center center / cover;
+    padding-bottom: var(--section-padding-desktop);
+    position: relative;
+    height: 800px; /* Keep fixed height for desktop for now, will adjust with JS */
+    border-bottom-left-radius: 200px;
+    border-bottom-right-radius: 200px;
+}
+
+/* Navbar */
+.navbar {
+    background: url(../img/page-heading-bg.jpg);
+    padding: var(--spacing-md) 0;
+    position: relative;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.navbar.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--primary-blue);
+    box-shadow: var(--box-shadow);
+    padding: var(--spacing-sm) 0;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo img {
+    height: 40px;
+    width: auto;
+}
+
+.navbar .nav-links {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .nav-links li {
+    margin-left: var(--spacing-lg);
+}
+
+.navbar .nav-links li:last-child {
+    margin-left: var(--spacing-xl);
+}
+
+.navbar .nav-links li a {
+    color: var(--white);
+    font-weight: 500;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-lg);
+    transition: background-color 0.3s ease;
+}
+
+.navbar .nav-links li a:hover {
+    color: var(--white);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar .nav-links li a.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+    font-weight: 600;
+}
+
+.navbar .nav-links .btn-primary {
+    background-color: var(--red-discount);
+}
+
+.navbar.sticky .nav-links li a {
+    color: var(--dark-gray);
+}
+
+.navbar.sticky .nav-links li a:hover {
+    background-color: var(--light-blue);
+    color: var(--primary-blue);
+}
+
+.navbar.sticky .nav-links li a.active {
+    background-color: var(--light-blue);
+    color: var(--primary-blue);
+}
+
+.navbar .menu-toggle {
+    display: none;
+    font-size: 24px;
+    color: var(--white);
+    cursor: pointer;
+}
+
+.navbar.sticky .menu-toggle {
+    color: var(--dark-gray);
+}
+
+/* Hero Section */
+.hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--spacing-xxl); /* Keep existing padding */
+    padding-bottom: var(--spacing-xxl); /* Keep existing padding */
+    gap: var(--spacing-xxl);
+    flex-grow: 1; /* Allow hero-section to grow and fill remaining space of main-header */
+    width: 100%; /* Ensure it takes full width within container */
+}
+
+.hero-content {
+    flex: 1;
+    color: var(--white);
+    text-align: left;
+    margin-left: 200px;
+    /* Removed height: 100%; and display:flex; justify-content:center; from here */
+    /* to maintain original text alignment/position */
+}
+
+.hero-content h6 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+    color: var(--white);
+}
+
+.hero-content h1 {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+    color: var(--white);
+    position: relative;
+}
+
+.caption_dec {
+    position: absolute;
+    left: 90px;
+    margin-top: 40px;
+    width: 189px;
+}
+
+.hero-content p {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: var(--spacing-xl);
+    color: var(--white);
+    width: 590px;
+}
+
+.hero-content .search-box {
+    display: flex;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    max-width: 450px;
+}
+
+.hero-content .search-box input {
+    flex-grow: 1;
+    padding: 15px 20px;
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    outline: none;
+    background-color: var(--light-gray);
+}
+
+.hero-content .search-box input::placeholder {
+    color: rgba(93, 90, 90, 0.7);
+}
+
+.hero-content .search-box button {
+    background-color: var(--red-discount);
+    color: var(--white);
+    border: none;
+    padding: 15px 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.hero-content .search-box button:hover {
+    background-color: var(--dark-blue);
+}
+
+/* --- Carousel Styles (FINAL ADJUSTMENTS FOR DIMENSIONS & CAPTION) --- */
+.hero-image {
+    flex: 1;
+    position: relative; /* Original property, crucial for positioning children */
+    max-width: 350px; /* Original property */
+    display: flex; /* Use flex to align carousel-container */
+    align-items: center; /* Vertically center carousel if hero-image has extra height */
+    margin-right: 200px;
+    padding-bottom: 100px;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%; /* Take full width of hero-image */
+    height: 500px; /* Set a fixed height for the carousel on desktop. Adjust as needed to match original image's visual height. */
+                  /* This height is a visual approximation for the original image's aspect ratio */
+    overflow: hidden;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+    /* No aspect-ratio here; height is fixed or inherited */
+    /* Max-width is removed; it should scale with hero-image flex property */
+    display: flex; /* To contain slides with flex */
+}
+
+.carousel-slides {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s ease-in-out;
+}
+
+.carousel-slide {
+    flex: 0 0 100%;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crucial for filling the space without distortion */
+    border-radius: var(--border-radius-lg); /* Ensure corners match container */
+    display: block;
+}
+
+.carousel-caption {
+    position: absolute;
+    bottom: var(--spacing-lg); /* Slightly more space from bottom */
+    left: var(--spacing-lg); /* Slightly more space from left */
+    background-color: rgba(0, 0, 0, 0.75); /* Slightly less transparent */
+    color: var(--white);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+    z-index: 2;
+    backdrop-filter: blur(8px); /* Increased blur for better separation */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.carousel-caption .price-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.carousel-caption .old-price {
+    text-decoration: line-through;
+    color: rgba(255, 255, 255, 0.6); /* Slightly lighter for less emphasis */
+    font-size: 13px; /* Slightly smaller */
+}
+
+.carousel-caption .new-price {
+    color: var(--green-price);
+    font-size: 22px; /* Slightly larger and more prominent */
+    font-weight: 700;
+}
+
+.carousel-caption h3 {
+    margin: 0;
+    font-size: 22px; /* Slightly larger title */
+    color: var(--white);
+    font-weight: 600; /* Medium bold */
+    line-height: 1.2;
+}
+
+.carousel-caption .rating {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    gap: var(--spacing-xs);
+    color: rgba(255, 255, 255, 0.8); /* Slightly less bright than main text */
+}
+
+.carousel-caption .rating i {
+    color: #FFD700; /* Gold color for stars */
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-sm);
+    cursor: pointer;
+    z-index: 10;
+    border-radius: var(--border-radius-full);
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-btn:hover {
+    background-color: var(--dark-blue);
+}
+
+.carousel-btn.prev-btn {
+    left: var(--spacing-md);
+}
+
+.carousel-btn.next-btn {
+    right: var(--spacing-md);
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--spacing-xs);
+    z-index: 10;
+}
+
+.carousel-dot {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: var(--border-radius-full);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-dot.active {
+    background-color: var(--white);
+    transform: scale(1.2);
+}
+
+/* Features Section */
+
+.features-section {
+
+    margin-top: -150px;
+
+    padding: var(--spacing-xxl) 0;
+
+    position: relative;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+.features-grid{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.feature-card {
+
+    width: 300px;
+
+    height: 250px;
+
+    background-color: var(--light-gray);
+
+    box-shadow: 2px 2px 3px -3px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: var(--spacing-md);
+
+    border-radius: var(--border-radius-md);
+
+    transition: all 0.3s ease;
+
+}
+
+
+.feature-card .icon-wrapper {
+
+    background-color: var(--primary-blue);
+
+    width: 70px;
+
+    height: 70px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: var(--border-radius-full);
+
+    margin-bottom: var(--spacing-md);
+
+    box-shadow: var(--box-shadow); /* Shadow for icons */
+
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+}
+
+
+.feature-card .icon-wrapper img {
+
+    width: 35px; /* Adjust icon size */
+
+    height: 35px;
+
+    transition: filter 0.3s ease;
+
+}
+
+
+.feature-card h4 {
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    margin-bottom: 0; /* Remove default h4 margin */
+
+    color: var(--dark-gray);
+
+}
+
+
+.feature-card:hover .icon-wrapper {
+
+    background-color: var(--red-discount); 
+
+    transform: scale(1.1); 
+
+}
+
+.feature-card p{
+    width: 283px;
+}
+
+/* Games Section - General Styles (Ensure these are present and correct) */
+.games-section {
+    padding: var(--section-padding-desktop);
+    background-color: var(--light-gray);
+    border-top-left-radius: var(--border-radius-lg);
+    border-top-right-radius: var(--border-radius-lg);
+    margin-top: var(--spacing-xl);
+}
+
+/* Specific radius for games-section on index.html, ensure it's applied correctly */
+.games-section {
+    border-top-left-radius: 200px;
+    border-top-right-radius: 200px;
+}
+
+.games-section h6 {
+    font-size: 20px;
+    font-weight: bolder;
+    color: var(--red-discount);
+}
+
+.games-section h2 { /* Ensure h2 is styled for section headers */
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--dark-gray);
+    margin-bottom: 20px;
+}
+
+.section-header { /* General header for sections like Trending, Most Played */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.section-header .view-all-btn {
+    background-color: var(--red-discount);
+    padding: 8px 15px;
+    border-radius: var(--border-radius-md);
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.section-header .view-all-btn:hover {
+    background-color: var(--dark-blue);
+}
+
+
+/* --- Game Card Styles (Applicable to both index.html and shop.html) --- */
+
+/* Base styles for all game cards */
+.game-card {
+    background-color: var(--white);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    position: relative; /* Needed for absolute positioning of price-info and product-actions */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; /* Ensure cards in grid take full height of their cell */
+    width: 300px;
+    padding-bottom: 60px;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    z-index: 2; /* Bring hovered card to front */
+}
+
+.game-card img {
+    width: 100%;
+    height: 210px; /* Fixed height for consistency */
+    object-fit: cover;
+    border-top-left-radius: var(--border-radius-md); /* Apply radius to top corners */
+    border-top-right-radius: var(--border-radius-md);
+    /* Ensure bottom corners are not rounded if parent has overflow: hidden */
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.game-card .game-info {
+    padding: 15px 20px; /* Adjusted padding for better spacing */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+.game-card .category {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-sm);
+    display: inline-block; /* Essential for padding/margin to work correctly */
+}
+
+.game-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: 8px;
+    line-height: 1.3; /* Improves readability for multiple lines */
+}
+
+/* Price Info (positioned absolutely) */
+.game-card .price-info {
+    position: absolute;
+    top: 15px; /* Distance from top */
+    right: 15px; /* Distance from right */
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 8px 12px; /* Adjusted padding */
+    border-radius: var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px; /* Ensure enough width for prices */
+    text-align: center;
+    box-shadow: var(--box-shadow-sm); /* Subtle shadow for depth */
+}
+
+.game-card .old-price {
+    text-decoration: line-through;
+    color: rgba(255, 255, 255, 0.7); /* Slightly faded old price */
+    font-size: 14px;
+    margin-bottom: 2px; /* Small space between prices */
+}
+
+.game-card .new-price {
+    color: var(--white);
+    font-weight: 700;
+    font-size: 18px;
+}
+
+/* --- Product Actions (for shop.html) --- */
+.game-card .product-actions {
+    position: absolute;
+    bottom: 15px; /* Distance from bottom - adjusted to be consistent */
+    right: 15px; /* Distance from right */
+    display: flex;
+    gap: 8px; /* Space between buttons */
+    z-index: 1; /* Ensure buttons are above other content if needed */
+}
+
+.game-card .product-actions button {
+    background-color: var(--red-discount);
+    color: var(--white);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Make them perfectly round */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: var(--box-shadow-sm); /* Subtle shadow for buttons */
+}
+
+.game-card .product-actions button:hover {
+    background-color: var(--dark-blue);
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Specific icon styles if needed, though font-awesome usually handles this */
+.game-card .product-actions button i {
+    color: var(--white); /* Ensure icon color is white */
+}
+
+
+/* --- Play Button (for index.html Trending Games) --- */
+/* This is specifically for index.html's Trending section */
+.game-card .play-btn {
+position: absolute;
+    bottom: 15px; /* Consistent with product-actions bottom */
+    right: 15px;
+    background-color: var(--red-discount);
+    color: var(--white);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Make it perfectly round */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Remove underline for links */
+    box-shadow: var(--box-shadow-sm); /* Consistent shadow */
+    z-index: 1; /* Ensure play button is above other elements if they overlap */
+}
+
+.game-card .play-btn:hover {
+    background-color: var(--dark-blue);
+}
+
+/* --- Game Card Small Styles (for index.html Most Played Games) --- */
+.game-card-small {
+    background-color: var(--light-gray);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; /* Changed to column for better layout */
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; /* Ensure it takes full width of its grid column */
+}
+
+.game-card-small:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.game-card-small img {
+    width: 100%;
+    height: 120px; /* Smaller fixed height for image for small cards */
+    object-fit: cover;
+    border-top-left-radius: var(--border-radius-md);
+    border-top-right-radius: var(--border-radius-md);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.game-card-small .game-info-small {
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-grow: 1;
+    text-align: left;
+}
+
+.game-card-small .category {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-sm);
+    display: inline-block;
+}
+
+.game-card-small h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.3;
+}
+
+.game-card-small .explore-btn {
+    display: inline-block;
+    background-color: var(--red-discount);
+    color: var(--white);
+    padding: 6px 12px;
+    border-radius: var(--border-radius-md);
+    font-size: 12px;
+    margin-top: var(--spacing-sm);
+    margin-left: 20px;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.game-card-small .explore-btn:hover {
+    background-color: var(--dark-blue);
+}
+
+/* --- Grid Layouts --- */
+.trending-games .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjusted min-width for better scaling */
+    gap: 56px; /* Increased gap for better spacing */
+    position: relative;
+}
+
+.shop-games-grid { /* This is the #product-grid in shop.html */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Consistent with trending games */
+    gap: 30px; /* Consistent with trending games */
+    margin-top: 30px; /* Space below filters */
+}
+
+.most-played-games .games-grid-small {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjusted min-width for smaller cards */
+    gap: 20px;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+/* --- Filter Buttons Styles --- */
+.shop-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px; /* Space between filter buttons */
+    margin-bottom: 40px; /* Space below filter buttons */
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-sm);
+}
+
+.shop-filters .filter-btn {
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.shop-filters .filter-btn:hover {
+    background-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.shop-filters .filter-btn.active {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    box-shadow: var(--box-shadow-sm);
+}
+
+/* --- Search Box Styles (for shop page) --- */
+.page-heading .search-box {
+    max-width: 600px; /* Limit width of search box */
+    margin: 50px auto; /* Center it with margin */
+    display: flex;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.page-heading .search-box input[type="text"] {
+    flex-grow: 1;
+    padding: 15px 20px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: var(--dark-gray);
+    background-color: var(--white);
+}
+
+.page-heading .search-box input[type="text"]::placeholder {
+    color: var(--text-color);
+}
+
+.page-heading .search-box button {
+    background-color: var(--red-discount);
+    color: var(--white);
+    padding: 15px 25px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.page-heading .search-box button:hover {
+    background-color: var(--dark-blue);
+}
+
+/* --- Pagination Styles --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.pagination-list { /* Added for the ul element in product.js */
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 8px;
+}
+
+.pagination-list li a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Round buttons */
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination-list li a:hover:not(.disabled) {
+    background-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.pagination-list li a.active {
+    background-color: var(--red-discount);
+    color: var(--white);
+    box-shadow: var(--box-shadow-sm);
+}
+
+.pagination-list li a.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Most Played Games - Specific Styles (Revised) */
+.most-played-games {
+    background-color: var(--white); /* White background for this section */
+    border-top-left-radius: var(--border-radius-lg);
+    border-top-right-radius: var(--border-radius-lg);
+    margin-top: var(--spacing-xxl); /* Space between sections */
+    padding: var(--section-padding-desktop) 0; /* Ensure consistent section padding */
+}
+
+.most-played-games .games-grid-small {
+    display: grid; /* Use grid for consistent layout */
+    grid-template-columns: repeat(6, 1fr); /* 6 columns as per desktop design */
+    gap: var(--spacing-md); /* Consistent gap */
+    /* Removed flex centering, grid handles it better with item alignment */
+}
+
+/* General Grid for Most Played Section */
+.games-grid-small {
+    display: grid;
+    /* Adjust grid-template-columns to control card width and number of columns */
+    /* Example: 5 columns for desktop, adjust as needed */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Min width 180px, grows to fill */
+    gap: 20px; /* Space between cards */
+    margin-top: 30px; /* Add some top margin for separation from header */
+    justify-content: center; /* Center items if they don't fill the whole row */
+}
+
+.game-card-small {
+    background-color: var(--light-gray);
+    border-radius: var(--border-radius-md);
+    overflow: hidden; /* Crucial for image border-radius to work */
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Remove fixed width: width: 400px; */
+    width: 100%; /* Ensure it takes full width of its grid column */
+}
+
+.game-card-small:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.game-card-small img {
+    width: 100%;
+    height: 120px; /* Smaller fixed height for image for small cards */
+    object-fit: cover;
+    /* Remove border-radius here if you want it on the parent div, or ensure it matches */
+    /* If you want image to have rounded top corners only, use: */
+    border-top-left-radius: var(--border-radius-md);
+    border-top-right-radius: var(--border-radius-md);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.game-card-small .game-info-small {
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-grow: 1;
+    text-align: left; /* Ensure text aligns left */
+}
+
+.game-card-small .category {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-sm);
+    /* Ensure it's inline-block or block to respect margin */
+    display: inline-block;
+}
+
+.game-card-small h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.3; /* Improve readability for multi-line titles */
+}
+
+.game-card-small .explore-btn {
+    display: inline-block;
+    background-color: var(--red-discount);
+    color: var(--white);
+    padding: 6px 12px;
+    border-radius: var(--border-radius-md);
+    font-size: 12px;
+    margin-top: var(--spacing-sm);
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Ensure no underline */
+}
+
+.game-card-small .explore-btn:hover {
+    background-color: var(--dark-blue);
+}
+
+/* Ensure the section header is styled correctly for alignment */
+.games-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* Space below header */
+}
+
+.games-section h6 {
+    color: var(--red-discount); /* Example color */
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.games-section h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--dark-gray);
+    margin-bottom: 0;
+}
+
+/* Existing styles for .section-header .view-all-btn (ensure they are present and correct) */
+.section-header .view-all-btn {
+    background-color: var(--red-discount);
+    padding: 8px 15px;
+    border-radius: var(--border-radius-md);
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Ensure game-card img is not overriding game-card-small img */
+.game-card img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    border-radius: var(--border-radius-md);
+}
+
+.game-card .game-info {
+
+    padding: 10px 15px; /* کاهش padding */
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+}
+
+
+.game-card .category {
+
+    background-color: var(--primary-blue);
+
+    color: var(--white);
+
+    font-size: 13px;
+
+    padding: 4px 10px;
+
+    border-radius: var(--border-radius-sm);
+
+    margin-bottom: var(--spacing-sm);
+
+    margin-left: 0 auto; /* تغییر جدید: فشردن به سمت راست */
+
+}
+
+
+.game-card h3 {
+
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: 8px;
+    line-height: 1.3; /* Improves readability for multiple lines */
+    /* NEW: Ensure it doesn't push too far down */
+    word-break: break-word; /* Allow long words to break */
+    overflow-wrap: break-word; /* Ensure wrapping for long titles */
+    max-height: 3.9em; /* Limit to 3 lines (1.3 * 3 = 3.9) to prevent overflow */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+}
+
+
+.game-card .price-info {
+    position: absolute;
+    top: 15px; /* Distance from top */
+    right: 15px; /* Distance from right */
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 8px 12px; /* Adjusted padding */
+    border-radius: var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px; /* Ensure enough width for prices */
+    text-align: center;
+    box-shadow: var(--box-shadow-sm); /* Subtle shadow for depth */
+    z-index: 1; /* Ensure price info is above other elements if they overlap */
+}
+
+
+.game-card .old-price {
+
+    text-decoration: line-through;
+
+    color: var(--light-gray);
+
+    font-size: 14px;
+
+}
+
+
+.game-card .new-price {
+
+    color: var(--light-gray);
+
+    font-weight: 700;
+
+    font-size: 18px;
+
+}
+
+
+.game-card .play-btn {
+
+    position: absolute;
+
+    bottom: 10px;
+
+    right: 10px; 
+
+    background-color: var(--red-discount);
+
+    color: var(--white);
+
+    width: 40px;
+
+    height: 40px;
+
+    border-radius: var(--border-radius-full);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 18px;
+
+    transition: background-color 0.3s ease;
+
+}
+
+
+.game-card .play-btn:hover {
+
+    background-color: var(--dark-blue);
+
+}
+
+/* Most Played Games - Specific Styles (Revised) */
+.most-played-games {
+    background-color: var(--white); /* White background for this section */
+    border-top-left-radius: var(--border-radius-lg);
+    border-top-right-radius: var(--border-radius-lg);
+    margin-top: var(--spacing-xxl); /* Space between sections */
+    padding: var(--section-padding-desktop) 0; /* Ensure consistent section padding */
+}
+
+.most-played-games .games-grid-small {
+    display: grid; /* Use grid for consistent layout */
+    grid-template-columns: repeat(6, 1fr); /* 6 columns as per desktop design */
+    gap: var(--spacing-md); /* Consistent gap */
+    /* Removed flex centering, grid handles it better with item alignment */
+}
+
+.game-card-small {
+    background-color: var(--light-gray);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* width: 400px; Removed fixed width, let grid handle sizing */
+}
+
+.game-card-small:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.game-card-small img {
+    width: 100%;
+    height: 120px; /* Smaller fixed height for image for small cards */
+    object-fit: cover;
+    border-radius: var(--border-radius-md); /* Apply radius to all corners, matching card */
+}
+
+.game-card-small .game-info-small {
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute content */
+    align-items: flex-start; /* Align text to left */
+    flex-grow: 1; /* Allow info box to grow */
+}
+
+.game-card-small .category {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    font-size: 11px; /* Smaller font for category */
+    padding: 3px 8px;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.game-card-small h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: var(--spacing-sm);
+}
+
+.game-card-small .explore-btn {
+    display: inline-block;
+    background-color: var(--red-discount);
+    color: var(--white);
+    padding: 6px 12px;
+    border-radius: var(--border-radius-md); /* Match existing radius on other buttons */
+    font-size: 12px;
+    margin-top: var(--spacing-sm); /* Add margin top to separate from title */
+    transition: background-color 0.3s ease;
+}
+
+.game-card-small .explore-btn:hover {
+    background-color: var(--dark-blue);
+}
+
+/* Section Header Styles */
+.section-header {
+    margin-bottom: var(--spacing-xl); /* Space below the header */
+}
+
+.section-header.center-header {
+    text-align: center; /* Center align the text in the header */
+}
+/* Top Categories Section */
+
+.categories-section {
+
+    padding: var(--section-padding-desktop);
+
+    background-color: var(--light-gray); /* Light grey background for sections */
+
+    /* margin-top: var(--spacing-xxl); در این مورد نیازی به margin-top نداریم چون بخش header بالا قرار میگیرد */
+
+}
+
+
+.categories-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(5, 1fr); /* 5 columns as in the screenshot */
+
+    gap: var(--spacing-md); /* Gap between cards */
+
+    justify-content: center; /* Center grid items horizontally */
+
+    align-items: start; /* Align items to the start of their grid area */
+
+}
+
+
+.category-card {
+
+    background-color: var(--primary-blue);
+
+    position: relative;
+
+    border-radius: var(--border-radius-lg);
+
+    overflow: hidden; /* Ensures the image respects border-radius */
+
+    box-shadow: var(--box-shadow);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    cursor: pointer; /* Indicate that it's clickable */
+
+}
+
+
+.category-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow on hover */
+
+}
+
+
+.category-card img {
+
+    width: 100%;
+
+    height: 100%; /* Make image fill the card */
+
+    display: block; /* Remove extra space below image */
+
+    border-top-left-radius: var(--border-radius-md);
+
+    border-top-right-radius: var(--border-radius-md);
+
+    margin-top: 55px;
+
+}
+
+
+.category-card .category-tag {
+
+    position: absolute;
+
+    background-color: var(--primary-blue); /* Darker, semi-transparent background */
+
+    color: var(--white);
+
+    width: 100%;
+
+    padding: 8px 15px;
+
+    padding-bottom: 20px ; 
+
+    text-align: center;
+
+    font-size: 15px;
+
+    font-weight: 500;
+
+    
+
+}
+
+
+
+/* Call to Action / Newsletter Section */
+
+.cta-newsletter-section {
+
+    background: url('../img/cta-bg.jpg') no-repeat center center / cover; /* Replace with your actual background image */
+
+    padding: var(--section-padding-desktop);
+
+    color: var(--white);
+
+    border-bottom-left-radius: var(--border-radius-lg);
+
+    border-bottom-right-radius: var(--border-radius-lg);
+
+    margin-top: var(--spacing-xxl);
+
+}
+
+
+.cta-newsletter-section .container {
+
+    padding: var(--spacing-lg) 0; /* Adjust container padding */
+
+}
+
+
+.cta-content {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: var(--spacing-xxl);
+
+}
+
+
+.shop-promo,
+
+.newsletter-form {
+
+    flex: 1;
+
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background for inner cards */
+
+    padding: var(--card-padding);
+
+    border-radius: var(--border-radius-lg);
+
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+
+    backdrop-filter: blur(5px); /* Optional: add a subtle blur effect */
+
+}
+
+
+.shop-promo h6,
+
+.newsletter-form h6 {
+
+    color: var(--light-gray);
+
+    font-size: 16px;
+
+    font-weight: 500;
+
+    margin-bottom: var(--spacing-sm);
+
+    text-transform: uppercase;
+
+}
+
+
+.shop-promo h2,
+
+.newsletter-form h2 {
+
+    font-size: 36px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    margin-bottom: var(--spacing-md);
+
+    color: var(--white);
+
+}
+
+
+.shop-promo h2 .highlight,
+
+.newsletter-form h2 .highlight {
+
+    color: var(--red-discount); /* Highlight color */
+
+}
+
+
+.shop-promo p {
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    margin-bottom: var(--spacing-xl);
+
+    color: rgba(255, 255, 255, 0.8);
+
+}
+
+
+.shop-promo .btn-secondary {
+
+    background-color: var(--red-discount);
+
+}
+
+
+.shop-promo .btn-secondary:hover {
+
+    background-color: var(--primary-blue);
+
+}
+
+
+.newsletter-form form {
+
+    display: flex;
+
+    border-radius: var(--border-radius-md);
+
+    overflow: hidden;
+
+    background-color: var(--white);
+
+    margin-top: var(--spacing-xl);
+
+}
+
+
+.newsletter-form form input {
+
+    flex-grow: 1;
+
+    padding: 15px 20px;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--dark-gray);
+
+    font-size: 15px;
+
+    outline: none;
+
+}
+
+
+.newsletter-form form input::placeholder {
+
+    color: var(--text-color);
+
+}
+
+
+.newsletter-form form button {
+
+    background-color: var(--red-discount);
+
+    color: var(--white);
+
+    border: none;
+
+    padding: 15px 30px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
+
+}
+
+
+.newsletter-form form button:hover {
+
+    background-color: var(--dark-blue);
+
+}
+
+
+
+/* Footer Section */
+
+.main-footer {
+
+    background: url(../img/footer-bg.jpg);
+
+    color: var(--white);
+
+    padding: var(--spacing-lg) 0;
+
+    padding-bottom: 100px;
+
+    text-align: center;
+
+    font-size: 14px;
+
+    margin-top: var(--spacing-xxl); /* Space after the previous section */
+
+    border-top-left-radius: 200px;
+
+    border-top-right-radius: 200px;
+
+
+}
+
+
+.main-footer p {
+
+    margin: 0;
+
+}
+
+
+.main-footer a {
+
+    color: var(--primary-blue);
+
+    font-weight: 500;
+
+}
+
+
+.main-footer a:hover {
+
+    color: var(--light-blue);
+
+}
+
+.shop-header{
+}
+
+.page-heading {
+    background: url(../img/banner-bg.jpg);
+    padding: 120px 0 80px; /* Adjust top padding for header */
+    text-align: center;
+    color: var(--white);
+    position: relative;
+    z-index: 1; /* Below sticky header */
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+    margin-top: -50px; /* Pull it up to hide behind the header */
+    min-height: 250px; /* Ensure sufficient height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: -120px;
+}
+/* Ensure the page heading text colors are white */
+.page-heading h6 {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.page-heading h2 {
+    color: var(--white);
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+.page-heading .breadcrumb {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.page-heading .breadcrumb a {
+    color: var(--white);
+    text-decoration: none;
+}
+.page-heading .breadcrumb a.active {
+    color: var(--red-discount); /* Highlight active breadcrumb */
+    font-weight: 600;
+}
+
+
+.shop-content {
+    padding: var(--section-padding-desktop) 0;
+}
+
+.shop-content .container{
+    
+}
+.shop-filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 50px;
+    flex-wrap: wrap; /* Allow buttons to wrap */
+}
+
+.shop-filters .filter-btn {
+    background-color: var(--white);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 12px 25px;
+    border-radius: var(--border-radius-lg);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    box-shadow: var(--box-shadow);
+}
+
+.shop-filters .filter-btn:hover,
+.shop-filters .filter-btn.active {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border-color: var(--primary-blue);
+}
+
+
+/* --- Product Detail Section (NEW / specific) --- */
+.product-detail-section {
+    padding: var(--section-padding-desktop) 0; /* Use consistent section padding */
+    background-color: var(--white);
+}
+
+.product-detail-section .product-content {
+    display: flex;
+    gap: var(--spacing-xxl);
+    align-items: flex-start;
+    margin-bottom: var(--spacing-xxl);
+}
+
+.product-detail-section .product-image {
+    flex: 1;
+    max-width: 50%;
+    padding: 20px;
+    background-color: var(--light-gray); /* Used light-gray for consistency */
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--box-shadow-light);
+}
+
+.product-detail-section .product-image img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--border-radius-md);
+}
+
+.product-detail-section .product-info {
+    flex: 1;
+    max-width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.product-detail-section .product-info .category {
+    background-color: var(--light-blue-bg); /* Use light-blue-bg for specific product detail category */
+    color: var(--primary-blue);
+    padding: 5px 15px;
+    border-radius: var(--border-radius-full);
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+    align-self: flex-start;
+    margin-bottom: var(--spacing-xs);
+}
+
+.product-detail-section .product-info h2 {
+    font-size: 40px;
+    color: var(--heading-color);
+    margin-bottom: var(--spacing-xs);
+}
+
+.product-detail-section .product-info .prices {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.product-detail-section .product-info .prices .old-price {
+    font-size: 20px;
+    color: var(--dark-gray);
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.product-detail-section .product-info .prices .new-price {
+    font-size: 32px;
+    color: var(--red-discount);
+    font-weight: 700;
+}
+
+.product-detail-section .product-info p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.product-detail-section .quantity-add-cart {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.product-detail-section .quantity-input {
+    display: flex;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+}
+
+.product-detail-section .quantity-input button {
+    background-color: var(--light-gray);
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: var(--dark-gray);
+}
+
+.product-detail-section .quantity-input button:hover {
+    background-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.product-detail-section .quantity-input input.quantity {
+    width: 60px;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: var(--heading-color);
+}
+.product-detail-section .quantity-input input.quantity::-webkit-outer-spin-button,
+.product-detail-section .quantity-input input.quantity::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.product-detail-section .add-to-cart-btn {
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.product-detail-section .add-to-cart-btn:hover {
+    background-color: var(--light-gray);
+    color: var(--primary-blue);
+}
+
+.product-detail-section .add-to-cart-btn i {
+    font-size: 18px;
+}
+
+.product-detail-section .game-details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--border-color);
+    padding-top: var(--spacing-md);
+}
+
+.product-detail-section .game-details-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.product-detail-section .game-details-list li:last-child {
+    border-bottom: none;
+}
+
+.product-detail-section .game-details-list li span:first-child {
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.product-detail-section .game-details-list li span:last-child {
+    color: var(--text-color);
+    font-size: 15px;
+}
+
+
+/* --- Description & Reviews Tabs --- */
+.description-reviews {
+    background-color: var(--white);
+    padding: var(--spacing-xxl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-light);
+}
+
+.description-reviews .tabs {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.description-reviews .tab-item {
+    padding: 15px 25px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-color);
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px; /* To prevent double border */
+}
+
+.description-reviews .tab-item:hover {
+    color: var(--primary-blue);
+}
+
+.description-reviews .tab-item.active {
+    color: var(--primary-blue);
+    border-bottom: 3px solid var(--primary-blue);
+}
+
+.description-reviews .tab-pane {
+    display: none; /* Hidden by default */
+    line-height: 1.7;
+    color: var(--text-color);
+}
+
+.description-reviews .tab-pane.active {
+    display: block; /* Shown when active */
+}
+
+.description-reviews .tab-pane p {
+    margin-bottom: var(--spacing-md);
+    font-size: 15px;
+}
+.description-reviews .tab-pane p:last-child {
+    margin-bottom: 0;
+}
+
+/* NEW: Review Specific Styles */
+
+/* Styling for the stars-display container */
+.stars-display {
+    /* Adjust font-size if the icons are too small/large */
+    font-size: 1.2em; /* Example size */
+    display: inline-block; /* Keep it inline with text */
+    vertical-align: middle; /* Align nicely with text */
+    white-space: nowrap; /* Prevent stars from wrapping */
+}
+
+/* Color for filled stars */
+.stars-display .filled {
+    color: gold; /* Or any color you prefer for filled stars */
+}
+
+/* Color for half-filled stars (if you use fa-star-half-alt) */
+.stars-display .half-filled {
+    color: gold; /* Usually same as filled, or a slightly different shade */
+}
+
+/* Color for empty stars */
+.stars-display .empty {
+    color: #ccc; /* Light gray for empty stars */
+}
+
+
+/* Star Rating Input (for the review form) */
+.star-rating-input {
+    display: inline-block;
+    font-size: 2em; 
+    cursor: pointer;
+    width: fit-content;
+    white-space: nowrap; 
+}
+
+.star-rating-input .star {
+    color: #ccc;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+    padding: 0 2px;
+}
+
+.star-rating-input .star:hover {
+    color: gold;
+    transform: scale(1.1);
+}
+
+.star-rating-input .star:hover {
+    color: gold;
+    transform: scale(1.1);
+}
+
+.star-rating-input .star.selected {
+    color: gold;
+    transform: scale(1.1);
+}
+
+.star-rating-input:not(:hover) .star:not(.selected) {
+    color: #ccc;
+    transform: none;
+}
+
+/* Individual Review Card */
+.review-card {
+    background-color: var(--light-gray);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--box-shadow-small);
+    border: 1px solid var(--border-color);
+}
+
+.review-card:last-child {
+    margin-bottom: 0;
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.review-card-header .user-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.review-card-header .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-blue); /* Placeholder background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.review-card-header .username {
+    font-weight: 700;
+    color: var(--heading-color);
+    font-size: 1.1em;
+}
+
+.review-card-header .review-meta {
+    text-align: right;
+}
+
+.review-card-header .review-meta .review-date {
+    font-size: 0.9em;
+    color: var(--dark-gray);
+    display: block;
+    margin-top: 2px;
+}
+
+.review-card-body {
+    margin-bottom: var(--spacing-md);
+}
+
+.review-card-body p {
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-bottom: 0;
+}
+
+.review-card-footer {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    padding-top: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.review-helpful-buttons button {
+    background: none;
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 0.9em;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.review-helpful-buttons button:hover {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border-color: var(--primary-blue);
+}
+
+.review-helpful-buttons button.active {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border-color: var(--primary-blue);
+}
+
+.review-helpful-buttons .helpful-count {
+    font-weight: 600;
+    margin-left: 5px;
+    color: var(--heading-color);
+}
+
+/* --- Contact Page Specific Styles --- */
+
+/* Overall Section Styling */
+.contact-content.section { /* Using .section class for consistent padding from other pages */
+    padding: var(--section-padding-desktop) 0;
+    background-color: var(--white);
+}
+
+.contact-content .container {
+    /* The .container class itself should define max-width and margin: auto; */
+    /* This padding is for internal spacing specific to this section's container */
+    padding-bottom: var(--spacing-xxl); /* Add extra space below the main contact wrapper */
+}
+
+/* Main Two-Column Layout for Contact Content */
+.contact-content-wrapper {
+    display: grid; /* Enables CSS Grid for two-column layout */
+    grid-template-columns: 1fr 1fr; /* Creates two equal-width columns */
+    gap: var(--spacing-xxl); /* Gap between the two columns (info and form/map) */
+    align-items: flex-start; /* Aligns content blocks to the top of their grid cells */
+    background-color: var(--light-gray);
+}
+
+/* Left Column: Contact Information Block */
+.contact-info-block {
+    background-color: var(--light-gray-bg);
+    padding: var(--spacing-xl); /* Internal padding for the block */
+    box-shadow: var(--box-shadow-light);
+    height: 100%; /* Ensures the block stretches to fill the height of its grid cell */
+    display: flex; /* Use flexbox to organize content inside the block */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Vertically center content if there's extra space */
+}
+
+.contact-info-block .section-heading h6 {
+    color: var(--red-discount); /* Matches "CONTACT US" text color in the design */
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+}
+
+.contact-info-block .section-heading h2 {
+    font-size: 38px;
+    color: var(--heading-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.contact-info-block p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-xl);
+}
+
+.contact-details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contact-details-list li {
+    display: flex;
+    flex-direction: column; /* Stack title (h6) and span vertically */
+    margin-bottom: var(--spacing-md);
+}
+
+.contact-details-list li:last-child {
+    margin-bottom: 0; /* No margin below the last list item */
+}
+
+.contact-details-list li h6 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--heading-color);
+    margin-bottom: 5px; /* Small gap between title and value */
+}
+
+.contact-details-list li span {
+    font-size: 15px;
+    color: var(--text-color);
+}
+
+/* Right Column: Map and Contact Form Block */
+.contact-form-map-block {
+    background-color: var(--white);
+    padding: var(--spacing-xl); /* Internal padding for the block */
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-light);
+}
+
+/* Google Map Styling */
+#map {
+    margin-bottom: var(--spacing-md); /* Space between map and form */
+    border-radius: var(--border-radius-lg); /* Matches the container's border-radius */
+    overflow: hidden; /* Ensures the iframe's corners are rounded */
+}
+
+#map iframe {
+    width: 100%;
+    display: block; /* Removes any extra space below the iframe */
+}
+
+/* Contact Form Styling */
+#contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.form-fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+}
+
+/* تغییرات اصلی برای form-field-half */
+.form-field-half {
+    background-color: var(--light-gray); /* رنگ پس‌زمینه */
+    padding: 10px; /* فاصله داخلی */
+    border-radius: var(--border-radius-lg); /* گوشه‌های گرد */
+    transition: all 0.3s ease; /* انیمیشن برای حالت فوکوس */
+}
+
+.form-field-full {
+    grid-column: span 2;
+    background-color: var(--light-gray); /* رنگ پس‌زمینه */
+    border-radius: var(--border-radius-lg); /* گوشه‌های گرد */
+}
+
+#contact-form fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#contact-form input,
+#contact-form textarea {
+    width: 100%;
+    padding: 15px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    outline: none;
+    font-size: 15px;
+    color: var(--heading-color);
+    background-color: var(--light-gray-bg);
+    transition: all 0.3s ease;
+}
+
+/* تغییر استایل placeholder */
+#contact-form input::placeholder,
+#contact-form textarea::placeholder {
+    color: var(--heading-color);
+    opacity: 0.8;
+}
+
+/* تغییرات برای حالت فوکوس */
+#contact-form input:focus,
+#contact-form textarea:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(var(--primary-blue-rgb), 0.2);
+}
+
+/* حالت فوکوس برای ظرف فیلدهای نیمه */
+.form-field-half:focus-within {
+    box-shadow: 0 0 0 3px rgba(var(--primary-blue-rgb), 0.2);
+}
+
+#contact-form textarea {
+    min-height: 120px;
+    resize: vertical;
+    background-color: var(--light-gray-bg);
+}
+/* Orange Button Style (for form submit button) */
+.orange-button {
+    background-color: var(--red-discount); /* Use your defined red discount color */
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 15px 30px;
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block; /* Makes the button take full width of its container */
+    width: 100%; /* Ensures it fills the 'form-field-full' grid cell */
+    text-align: center;
+}
+
+.orange-button:hover {
+    background-color: var(--primary-blue);
+}
