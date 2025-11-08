@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const tableBody = document.getElementById('topProductsTableBody');
         tableBody.innerHTML = '';
 
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">No products found for the selected period.</td></tr>';
             return;
         }
@@ -351,13 +351,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(`HTTP error! Status: ${response.status}. Response: ${errorText}`);
             }
 
-            const data = await response.json();
+            const responseData = await response.json();
 
-            if (data.success) {
-                renderActivityTable(data.data.data);
-                renderActivityPagination(data.data.pagination);
+            if (responseData.success) {
+                // Check if data exists and has the expected structure
+                if (responseData.data && responseData.data.data) {
+                    renderActivityTable(responseData.data.data);
+                    renderActivityPagination(responseData.data.pagination);
+                } else {
+                    // Handle case where data structure is different
+                    const tableBody = document.getElementById('activityTableBody');
+                    tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No activity logs found for the selected filters.</td></tr>';
+                }
             } else {
-                Admin.showAlert(data.message || 'Failed to load user activity report.', 'danger', 'message');
+                Admin.showAlert(responseData.message || 'Failed to load user activity report.', 'danger', 'message');
             }
         } catch (error) {
             console.error('Network or unexpected error fetching user activity report:', error);
@@ -373,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const tableBody = document.getElementById('activityTableBody');
         tableBody.innerHTML = '';
 
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No activity logs found for the selected filters.</td></tr>';
             return;
         }
@@ -401,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const paginationContainer = document.getElementById('activityPagination');
         paginationContainer.innerHTML = '';
 
-        if (pagination.pages <= 1) {
+        if (!pagination || pagination.pages <= 1) {
             return;
         }
 
@@ -480,10 +487,19 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('deviceStatsContainer').style.display = 'none';
             document.getElementById('dailyStatsContainer').style.display = 'none';
             
+            // Show/hide additional filters based on report type
+            const urlInput = document.getElementById('pageViewUrl');
+            const deviceTypeSelect = document.getElementById('pageViewDeviceType');
+            
+            urlInput.style.display = 'none';
+            deviceTypeSelect.style.display = 'none';
+            
             // Show the selected container
             switch (reportType) {
                 case 'list':
                     document.getElementById('pageViewListContainer').style.display = 'block';
+                    urlInput.style.display = 'block';
+                    deviceTypeSelect.style.display = 'block';
                     break;
                 case 'top_pages':
                     document.getElementById('topPagesContainer').style.display = 'block';
@@ -517,8 +533,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const reportType = document.getElementById('pageViewReportType').value;
         const dateFrom = document.getElementById('pageViewDateFrom').value;
         const dateTo = document.getElementById('pageViewDateTo').value;
-        const url = document.getElementById('pageViewUrl').value;
-        const deviceType = document.getElementById('pageViewDeviceType').value;
+        
+        // Get optional filters
+        const urlElement = document.getElementById('pageViewUrl');
+        const deviceTypeElement = document.getElementById('pageViewDeviceType');
+        
+        const url = urlElement ? urlElement.value : '';
+        const deviceType = deviceTypeElement ? deviceTypeElement.value : '';
+        
         const limit = 50;
 
         try {
@@ -554,17 +576,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 switch (reportType) {
                     case 'list':
-                        renderPageViewTable(data.data.data);
-                        renderPageViewPagination(data.data.pagination);
+                        if (data.data && data.data.data) {
+                            renderPageViewTable(data.data.data);
+                            renderPageViewPagination(data.data.pagination);
+                        } else {
+                            const tableBody = document.getElementById('pageViewTableBody');
+                            tableBody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No page views found for the selected filters.</td></tr>';
+                        }
                         break;
                     case 'top_pages':
-                        renderTopPagesChart(data.data);
+                        renderTopPagesChart(data.data || []);
                         break;
                     case 'device_stats':
-                        renderDeviceStats(data.data);
+                        renderDeviceStats(data.data || []);
                         break;
                     case 'daily_stats':
-                        renderDailyStatsChart(data.data);
+                        renderDailyStatsChart(data.data || []);
                         break;
                 }
             } else {
@@ -584,7 +611,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const tableBody = document.getElementById('pageViewTableBody');
         tableBody.innerHTML = '';
 
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No page views found for the selected filters.</td></tr>';
             return;
         }
@@ -611,7 +638,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const paginationContainer = document.getElementById('pageViewPagination');
         paginationContainer.innerHTML = '';
 
-        if (pagination.pages <= 1) {
+        if (!pagination || pagination.pages <= 1) {
             return;
         }
 
@@ -691,8 +718,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Prepare data for the chart
         const labels = data.map(page => {
-            const url = new URL(page.url);
-            return url.pathname.length > 30 ? url.pathname.substring(0, 30) + '...' : url.pathname;
+            try {
+                const url = new URL(page.url);
+                return url.pathname.length > 30 ? url.pathname.substring(0, 30) + '...' : url.pathname;
+            } catch (e) {
+                return page.url.length > 30 ? page.url.substring(0, 30) + '...' : page.url;
+            }
         });
         
         const viewsData = data.map(page => page.views || 0);
@@ -795,7 +826,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const tableBody = document.getElementById('deviceStatsTableBody');
         tableBody.innerHTML = '';
 
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">No device statistics found for the selected period.</td></tr>';
             return;
         }

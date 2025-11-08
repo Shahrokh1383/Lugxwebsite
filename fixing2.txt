@@ -1,0 +1,694 @@
+خیلی خب ما پیاده سازی سیستم گزارش گیری در پنل ادمینی رو انجام دادیم و در ادرس http://localhost:8080/Lugxwebsite/public/frontend/admin/admin_reports.html قرار داریم اما با لاگ های php زیر روبرو میشم و هیچ چیزی به درستی نمایش داده نمیشه در این صفحه 
+
+من در زیر برات تمام لاگ های php رو برای انالیز کامل قرار میدم :
+
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Called.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Router instantiated.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Called.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Including api.php: C:\xampp\htdocs\Lugxwebsite/app/routes/api.php
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Including admin_api.php: C:\xampp\htdocs\Lugxwebsite/app/routes/admin_api.php
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Routes loaded.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::run - Called. Attempting to resolve route.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::run - Class exists: App\Controllers\Api\CartController
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router processing URI: /api/admin/reports/dashboard-stats with method: GET
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/register$# for route: /api/register
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/login$# for route: /api/login
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/forgot-password$# for route: /api/forgot-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reset-password$# for route: /api/reset-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/verify-email$# for route: /api/verify-email
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/auth\/status$# for route: /api/auth/status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/csrf-token$# for route: /api/csrf-token
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products$# for route: /api/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/products/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/categories$# for route: /api/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/categories/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/platforms$# for route: /api/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/platforms/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/publishers$# for route: /api/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/publishers/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/developers$# for route: /api/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/developers/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/tags$# for route: /api/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/tags/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/features$# for route: /api/features
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/reviews$# for route: /api/products/{id}/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/review-status$# for route: /api/products/{id}/review-status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/contact\/message$# for route: /api/contact/message
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/logout$# for route: /api/logout
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/profile$# for route: /api/user/profile
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/profile$# for route: /api/user/profile
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/change-password$# for route: /api/user/change-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses$# for route: /api/user/addresses
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses$# for route: /api/user/addresses
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/games$# for route: /api/user/games
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/add$# for route: /api/cart/add
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/update$# for route: /api/cart/update
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/remove$# for route: /api/cart/remove
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart$# for route: /api/cart
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/apply-coupon$# for route: /api/cart/apply-coupon
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/remove-coupon$# for route: /api/cart/remove-coupon
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist\/add$# for route: /api/wishlist/add
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist\/remove$# for route: /api/wishlist/remove
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist$# for route: /api/wishlist
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders$# for route: /api/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders$# for route: /api/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders\/([a-zA-Z0-9_.-]+)$# for route: /api/orders/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders\/([a-zA-Z0-9_.-]+)\/keys$# for route: /api/orders/{id}/keys
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/reviews$# for route: /api/products/{id}/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reviews\/([a-zA-Z0-9_.-]+)\/reply$# for route: /api/reviews/{id}/reply
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reviews\/([a-zA-Z0-9_.-]+)\/helpful$# for route: /api/reviews/{id}/helpful
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/newsletter\/subscribe$# for route: /api/newsletter/subscribe
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/auth\/login$# for route: /api/admin/auth/login
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/auth\/logout$# for route: /api/admin/auth/logout
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/dashboard\/stats$# for route: /api/admin/dashboard/stats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users$# for route: /api/admin/users
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users$# for route: /api/admin/users
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/roles$# for route: /api/admin/roles
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products$# for route: /api/admin/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/form-data$# for route: /api/admin/products/form-data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products$# for route: /api/admin/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories$# for route: /api/admin/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/top-level$# for route: /api/admin/categories/top-level
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories$# for route: /api/admin/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms$# for route: /api/admin/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms$# for route: /api/admin/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/search$# for route: /api/admin/publishers/search
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers$# for route: /api/admin/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers$# for route: /api/admin/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/search$# for route: /api/admin/developers/search
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers$# for route: /api/admin/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers$# for route: /api/admin/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags$# for route: /api/admin/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags$# for route: /api/admin/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders$# for route: /api/admin/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/orders/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/status$# for route: /api/admin/orders/{id}/status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/payment-status$# for route: /api/admin/orders/{id}/payment-status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/item\/([a-zA-Z0-9_.-]+)\/key$# for route: /api/admin/orders/item/{itemId}/key
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/status-history$# for route: /api/admin/orders/{id}/status-history
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons$# for route: /api/admin/coupons
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons$# for route: /api/admin/coupons
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews$# for route: /api/admin/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/statistics$# for route: /api/admin/reviews/statistics
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/reviews/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/replies$# for route: /api/admin/reviews/{id}/replies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/approve$# for route: /api/admin/reviews/{id}/approve
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/reject$# for route: /api/admin/reviews/{id}/reject
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/reply$# for route: /api/admin/reviews/{id}/reply
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/reviews/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages$# for route: /api/admin/messages
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/data$# for route: /api/admin/messages/data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/([a-zA-Z0-9_.-]+)\/mark-read$# for route: /api/admin/messages/{id}/mark-read
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/messages/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter$# for route: /api/admin/newsletter
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/subscribers$# for route: /api/admin/newsletter/subscribers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/subscribers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/subscribers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns$# for route: /api/admin/newsletter/campaigns
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns$# for route: /api/admin/newsletter/campaigns
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)\/schedule$# for route: /api/admin/newsletter/campaigns/{id}/schedule
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)\/send$# for route: /api/admin/newsletter/campaigns/{id}/send
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/data$# for route: /api/admin/newsletter/data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/send-email$# for route: /api/admin/newsletter/send-email
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/stats$# for route: /api/admin/newsletter/stats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/settings$# for route: /api/admin/settings
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/settings$# for route: /api/admin/settings
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/sales$# for route: /api/admin/reports/sales
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/top-products$# for route: /api/admin/reports/top-products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/user-activity$# for route: /api/admin/reports/user-activity
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/page-views$# for route: /api/admin/reports/page-views
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/dashboard-stats$# for route: /api/admin/reports/dashboard-stats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Matched route: /api/admin/reports/dashboard-stats for handler: App\Controllers\Admin\AdminReportController::getDashboardStats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Applying 2 middlewares.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Attempting to run middleware: App\Middlewares\AdminMiddleware
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::construct - Initializing dependencies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AdminMiddleware::handle - Access granted for admin user (ID: 1).
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Middleware App\Middlewares\AdminMiddleware returned true, continuing.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Attempting to call controller: App\Controllers\Admin\AdminReportController::getDashboardStats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::construct - Initializing dependencies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Calling controller method: App\Controllers\Admin\AdminReportController::getDashboardStats with params: []
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::hasRole - Checking role 'admin'.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::getCurrentUser - Retrieved user: {"id":1,"username":"admin","email":"admin@gamingstore.com","role_id":1}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::hasRole - User ID 1 has role 'admin': true
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Controller::renderApiJson - Called with data: {"success":true,"data":{"total_users":6,"total_products":5,"total_orders":3,"current_month_revenue":0,"revenue_change_percent":0,"top_pages":[{"url":"\/products\/cyberpunk-2077","views":1,"unique_visitors":1},{"url":"\/","views":1,"unique_visitors":1},{"url":"\/cart","views":1,"unique_visitors":1}],"recent_page_views":[{"id":3,"url":"\/cart","user_id":5,"session_id":null,"ip_address":"127.0.0.1","user_agent":null,"referer":null,"device_type":"desktop","browser":"Firefox","os":null,"country":null,"city":null,"created_at":"2025-11-08 12:04:45","first_name":"Sara","last_name":"Williams","email":"sara.williams@example.com"},{"id":2,"url":"\/products\/cyberpunk-2077","user_id":3,"session_id":null,"ip_address":"127.0.0.1","user_agent":null,"referer":null,"device_type":"mobile","browser":"Safari","os":null,"country":null,"city":null,"created_at":"2025-11-08 12:04:45","first_name":"Jane","last_name":"Smith","email":"jane.smith@example.com"},{"id":1,"url":"\/","user_id":2,"session_id":null,"ip_address":"127.0.0.1","user_agent":null,"referer":null,"device_type":"desktop","browser":"Chrome","os":null,"country":null,"city":null,"created_at":"2025-11-08 12:04:45","first_name":"John","last_name":"Doe","email":"john.doe@example.com"}]},"message":"Dashboard statistics fetched successfully."}, status: 200
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Called.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Router instantiated.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Called.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Including api.php: C:\xampp\htdocs\Lugxwebsite/app/routes/api.php
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Including admin_api.php: C:\xampp\htdocs\Lugxwebsite/app/routes/admin_api.php
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Routes loaded.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::run - Called. Attempting to resolve route.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::run - Class exists: App\Controllers\Api\CartController
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router processing URI: /api/admin/reports/sales with method: GET
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/register$# for route: /api/register
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/login$# for route: /api/login
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/forgot-password$# for route: /api/forgot-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reset-password$# for route: /api/reset-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/verify-email$# for route: /api/verify-email
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/auth\/status$# for route: /api/auth/status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/csrf-token$# for route: /api/csrf-token
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products$# for route: /api/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/products/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/categories$# for route: /api/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/categories/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/platforms$# for route: /api/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/platforms/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/publishers$# for route: /api/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/publishers/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/developers$# for route: /api/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/developers/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/tags$# for route: /api/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/tags/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/features$# for route: /api/features
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/reviews$# for route: /api/products/{id}/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/review-status$# for route: /api/products/{id}/review-status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/contact\/message$# for route: /api/contact/message
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/logout$# for route: /api/logout
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/profile$# for route: /api/user/profile
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/profile$# for route: /api/user/profile
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/change-password$# for route: /api/user/change-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses$# for route: /api/user/addresses
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses$# for route: /api/user/addresses
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/games$# for route: /api/user/games
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/add$# for route: /api/cart/add
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/update$# for route: /api/cart/update
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/remove$# for route: /api/cart/remove
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart$# for route: /api/cart
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/apply-coupon$# for route: /api/cart/apply-coupon
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/remove-coupon$# for route: /api/cart/remove-coupon
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist\/add$# for route: /api/wishlist/add
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist\/remove$# for route: /api/wishlist/remove
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist$# for route: /api/wishlist
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders$# for route: /api/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders$# for route: /api/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders\/([a-zA-Z0-9_.-]+)$# for route: /api/orders/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders\/([a-zA-Z0-9_.-]+)\/keys$# for route: /api/orders/{id}/keys
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/reviews$# for route: /api/products/{id}/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reviews\/([a-zA-Z0-9_.-]+)\/reply$# for route: /api/reviews/{id}/reply
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reviews\/([a-zA-Z0-9_.-]+)\/helpful$# for route: /api/reviews/{id}/helpful
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/newsletter\/subscribe$# for route: /api/newsletter/subscribe
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/auth\/login$# for route: /api/admin/auth/login
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/auth\/logout$# for route: /api/admin/auth/logout
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/dashboard\/stats$# for route: /api/admin/dashboard/stats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users$# for route: /api/admin/users
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users$# for route: /api/admin/users
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/roles$# for route: /api/admin/roles
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products$# for route: /api/admin/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/form-data$# for route: /api/admin/products/form-data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products$# for route: /api/admin/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories$# for route: /api/admin/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/top-level$# for route: /api/admin/categories/top-level
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories$# for route: /api/admin/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms$# for route: /api/admin/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms$# for route: /api/admin/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/search$# for route: /api/admin/publishers/search
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers$# for route: /api/admin/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers$# for route: /api/admin/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/search$# for route: /api/admin/developers/search
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers$# for route: /api/admin/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers$# for route: /api/admin/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags$# for route: /api/admin/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags$# for route: /api/admin/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders$# for route: /api/admin/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/orders/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/status$# for route: /api/admin/orders/{id}/status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/payment-status$# for route: /api/admin/orders/{id}/payment-status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/item\/([a-zA-Z0-9_.-]+)\/key$# for route: /api/admin/orders/item/{itemId}/key
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/status-history$# for route: /api/admin/orders/{id}/status-history
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons$# for route: /api/admin/coupons
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons$# for route: /api/admin/coupons
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews$# for route: /api/admin/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/statistics$# for route: /api/admin/reviews/statistics
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/reviews/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/replies$# for route: /api/admin/reviews/{id}/replies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/approve$# for route: /api/admin/reviews/{id}/approve
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/reject$# for route: /api/admin/reviews/{id}/reject
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/reply$# for route: /api/admin/reviews/{id}/reply
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/reviews/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages$# for route: /api/admin/messages
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/data$# for route: /api/admin/messages/data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/([a-zA-Z0-9_.-]+)\/mark-read$# for route: /api/admin/messages/{id}/mark-read
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/messages/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter$# for route: /api/admin/newsletter
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/subscribers$# for route: /api/admin/newsletter/subscribers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/subscribers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/subscribers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns$# for route: /api/admin/newsletter/campaigns
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns$# for route: /api/admin/newsletter/campaigns
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)\/schedule$# for route: /api/admin/newsletter/campaigns/{id}/schedule
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)\/send$# for route: /api/admin/newsletter/campaigns/{id}/send
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/data$# for route: /api/admin/newsletter/data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/send-email$# for route: /api/admin/newsletter/send-email
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/stats$# for route: /api/admin/newsletter/stats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/settings$# for route: /api/admin/settings
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/settings$# for route: /api/admin/settings
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/sales$# for route: /api/admin/reports/sales
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Matched route: /api/admin/reports/sales for handler: App\Controllers\Admin\AdminReportController::getSalesReports
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Applying 2 middlewares.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Attempting to run middleware: App\Middlewares\AdminMiddleware
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::construct - Initializing dependencies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AdminMiddleware::handle - Access granted for admin user (ID: 1).
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Middleware App\Middlewares\AdminMiddleware returned true, continuing.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Attempting to call controller: App\Controllers\Admin\AdminReportController::getSalesReports
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::construct - Initializing dependencies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Calling controller method: App\Controllers\Admin\AdminReportController::getSalesReports with params: []
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::hasRole - Checking role 'admin'.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::getCurrentUser - Retrieved user: {"id":1,"username":"admin","email":"admin@gamingstore.com","role_id":1}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::hasRole - User ID 1 has role 'admin': true
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Controller::renderApiJson - Called with data: {"success":true,"data":[{"month":1,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":2,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":3,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":4,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":5,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":6,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":7,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":8,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":9,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":10,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":11,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0},{"month":12,"orders_count":0,"revenue":0,"new_customers":0,"returning_customers":0,"products_sold":0,"avg_order_value":0}],"period":"month","message":"Sales reports fetched successfully."}, status: 200
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Called.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Router instantiated.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Called.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Including api.php: C:\xampp\htdocs\Lugxwebsite/app/routes/api.php
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Including admin_api.php: C:\xampp\htdocs\Lugxwebsite/app/routes/admin_api.php
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Routes loaded.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::run - Called. Attempting to resolve route.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::run - Class exists: App\Controllers\Api\CartController
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router processing URI: /api/admin/reports/user-activity with method: GET
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/register$# for route: /api/register
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/login$# for route: /api/login
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/forgot-password$# for route: /api/forgot-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reset-password$# for route: /api/reset-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/verify-email$# for route: /api/verify-email
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/auth\/status$# for route: /api/auth/status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/csrf-token$# for route: /api/csrf-token
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products$# for route: /api/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/products/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/categories$# for route: /api/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/categories/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/platforms$# for route: /api/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/platforms/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/publishers$# for route: /api/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/publishers/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/developers$# for route: /api/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/developers/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/tags$# for route: /api/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/tags/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/features$# for route: /api/features
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/reviews$# for route: /api/products/{id}/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/review-status$# for route: /api/products/{id}/review-status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/contact\/message$# for route: /api/contact/message
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/logout$# for route: /api/logout
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/profile$# for route: /api/user/profile
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/profile$# for route: /api/user/profile
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/change-password$# for route: /api/user/change-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses$# for route: /api/user/addresses
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses$# for route: /api/user/addresses
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/games$# for route: /api/user/games
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/add$# for route: /api/cart/add
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/update$# for route: /api/cart/update
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/remove$# for route: /api/cart/remove
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart$# for route: /api/cart
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/apply-coupon$# for route: /api/cart/apply-coupon
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/remove-coupon$# for route: /api/cart/remove-coupon
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist\/add$# for route: /api/wishlist/add
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist\/remove$# for route: /api/wishlist/remove
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist$# for route: /api/wishlist
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders$# for route: /api/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders$# for route: /api/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders\/([a-zA-Z0-9_.-]+)$# for route: /api/orders/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders\/([a-zA-Z0-9_.-]+)\/keys$# for route: /api/orders/{id}/keys
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/reviews$# for route: /api/products/{id}/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reviews\/([a-zA-Z0-9_.-]+)\/reply$# for route: /api/reviews/{id}/reply
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reviews\/([a-zA-Z0-9_.-]+)\/helpful$# for route: /api/reviews/{id}/helpful
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/newsletter\/subscribe$# for route: /api/newsletter/subscribe
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/auth\/login$# for route: /api/admin/auth/login
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/auth\/logout$# for route: /api/admin/auth/logout
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/dashboard\/stats$# for route: /api/admin/dashboard/stats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users$# for route: /api/admin/users
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users$# for route: /api/admin/users
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/roles$# for route: /api/admin/roles
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products$# for route: /api/admin/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/form-data$# for route: /api/admin/products/form-data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products$# for route: /api/admin/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories$# for route: /api/admin/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/top-level$# for route: /api/admin/categories/top-level
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories$# for route: /api/admin/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms$# for route: /api/admin/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms$# for route: /api/admin/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/search$# for route: /api/admin/publishers/search
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers$# for route: /api/admin/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers$# for route: /api/admin/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/search$# for route: /api/admin/developers/search
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers$# for route: /api/admin/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers$# for route: /api/admin/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags$# for route: /api/admin/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags$# for route: /api/admin/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders$# for route: /api/admin/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/orders/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/status$# for route: /api/admin/orders/{id}/status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/payment-status$# for route: /api/admin/orders/{id}/payment-status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/item\/([a-zA-Z0-9_.-]+)\/key$# for route: /api/admin/orders/item/{itemId}/key
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/status-history$# for route: /api/admin/orders/{id}/status-history
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons$# for route: /api/admin/coupons
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons$# for route: /api/admin/coupons
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews$# for route: /api/admin/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/statistics$# for route: /api/admin/reviews/statistics
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/reviews/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/replies$# for route: /api/admin/reviews/{id}/replies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/approve$# for route: /api/admin/reviews/{id}/approve
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/reject$# for route: /api/admin/reviews/{id}/reject
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/reply$# for route: /api/admin/reviews/{id}/reply
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/reviews/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages$# for route: /api/admin/messages
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/data$# for route: /api/admin/messages/data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/([a-zA-Z0-9_.-]+)\/mark-read$# for route: /api/admin/messages/{id}/mark-read
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/messages/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter$# for route: /api/admin/newsletter
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/subscribers$# for route: /api/admin/newsletter/subscribers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/subscribers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/subscribers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns$# for route: /api/admin/newsletter/campaigns
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns$# for route: /api/admin/newsletter/campaigns
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)\/schedule$# for route: /api/admin/newsletter/campaigns/{id}/schedule
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)\/send$# for route: /api/admin/newsletter/campaigns/{id}/send
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/data$# for route: /api/admin/newsletter/data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/send-email$# for route: /api/admin/newsletter/send-email
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/stats$# for route: /api/admin/newsletter/stats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/settings$# for route: /api/admin/settings
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/settings$# for route: /api/admin/settings
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/sales$# for route: /api/admin/reports/sales
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/top-products$# for route: /api/admin/reports/top-products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/user-activity$# for route: /api/admin/reports/user-activity
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Matched route: /api/admin/reports/user-activity for handler: App\Controllers\Admin\AdminReportController::getUserActivity
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Applying 2 middlewares.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Attempting to run middleware: App\Middlewares\AdminMiddleware
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::construct - Initializing dependencies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AdminMiddleware::handle - Access granted for admin user (ID: 1).
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Middleware App\Middlewares\AdminMiddleware returned true, continuing.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Attempting to call controller: App\Controllers\Admin\AdminReportController::getUserActivity
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::construct - Initializing dependencies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Calling controller method: App\Controllers\Admin\AdminReportController::getUserActivity with params: []
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::hasRole - Checking role 'admin'.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::getCurrentUser - Retrieved user: {"id":1,"username":"admin","email":"admin@gamingstore.com","role_id":1}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::hasRole - User ID 1 has role 'admin': true
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Controller::renderApiJson - Called with data: {"success":true,"data":[{"id":4,"user_id":1,"action":"update_setting","description":"Updated setting: currency","model_type":"SiteSetting","model_id":null,"old_values":"{\"old_value\":\"USD\"}","new_values":"{\"new_value\":\"USD\"}","ip_address":"127.0.0.1","user_agent":"Mozilla\/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko\/20100101 Firefox\/144.0","created_at":"2025-11-08 13:24:08","first_name":"Admin","last_name":"User","email":"admin@gamingstore.com"},{"id":5,"user_id":1,"action":"update_setting","description":"Updated setting: site_description","model_type":"SiteSetting","model_id":null,"old_values":"{\"old_value\":\"Online video games store\"}","new_values":"{\"new_value\":\"Online video games store\"}","ip_address":"127.0.0.1","user_agent":"Mozilla\/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko\/20100101 Firefox\/144.0","created_at":"2025-11-08 13:24:08","first_name":"Admin","last_name":"User","email":"admin@gamingstore.com"},{"id":6,"user_id":1,"action":"update_setting","description":"Updated setting: site_name","model_type":"SiteSetting","model_id":null,"old_values":"{\"old_value\":\"Gaming Store\"}","new_values":"{\"new_value\":\"Gaming Store\"}","ip_address":"127.0.0.1","user_agent":"Mozilla\/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko\/20100101 Firefox\/144.0","created_at":"2025-11-08 13:24:08","first_name":"Admin","last_name":"User","email":"admin@gamingstore.com"},{"id":7,"user_id":1,"action":"update_settings","description":"Updated multiple site settings","model_type":"SiteSetting","model_id":null,"old_values":null,"new_values":"{\"updated_settings\":{\"enable_reviews\":true,\"enable_wishlist\":true,\"currency\":\"USD\",\"items_per_page\":12,\"site_description\":\"Online video games store\",\"site_name\":\"Gaming Store\",\"tax_rate\":0.08}}","ip_address":"127.0.0.1","user_agent":"Mozilla\/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko\/20100101 Firefox\/144.0","created_at":"2025-11-08 13:24:08","first_name":"Admin","last_name":"User","email":"admin@gamingstore.com"},{"id":1,"user_id":2,"action":"login","description":"User logged in","model_type":"App\\Models\\User","model_id":2,"old_values":null,"new_values":null,"ip_address":"127.0.0.1","user_agent":null,"created_at":"2025-11-08 12:04:45","first_name":"John","last_name":"Doe","email":"john.doe@example.com"},{"id":2,"user_id":6,"action":"update","description":"Updated price for Cyberpunk 2077","model_type":"App\\Models\\Product","model_id":1,"old_values":null,"new_values":null,"ip_address":"127.0.0.1","user_agent":null,"created_at":"2025-11-08 12:04:45","first_name":"Mark","last_name":"Manager","email":"mark.manager@gamingstore.com"},{"id":3,"user_id":3,"action":"place_order","description":"Placed an order","model_type":"App\\Models\\Order","model_id":2,"old_values":null,"new_values":null,"ip_address":"127.0.0.1","user_agent":null,"created_at":"2025-11-08 12:04:45","first_name":"Jane","last_name":"Smith","email":"jane.smith@example.com"}],"pagination":{"page":1,"limit":50,"total":7,"pages":1},"message":"User activity logs fetched successfully."}, status: 200
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Called.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Router instantiated.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Called.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Including api.php: C:\xampp\htdocs\Lugxwebsite/app/routes/api.php
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::loadRoutes - Including admin_api.php: C:\xampp\htdocs\Lugxwebsite/app/routes/admin_api.php
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::__construct - Routes loaded.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::run - Called. Attempting to resolve route.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: App::run - Class exists: App\Controllers\Api\CartController
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router processing URI: /api/admin/reports/top-products with method: GET
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/register$# for route: /api/register
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/login$# for route: /api/login
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/forgot-password$# for route: /api/forgot-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reset-password$# for route: /api/reset-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/verify-email$# for route: /api/verify-email
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/auth\/status$# for route: /api/auth/status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/csrf-token$# for route: /api/csrf-token
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products$# for route: /api/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/products/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/categories$# for route: /api/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/categories/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/platforms$# for route: /api/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/platforms/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/publishers$# for route: /api/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/publishers/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/developers$# for route: /api/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/developers/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/tags$# for route: /api/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/tags/{id_or_slug}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/features$# for route: /api/features
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/reviews$# for route: /api/products/{id}/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/review-status$# for route: /api/products/{id}/review-status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/contact\/message$# for route: /api/contact/message
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/logout$# for route: /api/logout
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/profile$# for route: /api/user/profile
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/profile$# for route: /api/user/profile
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/change-password$# for route: /api/user/change-password
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses$# for route: /api/user/addresses
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses$# for route: /api/user/addresses
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/addresses\/([a-zA-Z0-9_.-]+)$# for route: /api/user/addresses/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/user\/games$# for route: /api/user/games
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/add$# for route: /api/cart/add
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/update$# for route: /api/cart/update
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/remove$# for route: /api/cart/remove
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart$# for route: /api/cart
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/apply-coupon$# for route: /api/cart/apply-coupon
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/cart\/remove-coupon$# for route: /api/cart/remove-coupon
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist\/add$# for route: /api/wishlist/add
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist\/remove$# for route: /api/wishlist/remove
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/wishlist$# for route: /api/wishlist
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders$# for route: /api/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders$# for route: /api/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders\/([a-zA-Z0-9_.-]+)$# for route: /api/orders/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/orders\/([a-zA-Z0-9_.-]+)\/keys$# for route: /api/orders/{id}/keys
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/products\/([a-zA-Z0-9_.-]+)\/reviews$# for route: /api/products/{id}/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reviews\/([a-zA-Z0-9_.-]+)\/reply$# for route: /api/reviews/{id}/reply
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/reviews\/([a-zA-Z0-9_.-]+)\/helpful$# for route: /api/reviews/{id}/helpful
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/newsletter\/subscribe$# for route: /api/newsletter/subscribe
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/auth\/login$# for route: /api/admin/auth/login
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/auth\/logout$# for route: /api/admin/auth/logout
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/dashboard\/stats$# for route: /api/admin/dashboard/stats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users$# for route: /api/admin/users
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users$# for route: /api/admin/users
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/users\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/users/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/roles$# for route: /api/admin/roles
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products$# for route: /api/admin/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/form-data$# for route: /api/admin/products/form-data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products$# for route: /api/admin/products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/products\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/products/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories$# for route: /api/admin/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/top-level$# for route: /api/admin/categories/top-level
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories$# for route: /api/admin/categories
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/categories\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/categories/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms$# for route: /api/admin/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms$# for route: /api/admin/platforms
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/platforms\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/platforms/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/search$# for route: /api/admin/publishers/search
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers$# for route: /api/admin/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers$# for route: /api/admin/publishers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/publishers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/publishers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/search$# for route: /api/admin/developers/search
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers$# for route: /api/admin/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers$# for route: /api/admin/developers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/developers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/developers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags$# for route: /api/admin/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags$# for route: /api/admin/tags
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/tags\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/tags/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders$# for route: /api/admin/orders
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/orders/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/status$# for route: /api/admin/orders/{id}/status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/payment-status$# for route: /api/admin/orders/{id}/payment-status
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/item\/([a-zA-Z0-9_.-]+)\/key$# for route: /api/admin/orders/item/{itemId}/key
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/orders\/([a-zA-Z0-9_.-]+)\/status-history$# for route: /api/admin/orders/{id}/status-history
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons$# for route: /api/admin/coupons
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons$# for route: /api/admin/coupons
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/coupons\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/coupons/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews$# for route: /api/admin/reviews
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/statistics$# for route: /api/admin/reviews/statistics
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/reviews/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/replies$# for route: /api/admin/reviews/{id}/replies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/approve$# for route: /api/admin/reviews/{id}/approve
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/reject$# for route: /api/admin/reviews/{id}/reject
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)\/reply$# for route: /api/admin/reviews/{id}/reply
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reviews\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/reviews/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages$# for route: /api/admin/messages
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/data$# for route: /api/admin/messages/data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/([a-zA-Z0-9_.-]+)\/mark-read$# for route: /api/admin/messages/{id}/mark-read
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/messages\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/messages/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter$# for route: /api/admin/newsletter
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/subscribers$# for route: /api/admin/newsletter/subscribers
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/subscribers\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/subscribers/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns$# for route: /api/admin/newsletter/campaigns
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns$# for route: /api/admin/newsletter/campaigns
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/campaigns/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)\/schedule$# for route: /api/admin/newsletter/campaigns/{id}/schedule
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/campaigns\/([a-zA-Z0-9_.-]+)\/send$# for route: /api/admin/newsletter/campaigns/{id}/send
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/data$# for route: /api/admin/newsletter/data
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/([a-zA-Z0-9_.-]+)$# for route: /api/admin/newsletter/{id}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/send-email$# for route: /api/admin/newsletter/send-email
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/newsletter\/stats$# for route: /api/admin/newsletter/stats
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/settings$# for route: /api/admin/settings
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/settings$# for route: /api/admin/settings
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/sales$# for route: /api/admin/reports/sales
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Matching against pattern: #^\/api\/admin\/reports\/top-products$# for route: /api/admin/reports/top-products
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Matched route: /api/admin/reports/top-products for handler: App\Controllers\Admin\AdminReportController::getTopProducts
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Applying 2 middlewares.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Attempting to run middleware: App\Middlewares\AdminMiddleware
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::construct - Initializing dependencies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AdminMiddleware::handle - Access granted for admin user (ID: 1).
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Middleware App\Middlewares\AdminMiddleware returned true, continuing.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Attempting to call controller: App\Controllers\Admin\AdminReportController::getTopProducts
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::construct - Initializing dependencies
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Router - Calling controller method: App\Controllers\Admin\AdminReportController::getTopProducts with params: []
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::hasRole - Checking role 'admin'.
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::getCurrentUser - Retrieved user: {"id":1,"username":"admin","email":"admin@gamingstore.com","role_id":1}
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: AuthService::hasRole - User ID 1 has role 'admin': true
+[08-Nov-2025 22:25:57 Europe/Berlin] DEBUG: Controller::renderApiJson - Called with data: {"success":true,"data":[],"period":"week","message":"Top products fetched successfully."}, status: 200
+
+همچنین در کنسول مرورگرم شاهد ارورهای زیر هستم 
+
+Uncaught (in promise) TypeError: can't access property "value", document.getElementById(...) is null
+    loadPageViewsReport http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:520
+    initPageViewsReport http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:510
+    initReports http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:892
+    async* http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:900
+    EventListener.handleEvent* http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:8
+admin_reports.js:520:30
+    loadPageViewsReport http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:520
+    initPageViewsReport http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:510
+    initReports http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:892
+    InterpretGeneratorResume self-hosted:1332
+    AsyncFunctionNext self-hosted:800
+    (Async: async)
+    <anonymous> http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:900
+    (Async: EventListener.handleEvent)
+    <anonymous> http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:8
+Network or unexpected error fetching user activity report: TypeError: can't access property "length", data is undefined
+    renderActivityTable http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:376
+    loadUserActivityReport http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:357
+    initUserActivityReport http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:309
+    initReports http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:891
+    async* http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:900
+    EventListener.handleEvent* http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:8
+admin_reports.js:363:21
+    loadUserActivityReport http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:363
+    initUserActivityReport http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:309
+    initReports http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:891
+    <anonymous> http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:900
+    (Async: EventListener.handleEvent)
+    <anonymous> http://localhost:8080/Lugxwebsite/public/assets/js/admin/admin_reports.js:8
+
+ریشه مشکل رو پیدا کن و ازم لیست تمام فایل های مورد نیاز برای بازبینی رو بخواه تا برات قرار بدم تا پس از چک کردن فایل ها کدهای کامل و اصلاح شده رو تحویلم بدی تا مشکل رو بطور کامل حل کنیم    
