@@ -14,8 +14,8 @@ use App\Controllers\Admin\AdminCouponController;
 use App\Controllers\Admin\AdminReviewController;
 use App\Controllers\Admin\AdminContactMessageController;
 use App\Controllers\Admin\AdminNewsletterController;
-use App\Controllers\Admin\AdminBannerController;
-use App\Controllers\Admin\AdminPageController;
+use App\Controllers\Admin\AdminSettingsController;
+use App\Controllers\Admin\AdminReportController;
 use App\Middlewares\AdminMiddleware;
 use App\Middlewares\CsrfMiddleware;
 
@@ -147,29 +147,13 @@ $router->group('/api/admin', function(Router $router) {
     $router->post('/newsletter/send-email', [AdminNewsletterController::class, 'sendGroupEmail']);
     // Newsletter Statistics
     $router->get('/newsletter/stats', [AdminNewsletterController::class, 'getStats']); // Get newsletter statistics
-    
-    // --- Admin Banner Routes ---
-    $router->get('/banners', [AdminBannerController::class, 'index']);
-    $router->get('/banners/data', [AdminBannerController::class, 'getBanners']);
-    $router->get('/banners/{id}', [AdminBannerController::class, 'getBanner']);
-    $router->post('/banners', [AdminBannerController::class, 'createBanner'], ['enctype' => 'multipart/form-data']);
-    $router->put('/banners/{id}', [AdminBannerController::class, 'updateBanner'], ['enctype' => 'multipart/form-data']);
-    $router->post('/banners/{id}', [AdminBannerController::class, 'updateBanner'], ['enctype' => 'multipart/form-data']);
-    $router->delete('/banners/{id}', [AdminBannerController::class, 'deleteBanner']);
-    
-     // --- Admin Page Routes ---
-    $router->get('/pages', [AdminPageController::class, 'index']);
-    $router->get('/pages/data', [AdminPageController::class, 'getPages']);
-    $router->get('/pages/{id}', [AdminPageController::class, 'getPage']);
-    $router->post('/pages', [AdminPageController::class, 'createPage'], ['enctype' => 'multipart/form-data']);
-    $router->put('/pages/{id}', [AdminPageController::class, 'updatePage'], ['enctype' => 'multipart/form-data']);
-    $router->post('/pages/{id}', [AdminPageController::class, 'updatePage'], ['enctype' => 'multipart/form-data']);
-    $router->delete('/pages/{id}', [AdminPageController::class, 'deletePage']);
-    
-    // --- Admin Menu Routes ---
-    $router->get('/menus', [AdminPageController::class, 'getMenus']);
-    $router->post('/menus', [AdminPageController::class, 'createMenu']);
-    $router->put('/menus/{id}', [AdminPageController::class, 'updateMenu']);
-    $router->post('/menus/{id}', [AdminPageController::class, 'updateMenu']);
-    $router->delete('/menus/{id}', [AdminPageController::class, 'deleteMenu']);
+    // --- Admin Settings Routes ---
+    $router->get('/settings', [AdminSettingsController::class, 'getSettings']);
+    $router->put('/settings', [AdminSettingsController::class, 'updateSettings']);
+    // --- Admin Reports Routes ---
+    $router->get('/reports/sales', [AdminReportController::class, 'getSalesReports']);
+    $router->get('/reports/top-products', [AdminReportController::class, 'getTopProducts']);
+    $router->get('/reports/user-activity', [AdminReportController::class, 'getUserActivity']);
+    $router->get('/reports/page-views', [AdminReportController::class, 'getPageViews']);
+    $router->get('/reports/dashboard-stats', [AdminReportController::class, 'getDashboardStats']);
 }, [AdminMiddleware::class]);
