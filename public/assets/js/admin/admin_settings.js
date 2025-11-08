@@ -281,19 +281,34 @@ document.addEventListener('DOMContentLoaded', function() {
         saveSettingsBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
 
         try {
-            // Create FormData object
-            const formData = new FormData(settingsForm);
+            // Create a simple object for settings
+            const settingsData = {};
             
-            // Add CSRF token
-            const csrfToken = await Admin.getCsrfToken();
-            if (csrfToken) {
-                formData.set('csrf_token', csrfToken);
-            }
-
-            // Use fetchWithCsrf for request
+            // Get all form inputs
+            const inputs = settingsForm.querySelectorAll('input, textarea, select');
+            
+            inputs.forEach(input => {
+                if (input.name && input.name.startsWith('settings[')) {
+                    // Extract the key name from settings[key_name]
+                    const keyName = input.name.substring(9, input.name.length - 1);
+                    
+                    if (input.type === 'checkbox') {
+                        settingsData[keyName] = input.checked ? '1' : '0';
+                    } else if (input.type !== 'file') {
+                        settingsData[keyName] = input.value;
+                    }
+                }
+            });
+            
+            // Add debug logging
+            console.log('Settings data to send:', settingsData);
+            
+            // Send as JSON instead of FormData
             const response = await Admin.fetchWithCsrf(`${baseUrlPath}/api/admin/settings`, {
                 method: 'PUT',
-                body: formData
+                body: JSON.stringify({
+                    settings: settingsData
+                })
             });
 
             // Check for HTTP errors before trying to parse JSON

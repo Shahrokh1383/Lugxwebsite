@@ -88,11 +88,48 @@ class AdminSettingsController extends Controller
             return;
         }
         
-        // Get form data instead of JSON data
-        $data = $_POST;
+        // Get settings data - check both JSON and form data
+        $settingsData = null;
+        
+        // First try to get JSON data
+        $jsonInput = file_get_contents('php://input');
+        error_log("JSON input: " . $jsonInput);
+        
+        if (!empty($jsonInput)) {
+            $jsonData = json_decode($jsonInput, true);
+            error_log("Decoded JSON: " . print_r($jsonData, true));
+            
+            if (json_last_error() === JSON_ERROR_NONE && isset($jsonData['settings'])) {
+                $settingsData = $jsonData['settings'];
+                error_log("Settings from JSON: " . print_r($settingsData, true));
+            }
+        }
+        
+        // If no JSON data, try form data
+        if ($settingsData === null) {
+            error_log("Checking POST data: " . print_r($_POST, true));
+            
+            if (isset($_POST['settings'])) {
+                error_log("Found settings in POST: " . print_r($_POST['settings'], true));
+                
+                if (is_string($_POST['settings'])) {
+                    // If settings is a JSON string, decode it
+                    $decodedSettings = json_decode($_POST['settings'], true);
+                    error_log("Decoded settings from POST: " . print_r($decodedSettings, true));
+                    
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        $settingsData = $decodedSettings;
+                    }
+                } elseif (is_array($_POST['settings'])) {
+                    $settingsData = $_POST['settings'];
+                    error_log("Settings array from POST: " . print_r($settingsData, true));
+                }
+            }
+        }
         
         // Validate that we have settings data
-        if (empty($data['settings']) || !is_array($data['settings'])) {
+        if ($settingsData === null || !is_array($settingsData)) {
+            error_log("No valid settings data found!");
             $this->renderApiJson([
                 'success' => false,
                 'error' => 'No settings data provided.'
@@ -100,7 +137,6 @@ class AdminSettingsController extends Controller
             return;
         }
         
-        $settingsData = $data['settings'];
         $updatedSettings = [];
         $errors = [];
         $currentUserId = $this->authService->getAuthenticatedUserId();
