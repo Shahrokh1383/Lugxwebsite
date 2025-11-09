@@ -4,6 +4,7 @@
 
 // Define the base URL for API calls.
 const BASE_URL = 'http://localhost:8080/Lugxwebsite/public/api';
+const BASE_ASSET_URL = 'http://localhost:8080/Lugxwebsite/public';
 
 window.IndexPage = {
     trendingGamesGrid: null,
@@ -36,7 +37,9 @@ window.IndexPage = {
             primaryCategoryName = primaryCat.name;
         }
 
-        const productImageUrl = `../assets/img/${product.featured_image || 'placeholder.jpg'}`;
+        const productImageUrl = product.featured_image 
+            ? `${BASE_ASSET_URL}/${product.featured_image}` 
+            : `${BASE_ASSET_URL}/assets/img/placeholder.jpg`;
 
         if (isSmallGrid) {
             cardHtml = `
@@ -159,7 +162,10 @@ window.IndexPage = {
                 result.data.forEach(category => {
                     const categoryCard = document.createElement('div');
                     categoryCard.className = 'category-card';
-                    const categoryImageUrl = `../assets/img/${category.image || 'placeholder-category.png'}`;
+                    // اصلاح مسیر تصویر دسته‌بندی با استفاده از BASE_ASSET_URL
+                    const categoryImageUrl = category.image 
+                        ? `${BASE_ASSET_URL}/${category.image}` 
+                        : `${BASE_ASSET_URL}/assets/img/placeholder-category.png`;
                     categoryCard.innerHTML = `
                         <div class="category-icon">
                             <img src="${categoryImageUrl}" alt="${category.name}">
