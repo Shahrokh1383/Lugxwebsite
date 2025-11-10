@@ -2,6 +2,7 @@
 
 # Lugxwebsite - A Complete E-commerce Platform for Gaming
 
+![lugx](https://github.com/user-attachments/assets/581027bd-c033-46be-9b09-896ac79e31d0)
 
 A full-featured e-commerce website for selling digital games, built from scratch with PHP, JavaScript, HTML, CSS, and Bootstrap 5. This project implements a custom MVC architecture with PDO for database connectivity, providing a secure and scalable solution for an online gaming store.
 
