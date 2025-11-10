@@ -70,11 +70,17 @@ window.Cart = {
         items.forEach(item => {
             const displayPrice = parseFloat(item.cart_item_price || item.current_product_price || 0).toFixed(2);
             const itemSubtotal = (parseFloat(item.quantity) * parseFloat(item.cart_item_price || item.current_product_price || 0)).toFixed(2);
+            
+            // --- اصلاح شده: استفاده از window.BASE_URL برای مسیردهی صحیح تصویر ---
+            const productImageUrl = item.featured_image 
+                ? `${window.BASE_URL}/${item.featured_image}` 
+                : `${window.BASE_URL}/assets/img/placeholder.jpg`;
+
             const row = `
                 <tr>
                     <td data-label="Product">
                         <div class="d-flex align-items-center">
-                            <img src="../assets/img/products/${item.featured_image || 'placeholder.jpg'}" onerror="this.onerror=null;this.src='https://placehold.co/80x80/cccccc/000000?text=No+Image';" alt="${item.title}" class="rounded-3 me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                            <img src="${productImageUrl}" onerror="this.onerror=null;this.src='${window.BASE_URL}/assets/img/placeholder.jpg';" alt="${item.title}" class="rounded-3 me-3" style="width: 80px; height: 80px; object-fit: cover;">
                             <div>
                                 <h5 class="mb-0 text-dark-gray">${item.title}</h5>
                                 <small class="text-medium-gray">Category: ${item.category_name || 'N/A'}</small>

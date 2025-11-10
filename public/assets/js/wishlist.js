@@ -36,12 +36,16 @@ window.wishlist = {
                         const salePrice = parseFloat(item.sale_price);
                         const displayPrice = salePrice > 0 ? salePrice : price;
 
+                        const productImageUrl = item.featured_image 
+                            ? `${window.BASE_URL}/${item.featured_image}` 
+                            : `${window.BASE_URL}/assets/img/placeholder.jpg`;
+
                         const productCard = `
                             <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                                 <div class="card h-100 border-0 rounded-3 shadow-sm product-card">
                                     <div class="position-relative">
                                         <a href="./product_detail.html?slug=${item.slug}">
-                                            <img src="${window.BASE_URL}/assets/img/products/${item.featured_image || 'placeholder.jpg'}" class="card-img-top rounded-top-3" alt="${item.title}" style="height: 180px; object-fit: cover;">
+                                            <img src="${productImageUrl}" class="card-img-top rounded-top-3" alt="${item.title}" style="height: 180px; object-fit: cover;">
                                         </a>
                                         <span class="badge bg-danger position-absolute top-0 start-0 m-2 price-badge">$${displayPrice.toFixed(2)}</span>
                                     </div>
@@ -142,7 +146,7 @@ window.wishlist = {
      * @returns {Promise<boolean>} True if successful, false otherwise.
      */
     removeFromWishlist: async function(productId) {
-        // IMPORTANT: Use a custom modal instead of confirm() for better UX and consistency.
+        // IMPORTANT: Use a custom modal instead of confirm() for better UX.
         // For now, keeping confirm() as per existing code.
         if (!confirm('Are you sure you want to remove this item from your wishlist?')) {
             return false; // User cancelled

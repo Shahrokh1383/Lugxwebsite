@@ -169,8 +169,10 @@ function renderProducts(products) {
             primaryCategoryName = primaryCat.name;
         }
 
-        // CORRECTED: Use window.BASE_URL for product image path consistency
-        const productImageUrl = `${window.BASE_URL}/assets/img/products/${product.featured_image || 'placeholder.jpg'}`;
+        // --- اصلاح شده: استفاده از window.BASE_URL برای یکپارچگی مسیر تصاویر ---
+        const productImageUrl = product.featured_image 
+            ? `${window.BASE_URL}/${product.featured_image}` 
+            : `${window.BASE_URL}/assets/img/placeholder.jpg`;
 
         const productCardWrapper = document.createElement('div'); // Wrapper div for grid column
         productCardWrapper.className = 'col-lg-4 col-md-6'; // Bootstrap grid classes

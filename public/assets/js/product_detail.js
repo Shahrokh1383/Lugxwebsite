@@ -1,4 +1,4 @@
-// REMOVED: const API_BASE_URL = `${window.BASE_URL}/api`; (Now defined in main.js)
+const BASE_ASSET_URL = 'http://localhost:8080/Lugxwebsite/public';
 
 // DOM Elements for product details.
 let productDetailContainer; // Added this line to select the main container
@@ -117,9 +117,12 @@ function renderProductDetails(product) {
         productBreadcrumbName.textContent = product.title;
     }
 
-    // Main Image
+    // Main Image - FIXED PATH
     if (productMainImage) {
-        productMainImage.src = `${window.BASE_URL}/assets/img/products/${product.featured_image || 'placeholder.jpg'}`;
+        const productImageUrl = product.featured_image 
+            ? `${BASE_ASSET_URL}/${product.featured_image}` 
+            : `${BASE_ASSET_URL}/assets/img/placeholder.jpg`;
+        productMainImage.src = productImageUrl;
         productMainImage.alt = product.title;
     }
 
@@ -264,12 +267,20 @@ function renderGallery(galleryImages) {
     if (galleryImages && galleryImages.length > 0) {
         galleryImages.forEach(imageUrl => {
             const imgElement = document.createElement('img');
-            imgElement.src = `${window.BASE_URL}/assets/img/products/${imageUrl}`;
+            // FIXED PATH
+            const galleryImageUrl = imageUrl 
+                ? `${BASE_ASSET_URL}/${imageUrl}` 
+                : `${BASE_ASSET_URL}/assets/img/placeholder.jpg`;
+            imgElement.src = galleryImageUrl;
             imgElement.alt = 'Product Gallery Image';
             imgElement.classList.add('gallery-thumbnail'); // Add a class for styling
             imgElement.addEventListener('click', () => {
                 if (productMainImage) {
-                    productMainImage.src = `${window.BASE_URL}/assets/img/products/${imageUrl}`;
+                    // FIXED PATH
+                    const mainImageUrl = imageUrl 
+                        ? `${BASE_ASSET_URL}/${imageUrl}` 
+                        : `${BASE_ASSET_URL}/assets/img/placeholder.jpg`;
+                    productMainImage.src = mainImageUrl;
                 }
             });
             productGallery.appendChild(imgElement);
@@ -341,10 +352,18 @@ function renderRelatedProducts(products) {
 
         const productCard = document.createElement('div');
         productCard.className = 'game-card'; // Reusing game-card class from shop.html
+        
+        // --- FINAL FIX FOR RELATED PRODUCTS IMAGE PATH ---
+        // Using the same BASE_ASSET_URL pattern from index_page.js, but with 'thumbnail'
+        // because the related products API likely provides this key.
+        const relatedProductImageUrl = product.thumbnail 
+            ? `${BASE_ASSET_URL}/${product.thumbnail}` 
+            : `${BASE_ASSET_URL}/assets/img/placeholder.jpg`;
+        
         productCard.innerHTML = `
-            <img src="${window.BASE_URL}/assets/img/products/${product.thumbnail || 'placeholder.jpg'}" alt="${product.name}">
+            <img src="${relatedProductImageUrl}" alt="${product.name || product.title}">
             <div class="game-info">
-                <h3>${product.name}</h3>
+                <h3>${product.name || product.title}</h3>
                 <div class="price-info">
                     ${oldPriceHtml}
                     <span class="new-price">$${displayPrice.toFixed(2)}</span>
@@ -389,7 +408,8 @@ async function fetchProductDetails(productSlug) {
             if (productTitle) productTitle.textContent = 'Error Loading Product';
             if (productShortDescription) productShortDescription.textContent = '';
             if (productFullDescription) productFullDescription.textContent = '';
-            if (productMainImage) productMainImage.src = `${window.BASE_URL}/assets/img/placeholder.jpg`;
+            // FIXED PATH
+            if (productMainImage) productMainImage.src = `${BASE_ASSET_URL}/assets/img/placeholder.jpg`;
             if (productGallery) productGallery.innerHTML = '';
             if (minRequirementsList) minRequirementsList.innerHTML = '<li>Error loading requirements.</li>';
             if (recRequirementsList) recRequirementsList.innerHTML = '<li>Error loading requirements.</li>';
@@ -405,7 +425,8 @@ async function fetchProductDetails(productSlug) {
         if (productTitle) productTitle.textContent = 'Error Loading Product';
         if (productShortDescription) productShortDescription.textContent = '';
         if (productFullDescription) productFullDescription.textContent = '';
-        if (productMainImage) productMainImage.src = `${window.BASE_URL}/assets/img/placeholder.jpg`;
+        // FIXED PATH
+        if (productMainImage) productMainImage.src = `${BASE_ASSET_URL}/assets/img/placeholder.jpg`;
         if (productGallery) productGallery.innerHTML = '';
         if (minRequirementsList) minRequirementsList.innerHTML = '<li>Error loading requirements.</li>';
         if (recRequirementsList) recRequirementsList.innerHTML = '<li>Error loading requirements.</li>';

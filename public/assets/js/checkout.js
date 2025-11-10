@@ -17,7 +17,6 @@ window.Checkout = {
         couponCodeInput: null,
         applyCouponBtn: null,
         couponMessageElement: null,
-        // removeCouponBtn: null, // REMOVED: This is now managed by cart.js
         useSavedShippingAddressCheckbox: null,
         savedShippingAddressesContainer: null,
         newShippingAddressForm: null,
@@ -163,11 +162,17 @@ window.Checkout = {
                 }
 
                 cartItems.forEach(item => {
+                    const BASE_ASSET_URL = 'http://localhost:8080/Lugxwebsite/public';
+                    
+                    const productImageUrl = item.featured_image 
+                        ? `${BASE_ASSET_URL}/${item.featured_image}` 
+                        : `${BASE_ASSET_URL}/assets/img/placeholder.jpg`;
+
                     const row = `
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <img src="${window.BASE_URL}/assets/img/products/${item.featured_image || 'placeholder.jpg'}" onerror="this.onerror=null;this.src='https://placehold.co/60x60/cccccc/000000?text=No+Image';" alt="${item.title}" class="rounded-3 me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                                    <img src="${productImageUrl}" onerror="this.onerror=null;this.src='${BASE_ASSET_URL}/assets/img/placeholder.jpg';" alt="${item.title}" class="rounded-3 me-3" style="width: 60px; height: 60px; object-fit: cover;">
                                     <div>
                                         <h6 class="mb-0 text-dark-gray">${item.title}</h6>
                                         <small class="text-medium-gray">Category: ${item.category_name || 'N/A'}</small>

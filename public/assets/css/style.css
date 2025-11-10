@@ -1897,8 +1897,8 @@ position: absolute;
 
 .product-detail-section .product-image {
     flex: 1;
-    max-width: 50%;
-    padding: 20px;
+    max-width: 100%;
+    height: 1000px;
     background-color: var(--light-gray); /* Used light-gray for consistency */
     border-radius: var(--border-radius-lg);
     display: flex;
