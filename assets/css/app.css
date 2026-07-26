@@ -1,0 +1,359 @@
+/*
+  GLOBAL VARIABLES & RESET
+*/
+:root {
+  --primary-color: #0084ff;
+  --secondary-color: #f35525;
+  --accent-color: #ee626b;
+  --dark-color: #1e1e1e;
+  --light-bg: #f7f7f7;
+  --card-bg: #ffffff;
+  --border-radius-lg: 25px;
+  --border-radius-md: 15px;
+  --transition: all 0.3s ease-in-out;
+  --font-family: 'Poppins', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: #ffffff;
+  color: #4a4a4a;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+/* ==========================================================================
+   HEADER & NAVBAR (STICKY & ANIMATED TOGGLER)
+   ========================================================================== */
+.header-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 20px 0;
+  transition: var(--transition);
+}
+
+.header-area.is-sticky {
+  position: fixed;
+  top: 0;
+  background-color: var(--primary-color);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  padding: 12px 0;
+  animation: slideDown 0.4s ease-in-out forwards;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.header-area .navbar-brand img {
+  max-height: 40px;
+}
+
+.header-area .nav-link {
+  color: #ffffff !important;
+  font-weight: 500;
+  padding: 8px 20px !important;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.header-area .nav-link.active,
+.header-area .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-sign-in {
+  background-color: var(--secondary-color);
+  color: #ffffff !important;
+  border-radius: 20px;
+  padding: 8px 22px !important;
+  font-weight: 500;
+  font-size: 14px;
+  border: none;
+  text-transform: uppercase;
+}
+
+.btn-sign-in:hover {
+  background-color: #e04415;
+}
+
+/* Custom Animated Hamburger to Cross Icon */
+.custom-toggler {
+  border: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  width: 30px;
+  height: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.custom-toggler .icon-bar {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-toggler:not(.collapsed) .icon-bar:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.custom-toggler:not(.collapsed) .icon-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.custom-toggler:not(.collapsed) .icon-bar:nth-child(3) {
+  transform: translateY(-11px) rotate(-45deg);
+}
+
+/* ==========================================================================
+   SHARED PAGE BANNER (used as hero & inner page title)
+   ========================================================================== */
+.main-banner {
+  background: var(--primary-color);
+  padding: 160px 0 120px 0;
+  border-bottom-left-radius: 150px;
+  border-bottom-right-radius: 150px;
+  position: relative;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   SHARED SECTION HEADERS & BUTTONS
+   ========================================================================== */
+.section-heading {
+  margin-bottom: 40px;
+}
+
+.section-heading span {
+  color: var(--secondary-color);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.section-heading h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--dark-color);
+  margin-top: 5px;
+}
+
+.btn-custom-red {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 10px 25px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-custom-red:hover {
+  background-color: var(--secondary-color);
+  color: #fff;
+}
+
+/* ==========================================================================
+   SHARED TRENDING / PRODUCT CARDS
+   ========================================================================== */
+.trending-card {
+  background-color: var(--light-bg);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 30px;
+  transition: var(--transition);
+  height: calc(100% - 30px);
+  display: flex;
+  flex-direction: column;
+}
+
+.trending-card .card-thumb {
+  position: relative;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+.trending-card .card-thumb img {
+  width: 100%;
+  border-radius: var(--border-radius-lg);
+  display: block;
+}
+
+.trending-card .price-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.trending-card .price-badge del {
+  display: block;
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.trending-card .card-body-custom {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.trending-card .category {
+  font-size: 12px;
+  color: #aaa;
+  display: block;
+}
+
+.trending-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 2px 0 0 0;
+  color: var(--dark-color);
+}
+
+.trending-card .cart-btn {
+  width: 35px;
+  height: 35px;
+  background-color: var(--accent-color);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.trending-card .category,
+.trending-card h4,
+.trending-card .cart-btn {
+  transition: var(--transition);
+}
+
+.trending-card:hover .category,
+.trending-card:hover h4 {
+  color: var(--primary-color);
+}
+
+.trending-card:hover .cart-btn {
+  background-color: var(--primary-color);
+}
+
+/* ==========================================================================
+   SHARED CATEGORIES SECTION
+   ========================================================================== */
+
+.category-card {
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius-lg);
+  text-align: center;
+  color: #fff;
+  padding-top: 15px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.category-card h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.category-card img {
+  width: 100%;
+  border-radius: var(--border-radius-lg);
+  display: block;
+}
+
+/* ==========================================================================
+   GLOBAL BUTTON HOVER EFFECT
+   ========================================================================== */
+.btn-custom-red,
+.btn-sign-in,
+.search-input button,
+.newsletter-form button,
+.cart-btn,
+.btn-explore {
+  transition: var(--transition) !important;
+}
+
+.btn-custom-red:hover,
+.btn-sign-in:hover,
+.search-input button:hover,
+.newsletter-form button:hover,
+.cart-btn:hover,
+.btn-explore:hover {
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 5px 15px rgba(0, 132, 255, 0.3);
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+footer {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  padding: 25px 0;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+  text-align: center;
+  font-size: 13px;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   GLOBAL RESPONSIVE OVERRIDES
+   ========================================================================== */
+@media (max-width: 991px) {
+  .main-banner {
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+    padding-bottom: 80px;
+  }
+}
