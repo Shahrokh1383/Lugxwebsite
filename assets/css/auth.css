@@ -1,0 +1,145 @@
+/* ==========================================================================
+   AUTH PAGES (Login, Signup, Forgot Password, Reset Password)
+   Card uses primary colour so the white logo is visible
+   ========================================================================== */
+
+.auth-page {
+  background-color: var(--light-bg);      /* #f7f7f7 */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-section {
+  width: 100%;
+  padding: 40px 0;
+}
+
+/* Card — now primary blue like the header */
+.auth-card {
+  background: var(--primary-color);       /* #0084ff */
+  border: none;
+  border-radius: var(--border-radius-lg); /* 25px */
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  padding: 35px 30px;
+  color: #ffffff;                          /* default text inside card is white */
+}
+
+/* Logo wrapper */
+.auth-logo-wrapper {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.auth-logo {
+  max-height: 45px;
+  display: inline-block;
+  /* logo is white, visible on blue background */
+}
+
+/* Headings */
+.auth-section h2 {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.auth-section .text-secondary {
+  color: rgba(255,255,255,0.85) !important;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+/* Labels */
+.auth-section .form-label {
+  color: rgba(255,255,255,0.9);
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+/* Inputs – white fields inside blue card */
+.auth-section .form-control {
+  background-color: #ffffff;
+  border: 2px solid transparent;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-size: 14px;
+  color: var(--dark-color);
+  transition: var(--transition);
+}
+
+.auth-section .form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(238,98,107,0.25);
+}
+
+.auth-section .form-control::placeholder {
+  color: #aaa;
+}
+
+/* Checkbox label */
+.auth-section .form-check-label {
+  color: rgba(255,255,255,0.9);
+}
+
+/* Links inside card */
+.auth-card a:not(.btn) {
+  color: #ffffff;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.auth-card a:not(.btn):hover {
+  color: var(--accent-color);
+}
+
+/* Buttons – keep the standard red button (visible on blue) */
+.auth-section .btn-custom-red {
+  width: 100%;
+  padding: 12px 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* The bottom text (e.g., "Don't have an account?") */
+.auth-card .small {
+  color: rgba(255,255,255,0.9);
+}
+
+/* Back link */
+.auth-back-link {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: var(--dark-color);
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 10;
+  background: rgba(255,255,255,0.9);
+  padding: 6px 15px;
+  border-radius: 20px;
+  transition: var(--transition);
+}
+
+.auth-back-link:hover {
+  background: #fff;
+  color: var(--primary-color);
+}
+
+/* Ensure no hover movement */
+.auth-card:hover {
+  transform: none;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .auth-card {
+    padding: 25px 20px;
+  }
+  .auth-section h2 {
+    font-size: 24px;
+  }
+}

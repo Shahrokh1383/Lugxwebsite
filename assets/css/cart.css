@@ -1,0 +1,22 @@
+.cart-section .table th,
+.cart-section .table td {
+  vertical-align: middle;
+}
+
+.cart-section .quantity-input {
+  -moz-appearance: textfield;
+}
+
+.cart-section .quantity-input::-webkit-outer-spin-button,
+.cart-section .quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.remove-btn {
+  transition: var(--transition);
+}
+
+.remove-btn:hover {
+  transform: scale(1.2);
+}

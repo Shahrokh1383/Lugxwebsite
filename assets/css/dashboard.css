@@ -1,0 +1,18 @@
+.dashboard-section .list-group-item {
+  border: none;
+  padding: 12px 20px;
+  font-weight: 500;
+  color: var(--dark-color);
+  transition: var(--transition);
+}
+
+.dashboard-section .list-group-item.active,
+.dashboard-section .list-group-item:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.dashboard-section .list-group-item i {
+  width: 20px;
+  text-align: center;
+}

@@ -1,0 +1,10 @@
+/* assets/css/faq.css */
+.faq-section .accordion-button {
+  background-color: var(--light-bg);
+  color: var(--dark-color);
+  font-size: 16px;
+}
+.faq-section .accordion-button:not(.collapsed) {
+  background-color: var(--primary-color);
+  color: #fff;
+}

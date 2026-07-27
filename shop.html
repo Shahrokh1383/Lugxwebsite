@@ -4,28 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LUGX Gaming Shop - Our Shop</title>
-  
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Bootstrap 5.3 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  
-  <!-- FontAwesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- External Shared CSS -->
   <link rel="stylesheet" href="./assets/css/app.css">
   <link rel="stylesheet" href="./assets/css/shop.css">
 </head>
 <body>
 
-  <!-- ***** Header Area Start ***** -->
   <header class="header-area">
     <div class="container">
-      <nav class="navbar navbar-expand-lg navbar-dark p-0">
+      <nav class="navbar navbar-expand-lg navbar-dark p-0 header-navbar">
         <a class="navbar-brand" href="index.html">
           <img src="./assets/images/logo.png" alt="LUGX Logo">
         </a>
@@ -34,299 +25,218 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav align-items-center mt-3 mt-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center mt-3 mt-lg-0">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item dropdown dropdown-mega">
+              <a class="nav-link dropdown-toggle" href="#" id="megaMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+              <div class="dropdown-menu" aria-labelledby="megaMenu">
+                <div class="mega-menu-content">
+                  <div class="mega-menu-column"><h6>Action</h6><ul class="list-unstyled"><li><a href="shop.html">FPS</a></li><li><a href="shop.html">Battle Royale</a></li><li><a href="shop.html">Fighting</a></li></ul></div>
+                  <div class="mega-menu-column"><h6>Adventure</h6><ul class="list-unstyled"><li><a href="shop.html">Open World</a></li><li><a href="shop.html">Puzzle</a></li><li><a href="shop.html">Survival</a></li></ul></div>
+                  <div class="mega-menu-column"><h6>RPG</h6><ul class="list-unstyled"><li><a href="shop.html">MMORPG</a></li><li><a href="shop.html">Action RPG</a></li><li><a href="shop.html">Turn-Based</a></li></ul></div>
+                  <div class="mega-menu-column"><h6>Sports & Racing</h6><ul class="list-unstyled"><li><a href="shop.html">Football</a></li><li><a href="shop.html">Basketball</a></li><li><a href="shop.html">Racing Sims</a></li></ul></div>
+                  <div class="mega-menu-column"><h6>Indie</h6><ul class="list-unstyled"><li><a href="shop.html">Platformer</a></li><li><a href="shop.html">Roguelike</a></li><li><a href="shop.html">Visual Novel</a></li></ul></div>
+                </div>
+              </div>
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="shop.html">Our Shop</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact Us</a>
-            </li>
-            <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-              <a class="btn btn-sign-in" href="#">Sign In</a>
+            <li class="nav-item"><a class="nav-link active" href="shop.html">Shop</a></li>
+            <li class="nav-item"><a class="nav-link" href="trending.html">Trending</a></li>
+            <li class="nav-item"><a class="nav-link" href="most-viewed.html">Most Viewed</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            <!-- User Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle user-icon" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-circle-user"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user"></i> My Account</a></li>
+                <li><a class="dropdown-item" href="track-order.html"><i class="fa-solid fa-key"></i> Order Status</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-heart"></i> Wishlist</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Sign In</a></li>
+              </ul>
             </li>
           </ul>
+        </div>
+        <!-- Always visible: Search & Cart -->
+        <div class="navbar-actions">
+          <div class="navbar-search">
+            <input type="text" id="search-input" placeholder="Search games...">
+            <button class="search-btn" id="search-toggle"><i class="fa-solid fa-search"></i></button>
+            <div class="search-dropdown" id="search-dropdown">
+              <div class="dropdown-header px-3 py-2 fw-bold" style="font-size:12px;">Popular Searches</div>
+              <div id="suggestions-list"></div>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Browse All</a>
+            </div>
+          </div>
+          <div class="mini-cart">
+            <a href="#" class="cart-icon" id="cart-toggle">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span class="cart-count">2</span>
+            </a>
+            <div class="cart-dropdown" id="cart-dropdown">
+              <div class="cart-item">
+                <img src="./assets/images/trending-01.jpg" alt="Game">
+                <div class="item-info"><h6>Assassin Creed</h6><span class="price">$22.00</span></div>
+                <span class="remove-item"><i class="fa-solid fa-times"></i></span>
+              </div>
+              <div class="cart-item">
+                <img src="./assets/images/trending-02.jpg" alt="Game">
+                <div class="item-info"><h6>Call of Duty MWII</h6><span class="price">$28.00</span></div>
+                <span class="remove-item"><i class="fa-solid fa-times"></i></span>
+              </div>
+              <div class="cart-total d-flex justify-content-between">
+                <span>Total:</span><span style="color:var(--primary-color);">$50.00</span>
+              </div>
+              <a href="cart.html" class="btn btn-custom-red w-100 text-center py-2">View Cart</a>
+            </div>
+          </div>
         </div>
       </nav>
     </div>
   </header>
-  <!-- ***** Header Area End ***** -->
 
-  <!-- ***** Page Title Banner Start ***** -->
+  <!-- Page Title Banner -->
   <section class="main-banner text-center">
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1 class="fw-bold text-white mb-2 text-uppercase" style="font-size: 48px; letter-spacing: 1px;">Our Shop</h1>
-          <p class="text-white opacity-75 mb-0" style="font-size: 15px; font-weight: 500;">Home &gt; Our Shop</p>
+          <h1 class="fw-bold text-white mb-2 text-uppercase" style="font-size:48px; letter-spacing:1px;">Our Shop</h1>
+          <nav aria-label="breadcrumb"><ol class="breadcrumb justify-content-center bg-transparent mb-0"><li class="breadcrumb-item"><a href="index.html" class="text-white-50">Home</a></li><li class="breadcrumb-item active text-white" aria-current="page">Shop</li></ol></nav>
         </div>
       </div>
     </div>
   </section>
-  <!-- ***** Page Title Banner End ***** -->
 
-  <!-- ***** Main Shop Section Start ***** -->
+  <!-- Shop Section -->
   <section class="shop-section py-5 my-4">
     <div class="container">
-      
-      <!-- Category Filter Tabs -->
-      <div class="d-flex justify-content-center flex-wrap gap-3 mb-5">
-        <a href="#" class="btn btn-custom-red px-4 py-2 fw-bold text-uppercase" style="border-radius: 20px;">Show All</a>
-        <a href="#" class="btn btn-light bg-light-subtle px-4 py-2 fw-bold text-dark text-uppercase border-0" style="border-radius: 20px; font-size: 13px;">Adventure</a>
-        <a href="#" class="btn btn-light bg-light-subtle px-4 py-2 fw-bold text-dark text-uppercase border-0" style="border-radius: 20px; font-size: 13px;">Strategy</a>
-        <a href="#" class="btn btn-light bg-light-subtle px-4 py-2 fw-bold text-dark text-uppercase border-0" style="border-radius: 20px; font-size: 13px;">Racing</a>
+
+      <!-- Top bar: Results Count + View Toggle -->
+      <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+        <div class="results-count text-muted" style="font-size:14px;">Showing <span id="showing-start">1</span>-<span id="showing-end">12</span> of <span id="total-products">24</span> results</div>
+        <div class="view-toggle">
+          <button class="btn btn-outline-secondary btn-sm rounded-pill active" id="grid-view-btn"><i class="fa-solid fa-grid-2"></i></button>
+          <button class="btn btn-outline-secondary btn-sm rounded-pill" id="list-view-btn"><i class="fa-solid fa-list"></i></button>
+        </div>
       </div>
 
-      <!-- Shop Products Grid -->
-      <div class="row g-4">
-        
-        <!-- Product Card 1 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-01.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$36</del>$24</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 2 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-02.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$32</del>$22</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 3 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-03.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$45</del>$30</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 4 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-04.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$32</del>$22</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 5 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-03.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$38</del>$26</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 6 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-01.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$30</del>$20</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 7 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-04.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$32</del>$22</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 8 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-02.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$32</del>$22</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 9 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-03.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$28</del>$20</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 10 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-04.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$26</del>$18</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 11 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-01.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$32</del>$24</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Card 12 -->
-        <div class="col-lg-3 col-md-6">
-          <div class="trending-card">
-            <div class="card-thumb">
-              <img src="./assets/images/trending-02.jpg" alt="Assassin Creed">
-              <span class="price-badge"><del>$45</del>$30</span>
-            </div>
-            <div class="card-body-custom">
-              <div>
-                <span class="category">Action</span>
-                <h4>Assasin Creed</h4>
-              </div>
-              <a href="./product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
-            </div>
-          </div>
-        </div>
-
+      <!-- Category Filter Tabs – now styled exactly like Trending/Most Viewed -->
+      <div class="filter-bar">
+        <button class="filter-btn active">Show All</button>
+        <button class="filter-btn">Adventure</button>
+        <button class="filter-btn">Strategy</button>
+        <button class="filter-btn">Racing</button>
       </div>
 
-      <!-- Pagination Section -->
+      <!-- Product Grid / List Container -->
+      <div id="products-container" class="row g-4">
+        <!-- Skeleton Loader Placeholder (will be removed via JS) -->
+        <div class="col-lg-3 col-md-6 skeleton-card"><div class="card bg-light rounded-4 h-100"><div class="card-img-top skeleton-box" style="height:200px;"></div><div class="card-body"><div class="skeleton-text w-75 mb-2"></div><div class="skeleton-text w-50"></div></div></div></div>
+        <div class="col-lg-3 col-md-6 skeleton-card"><div class="card bg-light rounded-4 h-100"><div class="card-img-top skeleton-box" style="height:200px;"></div><div class="card-body"><div class="skeleton-text w-75 mb-2"></div><div class="skeleton-text w-50"></div></div></div></div>
+        <div class="col-lg-3 col-md-6 skeleton-card"><div class="card bg-light rounded-4 h-100"><div class="card-img-top skeleton-box" style="height:200px;"></div><div class="card-body"><div class="skeleton-text w-75 mb-2"></div><div class="skeleton-text w-50"></div></div></div></div>
+        <div class="col-lg-3 col-md-6 skeleton-card"><div class="card bg-light rounded-4 h-100"><div class="card-img-top skeleton-box" style="height:200px;"></div><div class="card-body"><div class="skeleton-text w-75 mb-2"></div><div class="skeleton-text w-50"></div></div></div></div>
+        <!-- Real products loaded dynamically via JS (simulated) -->
+      </div>
+
+      <!-- Empty State (hidden by default) -->
+      <div id="empty-state" class="text-center py-5 d-none">
+        <i class="fa-solid fa-gamepad fa-4x text-muted mb-3"></i>
+        <h4>No products found</h4>
+        <p class="text-muted">Try adjusting your filters or search term.</p>
+        <a href="shop.html" class="btn btn-custom-red">Clear Filters</a>
+      </div>
+
+      <!-- Pagination -->
       <div class="row mt-5">
         <div class="col-12">
           <ul class="pagination justify-content-center align-items-center gap-2 mb-0">
-            <li class="page-item">
-              <a class="page-link rounded-circle border-0 text-dark bg-light d-flex align-items-center justify-content-center" href="#" style="width: 40px; height: 40px; font-weight: 600;">&lt;</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link rounded-circle border-0 text-dark bg-light d-flex align-items-center justify-content-center" href="#" style="width: 40px; height: 40px; font-weight: 600;">1</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link rounded-circle border-0 text-white bg-primary d-flex align-items-center justify-content-center fw-bold" href="#" style="width: 40px; height: 40px;">2</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link rounded-circle border-0 text-dark bg-light d-flex align-items-center justify-content-center" href="#" style="width: 40px; height: 40px; font-weight: 600;">3</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link rounded-circle border-0 text-dark bg-light d-flex align-items-center justify-content-center" href="#" style="width: 40px; height: 40px; font-weight: 600;">&gt;</a>
-            </li>
+            <li class="page-item"><a class="page-link rounded-circle border-0 text-dark bg-light d-flex align-items-center justify-content-center" href="#" style="width:40px; height:40px; font-weight:600;">&lt;</a></li>
+            <li class="page-item"><a class="page-link rounded-circle border-0 text-dark bg-light d-flex align-items-center justify-content-center" href="#">1</a></li>
+            <li class="page-item"><a class="page-link rounded-circle border-0 text-white bg-primary d-flex align-items-center justify-content-center fw-bold" href="#">2</a></li>
+            <li class="page-item"><a class="page-link rounded-circle border-0 text-dark bg-light d-flex align-items-center justify-content-center" href="#">3</a></li>
+            <li class="page-item"><a class="page-link rounded-circle border-0 text-dark bg-light d-flex align-items-center justify-content-center" href="#">&gt;</a></li>
           </ul>
         </div>
       </div>
 
     </div>
   </section>
-  <!-- ***** Main Shop Section End ***** -->
 
-  <!-- ***** Footer Start ***** -->
-  <footer>
+  <!-- Footer -->
+  <footer class="main-footer">
     <div class="container">
-      <p class="mb-0">Copyright © 2048 LUGX Gaming Company. All rights reserved.
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6"><h5 class="text-uppercase fw-bold mb-3">LUGX Gaming</h5><p class="small opacity-75">Your ultimate destination for the best gaming deals. Instant delivery, secure payments, and 24/7 support.</p><div class="social-links mt-3"><a href="#" class="me-2"><i class="fa-brands fa-facebook-f"></i></a><a href="#" class="me-2"><i class="fa-brands fa-twitter"></i></a><a href="#" class="me-2"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-brands fa-discord"></i></a></div></div>
+        <div class="col-lg-2 col-md-6"><h5 class="text-uppercase fw-bold mb-3">Explore</h5><ul class="list-unstyled"><li><a href="shop.html">Shop</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div class="col-lg-3 col-md-6"><h5 class="text-uppercase fw-bold mb-3">Help</h5><ul class="list-unstyled"><li><a href="faq.html">FAQ</a></li><li><a href="forgot-password.html">Account Help</a></li></ul></div>
+        <div class="col-lg-3 col-md-6"><h5 class="text-uppercase fw-bold mb-3">Policies</h5><ul class="list-unstyled"><li><a href="terms.html">Terms & Conditions</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="refund.html">Refund Policy</a></li></ul></div>
+      </div>
+      <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+      <div class="text-center"><p class="mb-0 small opacity-75">Copyright © 2048 LUGX Gaming Company. All rights reserved.</p></div>
     </div>
   </footer>
-  <!-- ***** Footer End ***** -->
+  <button id="back-to-top"><i class="fa-solid fa-chevron-up"></i></button>
 
-  <!-- Bootstrap 5.3 JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- External Shared JS -->
   <script src="app.js"></script>
+  <script>
+    // Simulate product loading with skeleton removal and dynamic cards
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        // Remove skeletons
+        document.querySelectorAll('.skeleton-card').forEach(el => el.remove());
+        // Generate real product cards (using existing trending-card structure + wishlist icon)
+        const container = document.getElementById('products-container');
+        const products = [
+          { img: "trending-01.jpg", cat:"Action", name:"Assassin Creed", old:"$36", price:"$24" },
+          { img: "trending-02.jpg", cat:"Action", name:"Assassin Creed II", old:"$32", price:"$22" },
+          { img: "trending-03.jpg", cat:"Action", name:"Assassin Creed III", old:"$45", price:"$30" },
+          { img: "trending-04.jpg", cat:"Action", name:"Assassin Creed IV", old:"$32", price:"$22" },
+          { img: "trending-03.jpg", cat:"Action", name:"Call of Duty", old:"$38", price:"$26" },
+          { img: "trending-01.jpg", cat:"Action", name:"Far Cry", old:"$30", price:"$20" },
+          { img: "trending-04.jpg", cat:"Action", name:"Watch Dogs", old:"$32", price:"$22" },
+          { img: "trending-02.jpg", cat:"Action", name:"Cyberpunk", old:"$32", price:"$22" },
+          { img: "trending-03.jpg", cat:"Action", name:"Elden Ring", old:"$28", price:"$20" },
+          { img: "trending-04.jpg", cat:"Action", name:"Battlefield", old:"$26", price:"$18" },
+          { img: "trending-01.jpg", cat:"Action", name:"GTA V", old:"$32", price:"$24" },
+          { img: "trending-02.jpg", cat:"Action", name:"Minecraft", old:"$45", price:"$30" }
+        ];
+        products.forEach(p => {
+          const col = document.createElement('div');
+          col.className = 'col-lg-3 col-md-6';
+          col.innerHTML = `
+            <div class="trending-card">
+              <div class="card-thumb">
+                <img src="./assets/images/${p.img}" alt="${p.name}">
+                <span class="price-badge"><del>${p.old}</del>${p.price}</span>
+              </div>
+              <div class="card-body-custom">
+                <div>
+                  <span class="category">${p.cat}</span>
+                  <h4>${p.name}</h4>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <a href="product-details.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></a>
+                </div>
+              </div>
+            </div>`;
+          container.appendChild(col);
+        });
+        // Wire up wishlist toggle
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const icon = btn.querySelector('i');
+            icon.classList.toggle('fa-regular');
+            icon.classList.toggle('fa-solid');
+            icon.classList.toggle('text-danger');
+          });
+        });
+      }, 1500); // simulate loading delay
+    });
+  </script>
 </body>
 </html>

@@ -1,3 +1,113 @@
-/*
-   SHOP PAGE
- */
+/* ==========================================================================
+   SHOP PAGE STYLES
+   ========================================================================== */
+
+/* Breadcrumb divider */
+.breadcrumb-item + .breadcrumb-item::before {
+  color: rgba(255,255,255,0.5);
+}
+
+/* Skeleton Loader (shimmer) */
+.skeleton-card .skeleton-box {
+  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 20px;
+}
+
+.skeleton-text {
+  height: 15px;
+  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 5px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Wishlist heart icon */
+.wishlist-btn {
+  font-size: 1.1rem;
+  transition: 0.2s;
+}
+.wishlist-btn:hover {
+  color: var(--accent-color) !important;
+}
+
+/* List view (toggled via JS) */
+.list-view .trending-card {
+  flex-direction: row !important;
+}
+.list-view .card-thumb {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   FILTER BAR – matches Trending / Most Viewed style
+   ========================================================================== */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.filter-btn {
+  background: var(--light-bg);
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark-color);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: var(--accent-color);
+  color: #fff;
+}
+
+/* ==========================================================================
+   SHOP PAGE BANNER – matches Trending / Most Viewed banners
+   ========================================================================== */
+.shop-banner {
+  background: var(--primary-color);
+  padding: 120px 0 60px;
+  color: #fff;
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.shop-banner h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.shop-banner p {
+  font-size: 14px;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .shop-banner {
+    padding: 100px 0 40px;
+    border-radius: 0 0 40px 40px;
+  }
+  .shop-banner h1 {
+    font-size: 28px;
+  }
+}

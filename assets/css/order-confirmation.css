@@ -1,0 +1,10 @@
+.order-confirmation-section .check-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  background: rgba(0,132,255,0.1);
+  border-radius: 50%;
+  margin: 0 auto;
+}

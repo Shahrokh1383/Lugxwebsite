@@ -1,0 +1,118 @@
+/* ==========================================================================
+   GAMES LIST PAGES (Trending & Most Viewed)
+   ========================================================================== */
+
+/* ----- Page Intro / Banner ----- */
+.games-page-banner {
+  background: var(--primary-color);
+  padding: 120px 0 60px;
+  color: #fff;
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.games-page-banner h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.games-page-banner p {
+  font-size: 14px;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ----- Filter Bar (optional) ----- */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.filter-btn {
+  background: var(--light-bg);
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark-color);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: var(--accent-color);
+  color: #fff;
+}
+
+/* ----- Games Grid (reuses trending-card from app.css) ----- */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+/* Override margin-bottom for cards inside grid */
+.games-grid .trending-card {
+  margin-bottom: 0;
+  height: 100%;
+}
+
+/* ----- Pagination ----- */
+.pagination-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  gap: 5px;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li a,
+.pagination li span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark-color);
+  background: var(--light-bg);
+  transition: var(--transition);
+}
+
+.pagination li a:hover,
+.pagination li.active span {
+  background: var(--accent-color);
+  color: #fff;
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 768px) {
+  .games-page-banner {
+    padding: 100px 0 40px;
+    border-radius: 0 0 40px 40px;
+  }
+  .games-page-banner h1 {
+    font-size: 28px;
+  }
+  .games-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+  }
+}
